@@ -50,14 +50,9 @@ _global_script_classes=[ {
 "path": "res://scripts/resources/grid_input_map.gd"
 }, {
 "base": "Resource",
-"class": "GridMotionBase",
+"class": "GridMotion",
 "language": "GDScript",
-"path": "res://scripts/resources/grid_motion_base.gd"
-}, {
-"base": "GridMotionBase",
-"class": "GridMotionMulti",
-"language": "GDScript",
-"path": "res://scripts/resources/grid_motion_base/grid_motion_multi.gd"
+"path": "res://scripts/resources/grid_motion.gd"
 }, {
 "base": "Resource",
 "class": "GridMove",
@@ -108,8 +103,7 @@ _global_script_class_icons={
 "GridEvent": "",
 "GridHitbox": "",
 "GridInputMap": "",
-"GridMotionBase": "",
-"GridMotionMulti": "",
+"GridMotion": "",
 "GridMove": "",
 "GridUI": "",
 "GridUtil": "",
