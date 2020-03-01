@@ -57,7 +57,7 @@ func tick_aggro() -> void:
 				# Next to a wall
 				if delta.y < 0:
 					# Target in front
-					buffer_move("move_forward")
+					buffer_motion("move_forward")
 				else:
 					# Target behind
 					if knows_quickturn:
@@ -73,11 +73,11 @@ func tick_aggro() -> void:
 			buffer_turn(delta.x > 0)
 		else:
 			# Next to a wall, move along it
-			buffer_move("move_forward")
+			buffer_motion("move_forward")
 	elif delta.y > 0:
 		# Target is behind
 		if knows_quickturn:
-			buffer_move("quickturn_right")
+			buffer_motion("quickturn_right")
 		else:
 			buffer_turn(delta.x > 0)
 	else:
@@ -86,13 +86,13 @@ func tick_aggro() -> void:
 			# Not in melee range
 			if check_move(0, -1):
 				# Not in front of wall
-				buffer_move("move_forward")
+				buffer_motion("move_forward")
 			else:
 				# In front of wall, turn
 				buffer_turn(delta.x > 0)
 		else:
 			# In melee range
-			buffer_move("attack")
+			buffer_motion("attack")
 
 func check_move(x: int, y: int) -> bool:
 	var world = target_actor.get_parent()
@@ -108,13 +108,13 @@ func check_move(x: int, y: int) -> bool:
 	return false
 
 func buffer_sidestep(clockwise: bool) -> void:
-	buffer_move("move_right" if clockwise else "move_left")
+	buffer_motion("move_right" if clockwise else "move_left")
 
 func buffer_turn(clockwise: bool) -> void:
-	buffer_move("turn_right" if clockwise else "turn_left")
+	buffer_motion("turn_right" if clockwise else "turn_left")
 
 func buffer_quickturn(clockwise: bool) -> void:
-	buffer_move("quickturn_right" if clockwise else "quickturn_left")
+	buffer_motion("quickturn_right" if clockwise else "quickturn_left")
 
 func tick_asleep() -> void:
 	var world = target_actor.get_parent()

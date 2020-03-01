@@ -1,0 +1,48 @@
+Broadsword
+    - Hack-and-slash all-rounder
+    - Mix of single target + crowd control
+Gauntlets + Greaves
+    - Single target
+    - High damage
+    - Offensive focus
+    - Shorter stinger, but high knockback
+        - God Hand cartoon blastback on counter-hit
+    - Few to no specials that turn the player
+        - Turn enemies instead
+        - Hook punch for 90 degree turn
+        - Roundhouse kick for 180 degree turn
+            - Hits diagonal instead of straight ahead?
+    - Replace turn left / turn right with two-tile strafe dash?
+    - Back special is a faster 'move backward', powers up forward special if used next
+    - Punch Rush
+Short Sword + Buckler
+    - Parry
+    - Knockback kick
+    - Single target, quick
+    - Shield bash attacks with higher hitstun
+Longsword
+    - Two-tile range
+    - Defensive focus
+    - Block mechanic
+    - Specials that focus on short repositions while covering with damage
+        - MG: Rising Defensive Offense
+Katana
+    - Special attacks that focus on fast, long repositions
+    - Crescent slash aesthetic
+Bo Staff
+    - Two-tile range
+    - Crowd control weapon
+Greatsword
+    - Slow, sweeps multiple tiles
+    - Two-tile range
+    - Super armor / hyper armor
+Rapier
+    - Fast
+    - Triangular attack patterns
+    - Offensive focus
+Open Palm
+    - Unarmed
+    - Little to no direct offensive capability
+    - Learning / defense weapon
+    - Grants foresight - visualize hitboxes ahead of time
+    - Counters?

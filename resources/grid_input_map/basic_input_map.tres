@@ -1,36 +1,36 @@
 [gd_resource type="Resource" load_steps=12 format=2]
 
 [ext_resource path="res://scripts/resources/grid_input_map.gd" type="Script" id=1]
-[ext_resource path="res://resources/grid_move/move_back.tres" type="Resource" id=2]
-[ext_resource path="res://resources/grid_move/move_forward.tres" type="Resource" id=3]
-[ext_resource path="res://resources/grid_move/move_left.tres" type="Resource" id=4]
-[ext_resource path="res://resources/grid_move/turn_left.tres" type="Resource" id=5]
-[ext_resource path="res://resources/grid_move/quickturn_right.tres" type="Resource" id=6]
-[ext_resource path="res://resources/grid_move/turn_right.tres" type="Resource" id=7]
-[ext_resource path="res://resources/grid_move/quickturn_left.tres" type="Resource" id=8]
-[ext_resource path="res://resources/grid_move/move_right.tres" type="Resource" id=9]
-[ext_resource path="res://resources/grid_move/special_stinger.tres" type="Resource" id=10]
-[ext_resource path="res://resources/grid_move/attack_forward.tres" type="Resource" id=11]
+[ext_resource path="res://resources/grid_motion/turn_left.tres" type="Resource" id=2]
+[ext_resource path="res://resources/grid_motion/quickturn_right.tres" type="Resource" id=3]
+[ext_resource path="res://resources/grid_motion/special_stinger.tres" type="Resource" id=4]
+[ext_resource path="res://resources/grid_motion/turn_right.tres" type="Resource" id=5]
+[ext_resource path="res://resources/grid_motion/move_left.tres" type="Resource" id=6]
+[ext_resource path="res://resources/grid_motion/move_right.tres" type="Resource" id=7]
+[ext_resource path="res://resources/grid_motion/move_forward.tres" type="Resource" id=8]
+[ext_resource path="res://resources/grid_motion/quickturn_left.tres" type="Resource" id=9]
+[ext_resource path="res://resources/grid_motion/attack_forward.tres" type="Resource" id=10]
+[ext_resource path="res://resources/grid_motion/move_backward.tres" type="Resource" id=11]
 
 [resource]
 script = ExtResource( 1 )
 map = {
-"attack": ExtResource( 11 ),
-"move_back": ExtResource( 2 ),
-"move_forward": ExtResource( 3 ),
-"move_left": ExtResource( 4 ),
-"move_right": ExtResource( 9 ),
-"quickturn_left": ExtResource( 8 ),
-"quickturn_right": ExtResource( 6 ),
+"attack": ExtResource( 10 ),
+"move_back": ExtResource( 11 ),
+"move_forward": ExtResource( 8 ),
+"move_left": ExtResource( 6 ),
+"move_right": ExtResource( 7 ),
+"quickturn_left": ExtResource( 9 ),
+"quickturn_right": ExtResource( 3 ),
 "special_attack": null,
 "special_move_back": null,
-"special_move_forward": ExtResource( 10 ),
+"special_move_forward": ExtResource( 4 ),
 "special_move_left": null,
 "special_move_right": null,
 "special_quickturn_left": null,
 "special_quickturn_right": null,
 "special_turn_left": null,
 "special_turn_right": null,
-"turn_left": ExtResource( 5 ),
-"turn_right": ExtResource( 7 )
+"turn_left": ExtResource( 2 ),
+"turn_right": ExtResource( 5 )
 }

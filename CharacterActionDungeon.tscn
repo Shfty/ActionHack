@@ -62,3 +62,5 @@ __meta__ = {
 "_editor_description_": ""
 }
 knows_quickturn = false
+[connection signal="health_changed" from="World/Player" to="UI" method="set_health"]
+[connection signal="rotation_changed" from="World/Player" to="UI" method="set_compass_angle"]

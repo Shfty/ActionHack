@@ -24,4 +24,4 @@ func _unhandled_input(event: InputEvent) -> void:
 				action_name = "special_"
 			action_name += action
 
-			buffer_move(action_name)
+			buffer_motion(action_name)
