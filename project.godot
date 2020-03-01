@@ -1,0 +1,218 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=4
+
+_global_script_classes=[ {
+"base": "Control",
+"class": "Compass",
+"language": "GDScript",
+"path": "res://scripts/compass.gd"
+}, {
+"base": "GridEntity",
+"class": "GridActor",
+"language": "GDScript",
+"path": "res://scripts/grid_entity/grid_actor.gd"
+}, {
+"base": "GridActor",
+"class": "GridCombatant",
+"language": "GDScript",
+"path": "res://scripts/grid_entity/grid_actor/grid_combatant.gd"
+}, {
+"base": "Node",
+"class": "GridController",
+"language": "GDScript",
+"path": "res://scripts/grid_controller.gd"
+}, {
+"base": "Node2D",
+"class": "GridEntity",
+"language": "GDScript",
+"path": "res://scripts/grid_entity.gd"
+}, {
+"base": "Resource",
+"class": "GridEvent",
+"language": "GDScript",
+"path": "res://scripts/resources/grid_event.gd"
+}, {
+"base": "GridEntity",
+"class": "GridHitbox",
+"language": "GDScript",
+"path": "res://scripts/grid_entity/grid_hitbox.gd"
+}, {
+"base": "Resource",
+"class": "GridInputMap",
+"language": "GDScript",
+"path": "res://scripts/resources/grid_input_map.gd"
+}, {
+"base": "Resource",
+"class": "GridMotionBase",
+"language": "GDScript",
+"path": "res://scripts/resources/grid_motion_base.gd"
+}, {
+"base": "GridMotionBase",
+"class": "GridMotionMulti",
+"language": "GDScript",
+"path": "res://scripts/resources/grid_motion_base/grid_motion_multi.gd"
+}, {
+"base": "Resource",
+"class": "GridMove",
+"language": "GDScript",
+"path": "res://scripts/resources/grid_move.gd"
+}, {
+"base": "Control",
+"class": "GridUI",
+"language": "GDScript",
+"path": "res://scripts/ui.gd"
+}, {
+"base": "Reference",
+"class": "GridUtil",
+"language": "GDScript",
+"path": "res://scripts/util/grid_util.gd"
+}, {
+"base": "Node2D",
+"class": "GridWorld",
+"language": "GDScript",
+"path": "res://scripts/grid_world.gd"
+}, {
+"base": "GridController",
+"class": "MonsterController",
+"language": "GDScript",
+"path": "res://scripts/grid_controller/monster_controller.gd"
+}, {
+"base": "GridController",
+"class": "PlayerController",
+"language": "GDScript",
+"path": "res://scripts/grid_controller/player_controller.gd"
+}, {
+"base": "Control",
+"class": "Renderer2D",
+"language": "GDScript",
+"path": "res://scripts/renderer_2d.gd"
+}, {
+"base": "Control",
+"class": "TextureSubregionRect",
+"language": "GDScript",
+"path": "res://scripts/texture_subregion_rect.gd"
+} ]
+_global_script_class_icons={
+"Compass": "",
+"GridActor": "",
+"GridCombatant": "",
+"GridController": "",
+"GridEntity": "",
+"GridEvent": "",
+"GridHitbox": "",
+"GridInputMap": "",
+"GridMotionBase": "",
+"GridMotionMulti": "",
+"GridMove": "",
+"GridUI": "",
+"GridUtil": "",
+"GridWorld": "",
+"MonsterController": "",
+"PlayerController": "",
+"Renderer2D": "",
+"TextureSubregionRect": ""
+}
+
+[application]
+
+config/name="Character Action Dungeon"
+run/main_scene="res://CharacterActionDungeon.tscn"
+config/icon="res://icon.png"
+
+[display]
+
+window/size/width=480
+window/size/height=480
+window/size/resizable=false
+window/size/test_width=960
+window/size/test_height=960
+window/stretch/mode="2d"
+window/stretch/aspect="keep"
+
+[importer_defaults]
+
+texture={
+"compress/bptc_ldr": 0,
+"compress/hdr_mode": 0,
+"compress/lossy_quality": 0.7,
+"compress/mode": 0,
+"compress/normal_map": 0,
+"detect_3d": true,
+"flags/anisotropic": false,
+"flags/filter": false,
+"flags/mipmaps": false,
+"flags/repeat": 0,
+"flags/srgb": 2,
+"process/HDR_as_SRGB": false,
+"process/fix_alpha_border": true,
+"process/invert_color": false,
+"process/premult_alpha": false,
+"size_limit": 0,
+"stream": false,
+"svg/scale": 1.0
+}
+
+[input]
+
+move_forward={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":69,"unicode":0,"echo":false,"script":null)
+ ]
+}
+move_back={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":68,"unicode":0,"echo":false,"script":null)
+ ]
+}
+move_left={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":83,"unicode":0,"echo":false,"script":null)
+ ]
+}
+move_right={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":70,"unicode":0,"echo":false,"script":null)
+ ]
+}
+turn_left={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":87,"unicode":0,"echo":false,"script":null)
+ ]
+}
+turn_right={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":82,"unicode":0,"echo":false,"script":null)
+ ]
+}
+quickturn_left={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":67,"unicode":0,"echo":false,"script":null)
+ ]
+}
+quickturn_right={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":86,"unicode":0,"echo":false,"script":null)
+ ]
+}
+attack={
+"deadzone": 0.5,
+"events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":1,"pressed":false,"doubleclick":false,"script":null)
+ ]
+}
+special={
+"deadzone": 0.5,
+"events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":2,"pressed":false,"doubleclick":false,"script":null)
+ ]
+}
+
+[rendering]
+
+environment/default_clear_color=Color( 0, 0, 0, 1 )
+environment/default_environment="res://default_env.tres"

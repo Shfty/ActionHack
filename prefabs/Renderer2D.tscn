@@ -1,0 +1,46 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scripts/renderer_2d.gd" type="Script" id=1]
+
+[node name="Renderer2D" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Rotation" type="Control" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -240.0
+margin_top = -240.0
+margin_right = -240.0
+margin_bottom = -240.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Offset" type="Control" parent="Rotation"]
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Canvas" type="Control" parent="Rotation/Offset"]
+margin_right = 480.0
+margin_bottom = 480.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Walls" type="Control" parent="Rotation/Offset/Canvas"]
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
