@@ -1,0 +1,35 @@
+[gd_resource type="Resource" load_steps=9 format=2]
+
+[ext_resource path="res://scripts/resources/grid_move.gd" type="Script" id=1]
+[ext_resource path="res://scripts/resources/grid_motion.gd" type="Script" id=2]
+[ext_resource path="res://resources/curve/curve_linear.tres" type="Curve" id=3]
+[ext_resource path="res://resources/grid_motion/knockdown.tres" type="Resource" id=4]
+
+[sub_resource type="Curve" id=1]
+max_value = 0.2
+_data = [ Vector2( 0, 0 ), 0.0, 1.76559, 0, 0, Vector2( 0.2, 0.2 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Curve" id=2]
+
+[sub_resource type="Curve" id=3]
+max_value = 0.2
+_data = [ Vector2( 0, 0 ), 0.0, 2.20893, 0, 0, Vector2( 0.247082, 0.2 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Resource" id=4]
+script = ExtResource( 1 )
+delta_position = Vector2( 0, 0 )
+delta_facing = 0
+curve_x = SubResource( 2 )
+curve_y = SubResource( 3 )
+curve_facing = SubResource( 1 )
+flip_curve_x = false
+flip_curve_y = false
+flip_curve_facing = false
+duration = 0.5
+events = [  ]
+
+[resource]
+script = ExtResource( 2 )
+motion_moves = [ SubResource( 4 ) ]
+motion_curve = ExtResource( 3 )
+next_motion = ExtResource( 4 )

@@ -1,8 +1,9 @@
-[gd_resource type="Resource" load_steps=11 format=2]
+[gd_resource type="Resource" load_steps=19 format=2]
 
 [ext_resource path="res://scripts/resources/grid_input_map.gd" type="Script" id=1]
 [ext_resource path="res://resources/grid_motion/turn_left.tres" type="Resource" id=2]
 [ext_resource path="res://resources/grid_motion/quickturn_right.tres" type="Resource" id=3]
+[ext_resource path="res://resources/grid_motion/broadsword/special_stinger.tres" type="Resource" id=4]
 [ext_resource path="res://resources/grid_motion/turn_right.tres" type="Resource" id=5]
 [ext_resource path="res://resources/grid_motion/move_left.tres" type="Resource" id=6]
 [ext_resource path="res://resources/grid_motion/move_right.tres" type="Resource" id=7]
@@ -10,6 +11,13 @@
 [ext_resource path="res://resources/grid_motion/quickturn_left.tres" type="Resource" id=9]
 [ext_resource path="res://resources/grid_motion/attack_forward.tres" type="Resource" id=10]
 [ext_resource path="res://resources/grid_motion/move_backward.tres" type="Resource" id=11]
+[ext_resource path="res://resources/grid_motion/broadsword/special_sidestep_right.tres" type="Resource" id=12]
+[ext_resource path="res://resources/grid_motion/broadsword/special_sidestep_left.tres" type="Resource" id=13]
+[ext_resource path="res://resources/grid_motion/broadsword/special_turn_right.tres" type="Resource" id=14]
+[ext_resource path="res://resources/grid_motion/broadsword/special_turn_left.tres" type="Resource" id=15]
+[ext_resource path="res://resources/grid_motion/broadsword/special_spin_right.tres" type="Resource" id=16]
+[ext_resource path="res://resources/grid_motion/broadsword/special_spin_left.tres" type="Resource" id=17]
+[ext_resource path="res://resources/grid_motion/broadsword/special_hop_back.tres" type="Resource" id=18]
 
 [resource]
 script = ExtResource( 1 )
@@ -22,14 +30,14 @@ map = {
 "quickturn_left": ExtResource( 9 ),
 "quickturn_right": ExtResource( 3 ),
 "special_attack": null,
-"special_move_back": null,
-"special_move_forward": null,
-"special_move_left": null,
-"special_move_right": null,
-"special_quickturn_left": null,
-"special_quickturn_right": null,
-"special_turn_left": null,
-"special_turn_right": null,
+"special_move_back": ExtResource( 18 ),
+"special_move_forward": ExtResource( 4 ),
+"special_move_left": ExtResource( 13 ),
+"special_move_right": ExtResource( 12 ),
+"special_quickturn_left": ExtResource( 17 ),
+"special_quickturn_right": ExtResource( 16 ),
+"special_turn_left": ExtResource( 15 ),
+"special_turn_right": ExtResource( 14 ),
 "turn_left": ExtResource( 2 ),
 "turn_right": ExtResource( 5 )
 }

@@ -5,6 +5,14 @@ tool
 export(Vector2) var delta_position
 export(int) var delta_facing
 
+export(Curve) var curve_x
+export(Curve) var curve_y
+export(Curve) var curve_facing
+
+export(bool) var flip_curve_x = false
+export(bool) var flip_curve_y = false
+export(bool) var flip_curve_facing = false
+
 export(float) var duration = 0.2
 export(Array, Resource) var events setget set_events
 

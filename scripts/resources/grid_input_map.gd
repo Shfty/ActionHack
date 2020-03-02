@@ -22,4 +22,12 @@ export(Dictionary) var map := {
 	"special_quickturn_left": Object(),
 	"special_quickturn_right": Object(),
 	"special_attack": Object(),
-}
+} setget set_map
+
+func set_map(new_map: Dictionary) -> void:
+	if map != new_map:
+		map = new_map
+
+		for key in map:
+			if not map[key]:
+				map[key] = Object()

@@ -1,0 +1,39 @@
+[gd_resource type="Resource" load_steps=10 format=2]
+
+[ext_resource path="res://resources/curve/curve_linear.tres" type="Curve" id=1]
+[ext_resource path="res://scripts/grid_entity/grid_hitbox.gd" type="Script" id=2]
+[ext_resource path="res://scripts/resources/grid_motion.gd" type="Script" id=3]
+[ext_resource path="res://scripts/resources/grid_move.gd" type="Script" id=4]
+[ext_resource path="res://scripts/resources/grid_event.gd" type="Script" id=5]
+[ext_resource path="res://resources/grid_motion/broadsword/special_stinger_knockback.tres" type="Resource" id=6]
+
+
+
+[sub_resource type="Curve" id=1]
+min_value = -0.25
+max_value = 0.0
+_data = [ Vector2( 0, 0 ), 0.0, -4.65598, 0, 0, Vector2( 0.140684, -0.25 ), 0.0, 0.0, 0, 0, Vector2( 0.692015, -0.25 ), 0.0, 2.57483, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Resource" id=2]
+script = ExtResource( 5 )
+time = 0.0
+event_type = 1
+spawn_class = ExtResource( 2 )
+spawn_relative_position = Vector2( 0, -1 )
+spawn_params = [ 0.1, 2, ExtResource( 6 ) ]
+
+[sub_resource type="Resource" id=3]
+script = ExtResource( 4 )
+delta_position = Vector2( 0, 0 )
+delta_facing = 0
+curve_y = SubResource( 1 )
+flip_curve_x = false
+flip_curve_y = false
+flip_curve_facing = false
+duration = 0.3
+events = [ SubResource( 2 ) ]
+
+[resource]
+script = ExtResource( 3 )
+motion_moves = [ SubResource( 3 ) ]
+motion_curve = ExtResource( 1 )

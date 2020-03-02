@@ -30,23 +30,18 @@ func run_spawn(args: Dictionary) -> void:
 		push_warning("Couldn't spawn: Unable to instance class")
 		return
 
-	if not 'parent' in args:
-		push_warning("Couldn't spawn: No parent argument")
+	if not 'source' in args:
+		push_warning("Couldn't spawn: No source argument")
 		return
 
-	if not 'position' in args:
-		push_warning("Couldn't spawn: No position argument")
-		return
+	var source = args['source'] as GridEntity
+	var position = Vector2(source.x, source.y)
 
-	if not 'facing' in args:
-		push_warning("Couldn't spawn: No position argument")
-		return
-
-	var pos = (args['position'] + GridUtil.rotate_vec2_by_facing(spawn_relative_position, args['facing']))
+	var pos = (position + GridUtil.rotate_vec2_by_facing(spawn_relative_position, source.facing))
 	inst.set_x(pos.x)
 	inst.set_y(pos.y)
-	inst.set_facing(args['facing'])
-	args['parent'].add_child(inst)
+	inst.set_facing(source.facing)
+	source.get_parent().add_child(inst)
 
 	if inst.has_method('init'):
 		inst.init(spawn_params)

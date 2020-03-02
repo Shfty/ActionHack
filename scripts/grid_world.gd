@@ -12,6 +12,7 @@ func _ready() -> void:
 		elif child is GridEntity:
 			child.connect("tree_exiting", self, "handle_entity_tree_exit", [child])
 			entities.append(child)
+	set_visible(false)
 
 func check_collision(x: int, y: int, ignore: GridEntity = null) -> bool:
 	if check_tile_map_collision(x, y):
@@ -56,17 +57,7 @@ func check_tile_map_collision_internal(tile_map: TileMap, x: int, y: int) -> boo
 	return true
 
 func check_entity_collision_internal(entity: GridEntity, x: int, y: int) -> bool:
-	if entity.x == x and entity.y == y:
-		return true
-
-	if entity is GridActor:
-		if entity.motion_buffer.size() > 0:
-			var move = entity.motion_buffer[0].moves[0]
-			var rotated_delta = GridUtil.rotate_vec2_by_facing(move.delta_position, entity.facing)
-			if entity.x + rotated_delta.x == x and entity.y + rotated_delta.y == y:
-				return true
-
-	return false
+	return entity.solid and entity.x == x and entity.y == y
 
 func handle_tile_map_tree_exit(tile_map: TileMap) -> void:
 	var tile_map_idx = tile_maps.find(tile_map)

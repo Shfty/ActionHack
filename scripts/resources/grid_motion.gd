@@ -2,18 +2,21 @@ class_name GridMotion
 extends Resource
 tool
 
-export(Array, Resource) var moves setget set_moves
-export(Curve) var curve = preload("res://resources/curve/curve_linear.tres")
+export(Array, Resource) var motion_moves setget set_moves
+export(Curve) var motion_curve = preload("res://resources/curve/curve_linear.tres")
+export(Resource) var hit_wall_motion
+export(Resource) var hit_entity_motion
+export(Resource) var next_motion
 
-func set_moves(new_moves: Array) -> void:
-	if moves != new_moves:
-		moves = new_moves
-		if moves.size() > 0:
-			if not moves[-1]:
-				moves[-1] = GridMove.new()
+func set_moves(new_motion_moves: Array) -> void:
+	if motion_moves != new_motion_moves:
+		motion_moves = new_motion_moves
+		if motion_moves.size() > 0:
+			if not motion_moves[-1]:
+				motion_moves[-1] = GridMove.new()
 
 func get_duration() -> float:
 	var duration = 0.0
-	for move in moves:
+	for move in motion_moves:
 		duration += move.duration
 	return duration

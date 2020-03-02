@@ -153,4 +153,8 @@ func should_aggro_entity(entity: GridEntity) -> bool:
 	if delta.length() > wakeup_range:
 		return false
 
-	return true
+	for child in entity.get_children():
+		if child is PlayerController:
+			return true
+
+	return false

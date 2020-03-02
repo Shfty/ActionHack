@@ -31,18 +31,27 @@ func set_health(new_health: int) -> void:
 		if health <= 0:
 			die()
 
-func take_damage(damage: int) -> void:
+func take_damage(damage: int, damage_motion: GridMotion = null) -> void:
 	emit_signal("damage_taken", damage)
 
 	hitstun_armor -= damage
 	if hitstun_armor <= 0:
-		hitstun()
+		hitstun(damage_motion)
 
 	set_health(health - damage)
 
-func hitstun() -> void:
+func hitstun(motion: GridMotion) -> void:
 	emit_signal("hitstun_triggered", hitstun_duration)
 	hitstun_armor = hitstun_threshold
+	if motion:
+		var motion_mod = motion.duplicate()
+		for i in range(0, motion_mod.motion_moves.size()):
+			var move_mod = motion_mod.motion_moves[i].duplicate()
+			move_mod.delta_position = GridUtil.rotate_vec2_by_facing(move_mod.delta_position, -facing)
+			motion_mod.motion_moves[i] = move_mod
+		set_motion(motion_mod)
+	else:
+		set_motion(preload("res://resources/grid_motion/hitstun.tres"))
 
 func die() -> void:
 	get_parent().remove_child(self)

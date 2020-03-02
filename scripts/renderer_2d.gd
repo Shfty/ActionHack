@@ -12,6 +12,7 @@ export(Vector2) var offset = Vector2.ZERO setget set_offset
 var wall_cache = null
 var player_sprite = TextureRect.new()
 var actor_sprites := {}
+var tile_maps := {}
 
 var rotation_path = "./Rotation"
 var offset_path = rotation_path + "/Offset"
@@ -102,10 +103,10 @@ func _process(delta: float) -> void:
 
 	for node in world.get_children():
 		if node is TileMap:
-			draw_walls(node)
+			draw_walls_new(node)
 		elif node is GridEntity:
 			draw_entity(node)
-		elif node is Camera2D:
+		elif node is GridCamera:
 			var canvas_node = get_canvas_node()
 			if canvas_node:
 				set_offset(-Vector2(5, 5) + Vector2(-12, -12) + Vector2(0.5, 0.5) + node.position / GridUtil.TILE_SIZE)
@@ -114,6 +115,23 @@ func _process(delta: float) -> void:
 			if rotation_node:
 				rotation_node.rect_rotation = -node.rotation_degrees
 
+func draw_walls_new(tile_map: TileMap) -> void:
+	var walls_node = get_walls_node()
+	if not walls_node:
+		return
+
+	var map: TileMap = null
+
+	if tile_map in tile_maps:
+		map = tile_maps[tile_map]
+	else:
+		map = tile_map.duplicate()
+		tile_maps[tile_map] = map
+		walls_node.add_child(map)
+		#tile_map.connect("tree_exiting", self, "handle_entity_tree_exiting", [entity])
+
+	map.position = -offset * GridUtil.TILE_SIZE
+	map.position += Vector2(fmod(offset.x, 1.0), fmod(offset.y, 1.0)) * GridUtil.TILE_SIZE
 
 func draw_walls(wall_map: TileMap) -> void:
 	if not wall_cache:
@@ -175,11 +193,14 @@ func draw_entity(entity: GridEntity):
 	if sprite.texture:
 		sprite.rect_pivot_offset = sprite.texture.get_size() * 0.5
 
-	sprite.rect_position = entity.position
+	var entity_sprite = entity.get_sprite()
+
+	sprite.rect_position = entity.position + entity_sprite.position
 	sprite.rect_position -= offset * GridUtil.TILE_SIZE
 	sprite.rect_position += Vector2(fmod(offset.x, 1.0), fmod(offset.y, 1.0)) * GridUtil.TILE_SIZE
 
 	sprite.rect_rotation = entity.rotation_degrees
+	sprite.rect_rotation += entity_sprite.rotation_degrees
 
 	sprite.modulate[3] = entity.opacity
 
@@ -207,6 +228,10 @@ func create_wall_cache() -> void:
 func handle_entity_tree_exiting(entity: GridEntity):
 	if entity in actor_sprites:
 		var sprite = actor_sprites[entity]
-		sprite.get_parent().remove_child(sprite)
+		var parent = sprite.get_parent()
+
+		if parent:
+			sprite.get_parent().remove_child(sprite)
+
 		sprite.queue_free()
 		actor_sprites.erase(entity)
