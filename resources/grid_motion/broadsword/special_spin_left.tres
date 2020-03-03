@@ -97,3 +97,4 @@ script = ExtResource( 2 )
 motion_moves = [ SubResource( 9 ) ]
 motion_curve = ExtResource( 1 )
 looping = false
+lock_input_buffer = false

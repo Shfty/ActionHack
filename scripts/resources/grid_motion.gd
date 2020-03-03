@@ -8,6 +8,7 @@ export(Resource) var hit_wall_motion
 export(Resource) var hit_entity_motion
 export(Resource) var next_motion
 export(bool) var looping = false
+export(bool) var lock_input_buffer = false
 
 func set_moves(new_motion_moves: Array) -> void:
 	if motion_moves != new_motion_moves:

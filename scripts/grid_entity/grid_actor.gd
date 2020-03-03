@@ -189,10 +189,14 @@ func process_input():
 					motion = press_motion
 					consume_input = true
 					process_next = false
-			else:
+			elif not current_motion.lock_input_buffer:
 				motion = moveset.map[action] as GridMotion
 				consume_input = true
 				process_next = false
+			else:
+				consume_input = true
+				process_next = false
+				set_motion = false
 		else:
 			if action in current_move.input_release_motions:
 				# Releasing a link for the current move

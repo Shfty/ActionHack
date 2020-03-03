@@ -45,3 +45,4 @@ motion_moves = [ SubResource( 3 ) ]
 motion_curve = ExtResource( 1 )
 next_motion = ExtResource( 4 )
 looping = false
+lock_input_buffer = false
