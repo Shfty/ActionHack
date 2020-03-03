@@ -147,7 +147,7 @@ func update_animation(delta: float = 0.0):
 func buffer_input(input: String, pressed: bool) -> void:
 	input_buffer.append([input, pressed])
 
-	if not current_motion:
+	if not current_motion or current_motion.cancelable:
 		process_input()
 
 func process_input():
@@ -209,7 +209,7 @@ func process_input():
 				# Releasing an irrelevant action
 				set_motion = false
 				consume_input = true
-				process_next = true
+				process_next = false
 
 	else:
 		if pressed:

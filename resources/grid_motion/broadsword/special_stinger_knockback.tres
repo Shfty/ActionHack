@@ -61,3 +61,4 @@ hit_entity_motion = ExtResource( 2 )
 next_motion = ExtResource( 1 )
 looping = false
 lock_input_buffer = false
+cancelable = false
