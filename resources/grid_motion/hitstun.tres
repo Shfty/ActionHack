@@ -31,3 +31,4 @@ events = [  ]
 script = ExtResource( 2 )
 motion_moves = [ SubResource( 4 ) ]
 motion_curve = ExtResource( 3 )
+looping = false

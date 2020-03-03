@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://test_tileset.tres" type="TileSet" id=1]
 [ext_resource path="res://prefabs/Renderer2D.tscn" type="PackedScene" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://scripts/grid_world.gd" type="Script" id=5]
 [ext_resource path="res://resources/grid_input_map/broadsword_input_map.tres" type="Resource" id=6]
 [ext_resource path="res://scripts/grid_camera.gd" type="Script" id=7]
+[ext_resource path="res://resources/grid_input_map/basic_input_map.tres" type="Resource" id=8]
 [ext_resource path="res://scripts/grid_entity/grid_actor/grid_combatant.gd" type="Script" id=14]
 [ext_resource path="res://scripts/grid_controller/monster_controller.gd" type="Script" id=15]
 [ext_resource path="res://textures/player.png" type="Texture" id=16]
@@ -43,11 +44,11 @@ script = ExtResource( 14 )
 sprite_texture = ExtResource( 16 )
 x = 9
 y = 19
+moveset = ExtResource( 6 )
 hitstun_recovery_rate = 0.2
 
 [node name="PlayerController" type="Node" parent="World/Player"]
 script = ExtResource( 4 )
-input_map = ExtResource( 6 )
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="World/Player"]
 remote_path = NodePath("../../Camera2D")
@@ -60,6 +61,7 @@ sprite_texture = ExtResource( 16 )
 x = 18
 y = 7
 facing = 2
+moveset = ExtResource( 8 )
 health = 15
 
 [node name="MonsterController" type="Node" parent="World/Monster"]
@@ -79,6 +81,7 @@ sprite_texture = ExtResource( 16 )
 x = 7
 y = 10
 facing = 2
+moveset = ExtResource( 8 )
 health = 15
 
 [node name="MonsterController" type="Node" parent="World/Monster2"]
@@ -98,6 +101,7 @@ sprite_texture = ExtResource( 16 )
 x = 12
 y = 3
 facing = 2
+moveset = ExtResource( 8 )
 health = 15
 
 [node name="MonsterController" type="Node" parent="World/Monster3"]

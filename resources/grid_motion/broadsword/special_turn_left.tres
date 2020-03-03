@@ -9,7 +9,7 @@
 [ext_resource path="res://resources/curve/curve_ease_out.tres" type="Curve" id=7]
 [ext_resource path="res://resources/grid_motion/move_left.tres" type="Resource" id=8]
 
-[sub_resource type="Resource" id=2]
+[sub_resource type="Resource" id=1]
 script = ExtResource( 6 )
 time = 0.5
 event_type = 1
@@ -17,7 +17,7 @@ spawn_class = ExtResource( 5 )
 spawn_relative_position = Vector2( 1, -1 )
 spawn_params = [ 0.1, 1, ExtResource( 8 ) ]
 
-[sub_resource type="Resource" id=1]
+[sub_resource type="Resource" id=2]
 script = ExtResource( 6 )
 time = 0.75
 event_type = 1
@@ -34,10 +34,17 @@ flip_curve_x = false
 flip_curve_y = false
 flip_curve_facing = true
 duration = 0.25
-events = [ SubResource( 2 ), SubResource( 1 ) ]
+events = [ SubResource( 1 ), SubResource( 2 ) ]
+input_press_motions = {
+
+}
+input_release_motions = {
+
+}
 
 [resource]
 script = ExtResource( 2 )
 motion_moves = [ SubResource( 3 ) ]
 motion_curve = ExtResource( 7 )
 next_motion = ExtResource( 4 )
+looping = false

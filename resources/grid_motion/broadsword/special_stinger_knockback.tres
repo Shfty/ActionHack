@@ -29,6 +29,12 @@ flip_curve_y = false
 flip_curve_facing = false
 duration = 0.05
 events = [  ]
+input_press_motions = {
+
+}
+input_release_motions = {
+
+}
 
 [sub_resource type="Resource" id=5]
 script = ExtResource( 5 )
@@ -39,6 +45,12 @@ flip_curve_y = false
 flip_curve_facing = false
 duration = 0.05
 events = [  ]
+input_press_motions = {
+
+}
+input_release_motions = {
+
+}
 
 [resource]
 script = ExtResource( 4 )
@@ -47,3 +59,4 @@ motion_curve = ExtResource( 3 )
 hit_wall_motion = ExtResource( 6 )
 hit_entity_motion = ExtResource( 2 )
 next_motion = ExtResource( 1 )
+looping = false

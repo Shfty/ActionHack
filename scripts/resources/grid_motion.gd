@@ -7,6 +7,7 @@ export(Curve) var motion_curve = preload("res://resources/curve/curve_linear.tre
 export(Resource) var hit_wall_motion
 export(Resource) var hit_entity_motion
 export(Resource) var next_motion
+export(bool) var looping = false
 
 func set_moves(new_motion_moves: Array) -> void:
 	if motion_moves != new_motion_moves:

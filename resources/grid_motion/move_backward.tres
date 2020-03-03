@@ -1,8 +1,9 @@
-[gd_resource type="Resource" load_steps=5 format=2]
+[gd_resource type="Resource" load_steps=6 format=2]
 
 [ext_resource path="res://scripts/resources/grid_move.gd" type="Script" id=1]
 [ext_resource path="res://scripts/resources/grid_motion.gd" type="Script" id=2]
-[ext_resource path="res://resources/curve/curve_ease_out.tres" type="Curve" id=4]
+[ext_resource path="res://resources/grid_motion/run_backward.tres" type="Resource" id=3]
+[ext_resource path="res://resources/curve/curve_linear.tres" type="Curve" id=4]
 
 [sub_resource type="Resource" id=1]
 script = ExtResource( 1 )
@@ -13,8 +14,16 @@ flip_curve_y = false
 flip_curve_facing = false
 duration = 0.2
 events = [  ]
+input_press_motions = {
+
+}
+input_release_motions = {
+"move_back": null
+}
 
 [resource]
 script = ExtResource( 2 )
 motion_moves = [ SubResource( 1 ) ]
 motion_curve = ExtResource( 4 )
+next_motion = ExtResource( 3 )
+looping = false

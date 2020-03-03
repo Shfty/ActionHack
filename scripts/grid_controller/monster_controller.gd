@@ -52,47 +52,47 @@ func tick_aggro() -> void:
 		if knows_sidestep:
 			if check_move(sign(delta.x), 0):
 				# Not next to a wall, sidestep
-				buffer_sidestep(delta.x > 0)
+				buffer_sidestep_tap(delta.x > 0)
 			else:
 				# Next to a wall
 				if delta.y < 0:
 					# Target in front
-					buffer_motion("move_forward")
+					buffer_tap("move_forward")
 				else:
 					# Target behind
 					if knows_quickturn:
-						buffer_quickturn(delta.x < 0)
+						buffer_quickturn_tap(delta.x < 0)
 					else:
-						buffer_turn(delta.x < 0)
+						buffer_turn_tap(delta.x < 0)
 						yield(get_tree().create_timer(1.0 / ticks_per_second), "timeout")
-						buffer_turn(delta.x < 0)
+						buffer_turn_tap(delta.x < 0)
 	elif abs(delta.x) > abs(delta.y):
 		# Target is to side
 		if check_move(sign(delta.x), 0):
 			# Not next to a wall, turn
-			buffer_turn(delta.x > 0)
+			buffer_turn_tap(delta.x > 0)
 		else:
 			# Next to a wall, move along it
-			buffer_motion("move_forward")
+			buffer_tap("move_forward")
 	elif delta.y > 0:
 		# Target is behind
 		if knows_quickturn:
-			buffer_motion("quickturn_right")
+			buffer_tap("quickturn_right")
 		else:
-			buffer_turn(delta.x > 0)
+			buffer_turn_tap(delta.x > 0)
 	else:
 		# Target is in front
 		if delta.length() > 1:
 			# Not in melee range
 			if check_move(0, -1):
 				# Not in front of wall
-				buffer_motion("move_forward")
+				buffer_tap("move_forward")
 			else:
 				# In front of wall, turn
-				buffer_turn(delta.x > 0)
+				buffer_turn_tap(delta.x > 0)
 		else:
 			# In melee range
-			buffer_motion("attack")
+			buffer_tap("attack")
 
 func check_move(x: int, y: int) -> bool:
 	var world = target_actor.get_parent()
@@ -107,14 +107,14 @@ func check_move(x: int, y: int) -> bool:
 
 	return false
 
-func buffer_sidestep(clockwise: bool) -> void:
-	buffer_motion("move_right" if clockwise else "move_left")
+func buffer_sidestep_tap(clockwise: bool) -> void:
+	buffer_tap("move_right" if clockwise else "move_left")
 
-func buffer_turn(clockwise: bool) -> void:
-	buffer_motion("turn_right" if clockwise else "turn_left")
+func buffer_turn_tap(clockwise: bool) -> void:
+	buffer_tap("turn_right" if clockwise else "turn_left")
 
-func buffer_quickturn(clockwise: bool) -> void:
-	buffer_motion("quickturn_right" if clockwise else "quickturn_left")
+func buffer_quickturn_tap(clockwise: bool) -> void:
+	buffer_tap("quickturn_right" if clockwise else "quickturn_left")
 
 func tick_asleep() -> void:
 	var world = target_actor.get_parent()

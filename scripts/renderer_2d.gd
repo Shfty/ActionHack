@@ -128,7 +128,8 @@ func draw_walls_new(tile_map: TileMap) -> void:
 		map = tile_map.duplicate()
 		tile_maps[tile_map] = map
 		walls_node.add_child(map)
-		#tile_map.connect("tree_exiting", self, "handle_entity_tree_exiting", [entity])
+		if not map.is_connected("tree_exiting", self, "handle_tile_map_tree_exiting"):
+			map.connect("tree_exiting", self, "handle_tile_map_tree_exiting", [map])
 
 	map.position = -offset * GridUtil.TILE_SIZE
 	map.position += Vector2(fmod(offset.x, 1.0), fmod(offset.y, 1.0)) * GridUtil.TILE_SIZE
@@ -172,8 +173,11 @@ func draw_walls(wall_map: TileMap) -> void:
 				wall_cache[idx][1] = false
 
 func draw_entity(entity: GridEntity):
+	if not entity:
+		return
+
 	var canvas_node = get_canvas_node()
-	if not canvas_node or not entity:
+	if not canvas_node:
 		return
 
 	var top_left = offset * GridUtil.TILE_SIZE
@@ -193,16 +197,17 @@ func draw_entity(entity: GridEntity):
 	if sprite.texture:
 		sprite.rect_pivot_offset = sprite.texture.get_size() * 0.5
 
-	var entity_sprite = entity.get_sprite()
+	if entity.has_method("get_sprite"):
+		var entity_sprite = entity.get_sprite()
 
-	sprite.rect_position = entity.position + entity_sprite.position
-	sprite.rect_position -= offset * GridUtil.TILE_SIZE
-	sprite.rect_position += Vector2(fmod(offset.x, 1.0), fmod(offset.y, 1.0)) * GridUtil.TILE_SIZE
+		sprite.rect_position = entity.position + entity_sprite.position
+		sprite.rect_position -= offset * GridUtil.TILE_SIZE
+		sprite.rect_position += Vector2(fmod(offset.x, 1.0), fmod(offset.y, 1.0)) * GridUtil.TILE_SIZE
 
-	sprite.rect_rotation = entity.rotation_degrees
-	sprite.rect_rotation += entity_sprite.rotation_degrees
+		sprite.rect_rotation = entity.rotation_degrees
+		sprite.rect_rotation += entity_sprite.rotation_degrees
 
-	sprite.modulate[3] = entity.opacity
+		sprite.modulate[3] = entity.opacity
 
 	var entity_visible = true
 	entity_visible = entity_visible and sprite.rect_position.x >= -30
@@ -235,3 +240,14 @@ func handle_entity_tree_exiting(entity: GridEntity):
 
 		sprite.queue_free()
 		actor_sprites.erase(entity)
+
+func handle_tile_map_tree_exiting(tile_map: TileMap):
+	if tile_map in tile_maps:
+		var map = tile_maps[tile_map]
+		var parent = map.get_parent()
+
+		if parent:
+			map.get_parent().remove_child(map)
+
+		map.queue_free()
+		tile_maps.erase(map)

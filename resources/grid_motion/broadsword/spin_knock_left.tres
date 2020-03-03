@@ -2,12 +2,12 @@
 
 [ext_resource path="res://scripts/resources/grid_move.gd" type="Script" id=1]
 [ext_resource path="res://scripts/resources/grid_motion.gd" type="Script" id=2]
-[ext_resource path="res://resources/curve/curve_ease_out.tres" type="Curve" id=4]
+[ext_resource path="res://resources/curve/curve_linear.tres" type="Curve" id=4]
 
 [sub_resource type="Resource" id=1]
 script = ExtResource( 1 )
-delta_position = Vector2( 0, 0 )
-delta_facing = -1
+delta_position = Vector2( -1, 0 )
+delta_facing = 0
 flip_curve_x = false
 flip_curve_y = false
 flip_curve_facing = false

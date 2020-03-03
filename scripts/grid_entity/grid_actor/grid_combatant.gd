@@ -9,7 +9,6 @@ signal hitstun_triggered(duration)
 export(int) var health = 5 setget set_health
 export(int) var hitstun_threshold = 1
 export(float) var hitstun_recovery_rate = 0.5
-export(float) var hitstun_duration = 0.2
 
 onready var hitstun_armor: int = hitstun_threshold
 var hitstun_recovery_progress := 0.0
@@ -41,7 +40,6 @@ func take_damage(damage: int, damage_motion: GridMotion = null) -> void:
 	set_health(health - damage)
 
 func hitstun(motion: GridMotion) -> void:
-	emit_signal("hitstun_triggered", hitstun_duration)
 	hitstun_armor = hitstun_threshold
 	if motion:
 		var motion_mod = motion.duplicate()
@@ -52,6 +50,17 @@ func hitstun(motion: GridMotion) -> void:
 		set_motion(motion_mod)
 	else:
 		set_motion(preload("res://resources/grid_motion/hitstun.tres"))
+
+	var check_motion = current_motion
+	var duration = 0.0
+	while true:
+		if not check_motion:
+			break
+
+		duration += check_motion.get_duration()
+		check_motion = check_motion.next_motion
+
+	emit_signal("hitstun_triggered", duration)
 
 func die() -> void:
 	get_parent().remove_child(self)

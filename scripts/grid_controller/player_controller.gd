@@ -8,20 +8,21 @@ func _unhandled_input(event: InputEvent) -> void:
 	if not event is InputEventKey and not event is InputEventMouseButton:
 		return
 
-	if not event.pressed:
-		return
-
 	if event is InputEventKey and event.echo:
 		return
 
-	for action in input_map.map:
-		if not InputMap.has_action(action):
-			continue
+	if event.is_action("special"):
+		return
 
+	for action in InputMap.get_actions():
 		if event.is_action(action):
 			var action_name = ""
 			if Input.is_action_pressed("special"):
 				action_name = "special_"
 			action_name += action
 
-			buffer_motion(action_name)
+			buffer_input(action_name, event.pressed)
+
+			# Prevent special releases from masking their normal counterparts
+			if not event.pressed:
+				buffer_input(action, false)

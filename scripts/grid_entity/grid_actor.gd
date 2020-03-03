@@ -4,7 +4,9 @@ tool
 
 signal rotation_changed(rotation)
 
-var motion_buffer := []
+export(Resource) var moveset = null
+
+var input_buffer := []
 
 var current_motion: GridMotion = null
 var motion_duration := -1.0
@@ -33,12 +35,14 @@ func update_motion(progress: float = 0.0):
 		var target_y = y + rotated_delta_position.y
 
 		if get_world().check_tile_map_collision(target_x, target_y):
+			input_buffer.clear()
 			if current_motion.hit_wall_motion:
 				set_motion(current_motion.hit_wall_motion)
 			else:
 				set_motion(null)
 			return
 		elif get_world().check_entity_collision(target_x, target_y, self):
+			input_buffer.clear()
 			if current_motion.hit_entity_motion:
 				set_motion(current_motion.hit_entity_motion)
 			else:
@@ -85,7 +89,7 @@ func update_animation(delta: float = 0.0):
 	var world_rot = GridUtil.facing_to_angle(facing)
 
 	if current_motion:
-		animation_progress = min(animation_progress + delta, motion_duration)
+		animation_progress = animation_progress + delta
 
 		var current_move = get_current_move(motion_progress)
 		var move_start = current_move_dict[current_move]['start']
@@ -131,10 +135,7 @@ func update_animation(delta: float = 0.0):
 
 		# If finished, move to the next motion
 		if not animation_progress < motion_duration:
-			if current_motion.next_motion:
-				set_motion(current_motion.next_motion)
-			else:
-				next_motion()
+			process_input()
 
 	position = world_pos
 	position.x = round(position.x)
@@ -143,19 +144,88 @@ func update_animation(delta: float = 0.0):
 	rotation_degrees = world_rot
 	emit_signal("rotation_changed", rotation_degrees)
 
-func buffer_motion(motion: GridMotion) -> void:
-	motion_buffer.push_back(motion)
-	try_move()
+func buffer_input(input: String, pressed: bool) -> void:
+	input_buffer.append([input, pressed])
 
-func try_move():
 	if not current_motion:
-		next_motion()
+		process_input()
 
-func next_motion():
-	if motion_buffer.size() > 0:
-		set_motion(motion_buffer.pop_front())
-	else:
+func process_input():
+	if input_buffer.size() == 0:
+		if current_motion:
+			if current_motion.next_motion:
+				set_motion(current_motion.next_motion)
+			elif current_motion.looping:
+				set_motion(current_motion)
+			else:
+				set_motion(null)
+		return
+
+	if not moveset:
 		set_motion(null)
+		return
+
+	var input = input_buffer.front()
+	var action = input[0]
+	var pressed = input[1]
+
+	if not action in moveset.map:
+		set_motion(null)
+		return
+
+	var consume_input = false
+	var process_next = true
+	var set_motion = true
+	var motion = null
+
+	if current_motion:
+		# Called by end of current motion
+		var current_move = get_current_move(motion_progress)
+		if pressed:
+			if action in current_move.input_press_motions:
+				# Pressing a link for the current move
+				var press_motion = current_move.input_press_motions[action]
+				if press_motion:
+					motion = press_motion
+					consume_input = true
+					process_next = false
+			else:
+				motion = moveset.map[action] as GridMotion
+				consume_input = true
+				process_next = false
+		else:
+			if action in current_move.input_release_motions:
+				# Releasing a link for the current move
+				var release_motion = current_move.input_release_motions[action]
+				if release_motion:
+					motion = release_motion
+					consume_input = true
+					process_next = false
+			else:
+				# Releasing an irrelevant action
+				set_motion = false
+				consume_input = true
+				process_next = true
+
+	else:
+		if pressed:
+			# Pressed during idle
+			motion = moveset.map[action] as GridMotion
+			consume_input = true
+			process_next = false
+		else:
+			# Released during idle
+			consume_input = true
+			process_next = true
+
+	if set_motion:
+		set_motion(motion)
+
+	if consume_input:
+		input_buffer.pop_front()
+
+	if process_next:
+		process_input()
 
 func set_motion(motion: GridMotion):
 	motion_progress = 0.0
