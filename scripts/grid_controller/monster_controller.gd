@@ -48,24 +48,23 @@ func tick_aggro() -> void:
 	delta = GridUtil.rotate_vec2_by_facing(delta, -target_actor.facing)
 
 	if abs(delta.x) == abs(delta.y) and knows_sidestep:
-		# Diagonal from target
-		if knows_sidestep:
-			if check_move(sign(delta.x), 0):
-				# Not next to a wall, sidestep
-				buffer_sidestep_tap(delta.x > 0)
+		# Diagonal from target, knows sidestep
+		if check_move(sign(delta.x), 0):
+			# Not next to a wall, sidestep
+			buffer_sidestep_tap(delta.x > 0)
+		else:
+			# Next to a wall
+			if delta.y < 0:
+				# Target in front
+				buffer_tap("move_forward")
 			else:
-				# Next to a wall
-				if delta.y < 0:
-					# Target in front
-					buffer_tap("move_forward")
+				# Target behind
+				if knows_quickturn:
+					buffer_quickturn_tap(delta.x < 0)
 				else:
-					# Target behind
-					if knows_quickturn:
-						buffer_quickturn_tap(delta.x < 0)
-					else:
-						buffer_turn_tap(delta.x < 0)
-						yield(get_tree().create_timer(1.0 / ticks_per_second), "timeout")
-						buffer_turn_tap(delta.x < 0)
+					buffer_turn_tap(delta.x < 0)
+					yield(get_tree().create_timer(1.0 / ticks_per_second), "timeout")
+					buffer_turn_tap(delta.x < 0)
 	elif abs(delta.x) > abs(delta.y):
 		# Target is to side
 		if check_move(sign(delta.x), 0):
