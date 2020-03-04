@@ -2,16 +2,16 @@
 
 [ext_resource path="res://scripts/resources/grid_move.gd" type="Script" id=1]
 [ext_resource path="res://scripts/resources/grid_motion.gd" type="Script" id=2]
-[ext_resource path="res://resources/curve/curve_linear.tres" type="Curve" id=4]
+[ext_resource path="res://resources/curve/curve_linear.tres" type="Curve" id=3]
 
 [sub_resource type="Resource" id=1]
 script = ExtResource( 1 )
-delta_position = Vector2( 0, 1 )
+delta_position = Vector2( 0, 0 )
 delta_facing = 0
 flip_curve_x = false
 flip_curve_y = false
 flip_curve_facing = false
-duration = 0.2
+duration = 0.3
 events = [  ]
 input_press_motions = {
 
@@ -23,8 +23,8 @@ input_release_motions = {
 [resource]
 script = ExtResource( 2 )
 motion_moves = [ SubResource( 1 ) ]
-motion_curve = ExtResource( 4 )
+motion_curve = ExtResource( 3 )
 looping = false
 lock_input_buffer = false
-lock_inputs = [  ]
-cancelable = false
+lock_inputs = [ "attack" ]
+cancelable = true

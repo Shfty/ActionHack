@@ -28,4 +28,5 @@ motion_curve = ExtResource( 2 )
 next_motion = ExtResource( 3 )
 looping = false
 lock_input_buffer = false
+lock_inputs = [  ]
 cancelable = false

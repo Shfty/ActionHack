@@ -1,0 +1,55 @@
+[gd_resource type="Resource" load_steps=12 format=2]
+
+[ext_resource path="res://scripts/resources/grid_move.gd" type="Script" id=1]
+[ext_resource path="res://scripts/resources/grid_motion.gd" type="Script" id=2]
+[ext_resource path="res://resources/curve/curve_linear.tres" type="Curve" id=3]
+[ext_resource path="res://scripts/grid_entity/grid_hitbox.gd" type="Script" id=4]
+[ext_resource path="res://scripts/resources/grid_event.gd" type="Script" id=5]
+[ext_resource path="res://resources/grid_motion/broadsword/spin_knock_forward.tres" type="Resource" id=6]
+[ext_resource path="res://resources/grid_motion/broadsword/attack_3_recovery.tres" type="Resource" id=7]
+
+[sub_resource type="Curve" id=1]
+min_value = -0.25
+max_value = 0.35
+_data = [ Vector2( 0, 0.35 ), 0.0, 0.0, 0, 0, Vector2( 0.1, 0.35 ), 0.0, 0.0, 0, 0, Vector2( 0.5, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Curve" id=2]
+min_value = -0.25
+max_value = 0.25
+_data = [ Vector2( 0.1, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.2, 0.15 ), 0.0, 0.0, 0, 0, Vector2( 0.3, 0.15 ), 0.0, 0.0, 0, 0, Vector2( 0.447471, -0.25 ), 0.0, 0.0, 0, 0, Vector2( 0.8, -0.25 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Resource" id=3]
+script = ExtResource( 5 )
+time = 0.3
+event_type = 1
+spawn_class = ExtResource( 4 )
+spawn_relative_position = Vector2( 0, -1 )
+spawn_params = [ 0.1, 3, ExtResource( 6 ) ]
+
+[sub_resource type="Resource" id=4]
+script = ExtResource( 1 )
+delta_position = Vector2( 0, 0 )
+delta_facing = 0
+curve_y = SubResource( 2 )
+curve_facing = SubResource( 1 )
+flip_curve_x = false
+flip_curve_y = false
+flip_curve_facing = false
+duration = 0.4
+events = [ SubResource( 3 ) ]
+input_press_motions = {
+
+}
+input_release_motions = {
+
+}
+
+[resource]
+script = ExtResource( 2 )
+motion_moves = [ SubResource( 4 ) ]
+motion_curve = ExtResource( 3 )
+next_motion = ExtResource( 7 )
+looping = false
+lock_input_buffer = false
+lock_inputs = [  ]
+cancelable = false

@@ -10,13 +10,9 @@
 [ext_resource path="res://resources/grid_motion/broadsword/spin_knock_left.tres" type="Resource" id=8]
 [ext_resource path="res://resources/grid_motion/move_left.tres" type="Resource" id=9]
 [ext_resource path="res://resources/grid_motion/broadsword/spin_knock_backward.tres" type="Resource" id=10]
+[ext_resource path="res://resources/curve/broadsword/curve_spin.tres" type="Curve" id=11]
 
-[sub_resource type="Curve" id=1]
-min_value = -0.5
-max_value = 4.5
-_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.250951, -0.5 ), 0.0, 0.0, 0, 0, Vector2( 0.752852, 4 ), 6.95538, 6.95538, 0, 0, Vector2( 0.876426, 4.5 ), 0.0, 0.0, 0, 0, Vector2( 1, 4 ), 0.0, 0.0, 0, 0 ]
-
-[sub_resource type="Resource" id=2]
+[sub_resource type="Resource" id=1]
 script = ExtResource( 6 )
 time = 0.4
 event_type = 1
@@ -24,7 +20,7 @@ spawn_class = ExtResource( 5 )
 spawn_relative_position = Vector2( 0, -1 )
 spawn_params = [ 0.1, 1, ExtResource( 4 ) ]
 
-[sub_resource type="Resource" id=3]
+[sub_resource type="Resource" id=2]
 script = ExtResource( 6 )
 time = 0.45
 event_type = 1
@@ -32,7 +28,7 @@ spawn_class = ExtResource( 5 )
 spawn_relative_position = Vector2( 1, -1 )
 spawn_params = [ 0.1, 1, ExtResource( 7 ) ]
 
-[sub_resource type="Resource" id=4]
+[sub_resource type="Resource" id=3]
 script = ExtResource( 6 )
 time = 0.5
 event_type = 1
@@ -40,7 +36,7 @@ spawn_class = ExtResource( 5 )
 spawn_relative_position = Vector2( 1, 0 )
 spawn_params = [ 0.1, 2, ExtResource( 7 ) ]
 
-[sub_resource type="Resource" id=5]
+[sub_resource type="Resource" id=4]
 script = ExtResource( 6 )
 time = 0.55
 event_type = 1
@@ -48,7 +44,7 @@ spawn_class = ExtResource( 5 )
 spawn_relative_position = Vector2( 1, 1 )
 spawn_params = [ 0.1, 1, ExtResource( 10 ) ]
 
-[sub_resource type="Resource" id=6]
+[sub_resource type="Resource" id=5]
 script = ExtResource( 6 )
 time = 0.6
 event_type = 1
@@ -56,7 +52,7 @@ spawn_class = ExtResource( 5 )
 spawn_relative_position = Vector2( 0, 1 )
 spawn_params = [ 0.1, 1, ExtResource( 10 ) ]
 
-[sub_resource type="Resource" id=7]
+[sub_resource type="Resource" id=6]
 script = ExtResource( 6 )
 time = 0.65
 event_type = 1
@@ -64,7 +60,7 @@ spawn_class = ExtResource( 5 )
 spawn_relative_position = Vector2( -1, 1 )
 spawn_params = [ 0.1, 1, ExtResource( 8 ) ]
 
-[sub_resource type="Resource" id=8]
+[sub_resource type="Resource" id=7]
 script = ExtResource( 6 )
 time = 0.7
 event_type = 1
@@ -72,7 +68,7 @@ spawn_class = ExtResource( 5 )
 spawn_relative_position = Vector2( -1, 0 )
 spawn_params = [ 0.1, 1, ExtResource( 9 ) ]
 
-[sub_resource type="Resource" id=9]
+[sub_resource type="Resource" id=8]
 script = ExtResource( 6 )
 time = 0.75
 event_type = 1
@@ -80,16 +76,16 @@ spawn_class = ExtResource( 5 )
 spawn_relative_position = Vector2( -1, -1 )
 spawn_params = [ 0.1, 1, ExtResource( 4 ) ]
 
-[sub_resource type="Resource" id=10]
+[sub_resource type="Resource" id=9]
 script = ExtResource( 3 )
 delta_position = Vector2( 0, 0 )
 delta_facing = 0
-curve_facing = SubResource( 1 )
+curve_facing = ExtResource( 11 )
 flip_curve_x = false
 flip_curve_y = false
 flip_curve_facing = false
 duration = 0.625
-events = [ SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ), SubResource( 7 ), SubResource( 8 ), SubResource( 9 ) ]
+events = [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ), SubResource( 7 ), SubResource( 8 ) ]
 input_press_motions = {
 
 }
@@ -99,8 +95,9 @@ input_release_motions = {
 
 [resource]
 script = ExtResource( 2 )
-motion_moves = [ SubResource( 10 ) ]
+motion_moves = [ SubResource( 9 ) ]
 motion_curve = ExtResource( 1 )
 looping = false
 lock_input_buffer = false
+lock_inputs = [  ]
 cancelable = false

@@ -43,4 +43,5 @@ motion_moves = [ SubResource( 3 ) ]
 motion_curve = ExtResource( 1 )
 looping = false
 lock_input_buffer = true
+lock_inputs = [  ]
 cancelable = false
