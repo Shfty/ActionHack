@@ -12,7 +12,6 @@ func _ready() -> void:
 		elif child is GridEntity:
 			child.connect("tree_exiting", self, "handle_entity_tree_exit", [child])
 			entities.append(child)
-	set_visible(false)
 
 func check_collision(x: int, y: int, ignore: GridEntity = null) -> bool:
 	if check_tile_map_collision(x, y):
