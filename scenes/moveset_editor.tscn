@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://textures/icons/ei-archive.svg" type="Texture" id=1]
 [ext_resource path="res://textures/icons/ei-share-apple.svg" type="Texture" id=2]
@@ -6,19 +6,23 @@
 [ext_resource path="res://scripts/grid_entity/grid_actor.gd" type="Script" id=4]
 [ext_resource path="res://scripts/grid_world.gd" type="Script" id=5]
 [ext_resource path="res://tilesets/test_tileset.tres" type="TileSet" id=6]
+[ext_resource path="res://textures/icons/ei-close.svg" type="Texture" id=7]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends Control
 
 signal moveset_changed(moveset)
+signal moveset_invalid_changed(moveset_valid)
 signal selected_motion_changed(selected_motion)
 signal selected_move_changed(selected_move)
 
+var moveset_path: String
 var moveset: GridInputMap = null setget set_moveset
 var selected_motion: GridMotion = null
 var selected_move: GridMove = null
 
-func set_moveset_path(moveset_path: String) -> void:
+func set_moveset_path(new_moveset_path: String) -> void:
+	moveset_path = new_moveset_path
 	set_moveset(load(moveset_path) as GridInputMap)
 
 func set_moveset(new_moveset: GridInputMap) -> void:
@@ -29,6 +33,7 @@ func set_moveset(new_moveset: GridInputMap) -> void:
 		set_selected_motion(null)
 
 	emit_signal(\"moveset_changed\", moveset)
+	emit_signal(\"moveset_invalid_changed\", moveset == null)
 
 func set_selected_motion_by_name(motion_name: String) -> void:
 	if not motion_name in moveset.map:
@@ -47,6 +52,10 @@ func set_selected_motion(motion: GridMotion) -> void:
 func set_selected_move(move: GridMove) -> void:
 	selected_move = move
 	emit_signal(\"selected_move_changed\", selected_move)
+
+func save_moveset() -> void:
+	# TODO: Recursively traverse resources and save
+	ResourceSaver.save(moveset_path, moveset)
 
 func close_moveset() -> void:
 	set_moveset(null)
@@ -263,6 +272,24 @@ func handle_move_selected(move: GridMove):
 	emit_signal(\"move_selected\", move)
 "
 
+[sub_resource type="GDScript" id=9]
+script/source = "extends Control
+
+func set_animation_progress(animation_progress: float) -> void:
+	rect_position.x = animation_progress * get_parent().rect_size.x
+"
+
+[sub_resource type="StyleBoxFlat" id=8]
+content_margin_left = 6.0
+content_margin_right = 6.0
+content_margin_top = 0.0
+content_margin_bottom = 0.0
+border_width_left = 4
+border_width_top = 5
+border_width_right = 5
+border_color = Color( 0.8, 0.8, 0.8, 0 )
+corner_detail = 1
+
 [sub_resource type="GDScript" id=6]
 script/source = "extends FileDialog
 "
@@ -309,20 +336,21 @@ margin_right = 78.0
 margin_bottom = 33.0
 icon = ExtResource( 2 )
 
-[node name="CloseButton" type="ToolButton" parent="VBoxContainer/PanelContainer/ToolbarHBox"]
-margin_left = 82.0
-margin_right = 119.0
-margin_bottom = 33.0
-icon = ExtResource( 2 )
-
 [node name="TitleLabel" type="Label" parent="VBoxContainer/PanelContainer/ToolbarHBox"]
-margin_left = 123.0
+margin_left = 82.0
 margin_top = 9.0
-margin_right = 466.0
+margin_right = 425.0
 margin_bottom = 23.0
 size_flags_horizontal = 3
 clip_text = true
 script = SubResource( 7 )
+
+[node name="CloseButton" type="ToolButton" parent="VBoxContainer/PanelContainer/ToolbarHBox"]
+margin_left = 429.0
+margin_right = 466.0
+margin_bottom = 33.0
+disabled = true
+icon = ExtResource( 7 )
 
 [node name="MainHBox" type="HBoxContainer" parent="VBoxContainer"]
 margin_top = 47.0
@@ -422,6 +450,31 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="PlayHead" type="Control" parent="VBoxContainer/MotionTimeline/ColorRect"]
+anchor_bottom = 1.0
+size_flags_vertical = 3
+script = SubResource( 9 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/MotionTimeline/ColorRect/PlayHead"]
+margin_left = -6.0
+margin_right = 6.0
+margin_bottom = 131.0
+rect_pivot_offset = Vector2( 6, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VScrollBar" type="VScrollBar" parent="VBoxContainer/MotionTimeline/ColorRect/PlayHead/MarginContainer"]
+margin_right = 12.0
+margin_bottom = 131.0
+custom_styles/scroll = SubResource( 8 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="FileDialog" type="FileDialog" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -441,14 +494,16 @@ __meta__ = {
 }
 [connection signal="moveset_changed" from="." to="VBoxContainer/PanelContainer/ToolbarHBox/TitleLabel" method="set_title_from_moveset"]
 [connection signal="moveset_changed" from="." to="VBoxContainer/MainHBox/MotionList" method="populate_moves"]
+[connection signal="moveset_invalid_changed" from="." to="VBoxContainer/PanelContainer/ToolbarHBox/CloseButton" method="set_disabled"]
 [connection signal="selected_motion_changed" from="." to="VBoxContainer/MotionTimeline/ColorRect/MotionTimeline" method="populate_moves"]
 [connection signal="selected_motion_changed" from="." to="VBoxContainer/MainHBox/PropertiesContainer" method="populate_properties"]
 [connection signal="selected_motion_changed" from="." to="VBoxContainer/MainHBox/PanelContainer/DemoArea" method="set_motion"]
 [connection signal="selected_move_changed" from="." to="VBoxContainer/MainHBox/PropertiesContainer" method="populate_properties"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/ToolbarHBox/OpenButton" to="FileDialog" method="popup"]
-[connection signal="pressed" from="VBoxContainer/PanelContainer/ToolbarHBox/SaveButton" to="FileDialog" method="popup"]
+[connection signal="pressed" from="VBoxContainer/PanelContainer/ToolbarHBox/SaveButton" to="." method="save_moveset"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/ToolbarHBox/CloseButton" to="." method="close_moveset"]
 [connection signal="motion_selected" from="VBoxContainer/MainHBox/MotionList" to="." method="set_selected_motion_by_name"]
+[connection signal="animation_progress_changed" from="VBoxContainer/MainHBox/PanelContainer/DemoArea/GridWorld/GridActor" to="VBoxContainer/MotionTimeline/ColorRect/PlayHead" method="set_animation_progress"]
 [connection signal="property_changed" from="VBoxContainer/MainHBox/PropertiesContainer" to="VBoxContainer/MainHBox/PanelContainer/DemoArea" method="replay"]
 [connection signal="move_selected" from="VBoxContainer/MotionTimeline/ColorRect/MotionTimeline" to="." method="set_selected_move"]
 [connection signal="file_selected" from="FileDialog" to="." method="set_moveset_path"]
