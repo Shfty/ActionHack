@@ -59,7 +59,7 @@ func update_rotation_node_position() -> void:
 func update_canvas_node_position() -> void:
 	var canvas_node = get_canvas_node()
 	if canvas_node:
-		canvas_node.rect_position = Vector2(-width * 0.5 * GridUtil.TILE_SIZE, -height * 0.5 * GridUtil.TILE_SIZE)
+		canvas_node.rect_position = Vector2(-width * 0.5 * GridUtil.TILE_SIZE, -height * 0.5 * GridUtil.TILE_SIZE) + Vector2(GridUtil.TILE_SIZE, GridUtil.TILE_SIZE) * 0.5
 
 func update_canvas_node_size():
 	var canvas_node = get_canvas_node()
@@ -197,14 +197,15 @@ func draw_entity(entity: GridEntity):
 	if sprite.texture:
 		sprite.rect_pivot_offset = sprite.texture.get_size() * 0.5
 
-	if entity.has_method("get_sprite"):
-		var entity_sprite = entity.get_sprite()
+	if entity.has_node("Offset/Sprite"):
+		var entity_offset = entity.get_node("Offset")
+		var entity_sprite = entity.get_node("Offset/Sprite")
 
 		sprite.rect_position = entity.position + entity_sprite.position
 		sprite.rect_position -= offset * GridUtil.TILE_SIZE
 		sprite.rect_position += Vector2(fmod(offset.x, 1.0), fmod(offset.y, 1.0)) * GridUtil.TILE_SIZE
 
-		sprite.rect_rotation = entity.rotation_degrees
+		sprite.rect_rotation = entity_offset.rotation_degrees
 		sprite.rect_rotation += entity_sprite.rotation_degrees
 
 		sprite.modulate[3] = entity.opacity

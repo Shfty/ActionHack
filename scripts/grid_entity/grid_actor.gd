@@ -34,24 +34,26 @@ func update_motion(progress: float = 0.0):
 		var target_x = x + rotated_delta_position.x
 		var target_y = y + rotated_delta_position.y
 
-		if get_world().check_tile_map_collision(target_x, target_y):
-			input_buffer.clear()
-			if current_motion.hit_wall_motion:
-				set_motion(current_motion.hit_wall_motion)
+		var world = get_world()
+		if world:
+			if world.check_tile_map_collision(target_x, target_y):
+				input_buffer.clear()
+				if current_motion.hit_wall_motion:
+					set_motion(current_motion.hit_wall_motion)
+				else:
+					set_motion(null)
+				return
+			elif world.check_entity_collision(target_x, target_y, self):
+				input_buffer.clear()
+				if current_motion.hit_entity_motion:
+					set_motion(current_motion.hit_entity_motion)
+				else:
+					set_motion(null)
+				return
 			else:
-				set_motion(null)
-			return
-		elif get_world().check_entity_collision(target_x, target_y, self):
-			input_buffer.clear()
-			if current_motion.hit_entity_motion:
-				set_motion(current_motion.hit_entity_motion)
-			else:
-				set_motion(null)
-			return
-		else:
-			x += rotated_delta_position.x
-			y += rotated_delta_position.y
-			facing += current_move.delta_facing
+				x += rotated_delta_position.x
+				y += rotated_delta_position.y
+				facing += current_move.delta_facing
 
 	prev_move = current_move
 
@@ -82,7 +84,11 @@ func _process(delta: float):
 	if Engine.is_editor_hint():
 		return
 
-	update_animation(delta)
+	if current_motion:
+		update_animation(delta)
+	else:
+		$Offset/Sprite.position = lerp($Offset/Sprite.position, Vector2.ZERO, 0.1)
+		$Offset/Sprite.rotation_degrees = lerp($Offset/Sprite.rotation_degrees, 0.0, 0.1)
 
 func update_animation(delta: float = 0.0):
 	var world_pos = Vector2(x, y) * GridUtil.TILE_SIZE
@@ -111,7 +117,6 @@ func update_animation(delta: float = 0.0):
 		world_pos -= delta_position_rotated * animation_delta * GridUtil.TILE_SIZE
 		world_rot -= GridUtil.facing_to_angle(current_move.delta_facing) * animation_delta
 
-		var sprite = get_sprite()
 		var sprite_offset = Vector2.ZERO
 		if current_move.curve_x:
 			sprite_offset.x = current_move.curve_x.interpolate(move_progress) * GridUtil.TILE_SIZE
@@ -125,13 +130,18 @@ func update_animation(delta: float = 0.0):
 			if current_move.flip_curve_y:
 				sprite_offset.y *= -1
 
-		sprite.position = GridUtil.rotate_vec2_by_facing(sprite_offset, facing)
+		if sprite_offset != Vector2.ZERO:
+			$Offset/Sprite.position = GridUtil.rotate_vec2_by_facing(sprite_offset, facing)
+		else:
+			$Offset/Sprite.position = lerp($Offset/Sprite.position, Vector2.ZERO, 0.1)
 
 		if current_move.curve_facing:
-			sprite.rotation_degrees = current_move.curve_facing.interpolate(move_progress) * 90
+			$Offset/Sprite.rotation_degrees = current_move.curve_facing.interpolate(move_progress) * 90
 
 			if current_move.flip_curve_facing:
-				sprite.rotation_degrees *= -1
+				$Offset/Sprite.rotation_degrees *= -1
+		else:
+			$Offset/Sprite.rotation_degrees = lerp($Offset/Sprite.rotation_degrees, 0.0, 0.1)
 
 		# If finished, move to the next motion
 		if not animation_progress < motion_duration:
@@ -141,13 +151,20 @@ func update_animation(delta: float = 0.0):
 	position.x = round(position.x)
 	position.y = round(position.y)
 
-	rotation_degrees = world_rot
-	emit_signal("rotation_changed", rotation_degrees)
+	$Offset.rotation_degrees = world_rot
+	emit_signal("rotation_changed", world_rot)
 
 func buffer_input(input: String, pressed: bool) -> void:
 	input_buffer.append([input, pressed])
 
-	if not current_motion or current_motion.cancelable:
+	var should_process = false
+	if current_motion:
+		if current_motion.cancelable and not input in current_motion.lock_inputs:
+			should_process = true
+	else:
+		should_process = true
+
+	if should_process:
 		process_input()
 
 func process_input():
