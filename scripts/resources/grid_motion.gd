@@ -9,6 +9,7 @@ export(Resource) var hit_entity_motion
 export(Resource) var next_motion
 export(bool) var looping = false
 export(bool) var lock_input_buffer = false
+export(Array, String) var lock_inputs setget set_lock_inputs
 export(bool) var cancelable = false
 
 func set_moves(new_motion_moves: Array) -> void:
@@ -16,7 +17,11 @@ func set_moves(new_motion_moves: Array) -> void:
 		motion_moves = new_motion_moves
 		if motion_moves.size() > 0:
 			if not motion_moves[-1]:
-				motion_moves[-1] = GridMove.new()
+				motion_moves[-1] = Object()
+
+func set_lock_inputs(new_lock_inputs: Array) -> void:
+	if lock_inputs != new_lock_inputs:
+		lock_inputs = new_lock_inputs
 
 func get_duration() -> float:
 	var duration = 0.0
