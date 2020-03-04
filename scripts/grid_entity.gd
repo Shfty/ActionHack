@@ -42,6 +42,7 @@ func _ready():
 func set_sprite_texture(new_sprite_texture: Texture) -> void:
 	if sprite_texture != new_sprite_texture:
 		sprite_texture = new_sprite_texture
+		$Offset/Sprite.texture = sprite_texture
 
 func set_x(new_x: int, update: bool = false):
 	if x != new_x:
