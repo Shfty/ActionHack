@@ -41,6 +41,7 @@ func run_spawn(args: Dictionary) -> void:
 	inst.set_x(pos.x)
 	inst.set_y(pos.y)
 	inst.set_facing(source.facing)
+	inst.source = source
 	source.get_parent().add_child(inst)
 
 	if inst.has_method('init'):

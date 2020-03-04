@@ -6,6 +6,8 @@ var initial_duration := -1.0
 var duration := -1.0
 var damage := 0
 var damage_motion: GridMotion = null
+
+var source: GridEntity = null
 var hit := false
 
 func init(params: Array):
@@ -21,7 +23,7 @@ func init(params: Array):
 
 func _ready():
 	._ready()
-	set_sprite_texture(preload("res://textures/hitbox.png"))
+	set_sprite_texture(preload("res://textures/tiles/hitbox.png"))
 
 func _process(delta: float) -> void:
 	var progress = duration / initial_duration
@@ -30,6 +32,9 @@ func _process(delta: float) -> void:
 	if not hit:
 		for sibling in get_parent().get_children():
 			if sibling == self:
+				continue
+
+			if sibling == source:
 				continue
 
 			if not sibling is GridActor:
