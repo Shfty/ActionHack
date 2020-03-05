@@ -38,6 +38,7 @@ input_release_motions = {
 }
 
 [resource]
+resource_name = "Stinger Hit"
 script = ExtResource( 3 )
 motion_moves = [ SubResource( 3 ) ]
 motion_curve = ExtResource( 1 )

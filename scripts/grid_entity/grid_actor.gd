@@ -3,7 +3,7 @@ extends GridEntity
 tool
 
 signal rotation_changed(rotation)
-signal motion_progress_changed(motion_progress)
+signal current_motion_changed(current_motion)
 signal animation_progress_changed(animation_progress)
 
 export(Resource) var moveset = null
@@ -27,7 +27,6 @@ func _physics_process(delta: float) -> void:
 
 	if current_motion:
 		motion_progress += delta
-		emit_signal("motion_progress_changed", clamp(motion_progress / current_motion.get_duration(), 0.0, 1.0))
 		update_motion(motion_progress)
 
 func update_motion(progress: float = 0.0):
@@ -261,6 +260,7 @@ func set_motion(motion: GridMotion):
 	motion_duration = -1.0
 
 	current_motion = motion
+	emit_signal("current_motion_changed", motion)
 	current_move_dict.clear()
 
 	if current_motion:

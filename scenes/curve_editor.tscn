@@ -1,0 +1,100 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://scenes/curve_editor.gd" type="Script" id=1]
+[ext_resource path="res://scenes/tangent_handle.gd" type="Script" id=2]
+[ext_resource path="res://scenes/curve_control_point.gd" type="Script" id=3]
+
+[sub_resource type="Curve" id=1]
+_data = [ Vector2( 0, 0 ), -1.27207, 0.0, 0, 0, Vector2( 0.507273, 0.481818 ), 0.0369005, 0.0369005, 0, 0, Vector2( 1, 1 ), -5.96047e-07, -1.1825, 0, 0 ]
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+curve = SubResource( 1 )
+
+[node name="ControlPoint0" type="ColorRect" parent="."]
+margin_left = -4.0
+margin_top = -4.0
+margin_right = 4.0
+margin_bottom = 4.0
+script = ExtResource( 3 )
+left_tangent = -1.27207
+
+[node name="RightHandle" type="ColorRect" parent="ControlPoint0"]
+margin_left = -10.3604
+margin_top = 17.7233
+margin_right = -6.36039
+margin_bottom = 21.7233
+script = ExtResource( 2 )
+
+[node name="LeftHandle" type="ColorRect" parent="ControlPoint0"]
+margin_left = 22.0
+margin_top = 2.0
+margin_right = 26.0
+margin_bottom = 6.0
+script = ExtResource( 2 )
+
+[node name="ControlPoint1" type="ColorRect" parent="."]
+margin_left = 239.491
+margin_top = 227.273
+margin_right = 247.491
+margin_bottom = 235.273
+script = ExtResource( 3 )
+left_tangent = 0.0369005
+right_tangent = 0.0369005
+
+[node name="RightHandle" type="ColorRect" parent="ControlPoint1"]
+margin_left = -17.9864
+margin_top = 1.26249
+margin_right = -13.9864
+margin_bottom = 5.26249
+script = ExtResource( 2 )
+
+[node name="LeftHandle" type="ColorRect" parent="ControlPoint1"]
+margin_left = 21.9864
+margin_top = 2.73751
+margin_right = 25.9864
+margin_bottom = 6.73751
+script = ExtResource( 2 )
+
+[node name="ControlPoint2" type="ColorRect" parent="."]
+margin_left = 476.0
+margin_top = 476.0
+margin_right = 484.0
+margin_bottom = 484.0
+script = ExtResource( 3 )
+left_tangent = -5.96047e-07
+right_tangent = -1.1825
+
+[node name="RightHandle" type="ColorRect" parent="ControlPoint2"]
+margin_left = -18.0
+margin_top = 2.00001
+margin_right = -14.0
+margin_bottom = 6.00001
+script = ExtResource( 2 )
+
+[node name="LeftHandle" type="ColorRect" parent="ControlPoint2"]
+margin_left = 14.9145
+margin_top = -13.2714
+margin_right = 18.9145
+margin_bottom = -9.27141
+script = ExtResource( 2 )
+[connection signal="item_rect_changed" from="ControlPoint0" to="." method="control_point_moved" binds= [ 0 ]]
+[connection signal="left_tangent_changed" from="ControlPoint0" to="." method="control_point_left_tangent_changed" binds= [ 0 ]]
+[connection signal="right_tangent_changed" from="ControlPoint0" to="." method="control_point_right_tangent_changed" binds= [ 0 ]]
+[connection signal="dragged" from="ControlPoint0/RightHandle" to="ControlPoint0" method="tangent_handle_moved" binds= [ false ]]
+[connection signal="dragged" from="ControlPoint0/LeftHandle" to="ControlPoint0" method="tangent_handle_moved" binds= [ true ]]
+[connection signal="item_rect_changed" from="ControlPoint1" to="." method="control_point_moved" binds= [ 1 ]]
+[connection signal="left_tangent_changed" from="ControlPoint1" to="." method="control_point_left_tangent_changed" binds= [ 1 ]]
+[connection signal="right_tangent_changed" from="ControlPoint1" to="." method="control_point_right_tangent_changed" binds= [ 1 ]]
+[connection signal="dragged" from="ControlPoint1/RightHandle" to="ControlPoint1" method="tangent_handle_moved" binds= [ false ]]
+[connection signal="dragged" from="ControlPoint1/LeftHandle" to="ControlPoint1" method="tangent_handle_moved" binds= [ true ]]
+[connection signal="item_rect_changed" from="ControlPoint2" to="." method="control_point_moved" binds= [ 2 ]]
+[connection signal="left_tangent_changed" from="ControlPoint2" to="." method="control_point_left_tangent_changed" binds= [ 2 ]]
+[connection signal="right_tangent_changed" from="ControlPoint2" to="." method="control_point_right_tangent_changed" binds= [ 2 ]]
+[connection signal="dragged" from="ControlPoint2/RightHandle" to="ControlPoint2" method="tangent_handle_moved" binds= [ false ]]
+[connection signal="dragged" from="ControlPoint2/LeftHandle" to="ControlPoint2" method="tangent_handle_moved" binds= [ true ]]

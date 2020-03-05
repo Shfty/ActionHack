@@ -61,14 +61,14 @@ func close_moveset() -> void:
 	set_moveset(null)
 "
 
-[sub_resource type="GDScript" id=7]
+[sub_resource type="GDScript" id=2]
 script/source = "extends Label
 
 func set_title_from_moveset(moveset: GridInputMap) -> void:
 	text = moveset.get_path() if moveset else \"\"
 "
 
-[sub_resource type="GDScript" id=2]
+[sub_resource type="GDScript" id=3]
 script/source = "extends ItemList
 
 signal motion_selected(motion_name)
@@ -89,7 +89,7 @@ func populate_moves(moveset: GridInputMap):
 		add_item(move)
 "
 
-[sub_resource type="GDScript" id=3]
+[sub_resource type="GDScript" id=4]
 script/source = "extends Control
 
 onready var grid_actor = $GridWorld/GridActor
@@ -112,7 +112,7 @@ func replay():
 	set_motion(cached_motion)
 "
 
-[sub_resource type="GDScript" id=4]
+[sub_resource type="GDScript" id=5]
 script/source = "extends PanelContainer
 
 signal property_changed()
@@ -126,6 +126,9 @@ func populate_properties(object: Object):
 
 	if not object:
 		return
+
+	if object is Resource:
+		populate_resource_properties(object)
 
 	for property in object.get_property_list():
 		if property['name'] in property_blacklist:
@@ -143,6 +146,15 @@ func populate_properties(object: Object):
 					populate_vector2_property(object, property)
 				_:
 					populate_unhandled_property(object, property)
+
+func populate_resource_properties(object: Object) -> void:
+	var line_edit = LineEdit.new()
+	line_edit.text = object.get_name()
+	line_edit.placeholder_text = \"Name\"
+	line_edit.size_flags_horizontal = SIZE_EXPAND_FILL
+	line_edit.connect(\"text_changed\", self, \"set_resource_name\", [object])
+
+	vbox_container.add_child(line_edit)
 
 func populate_bool_property(object: Object, property: Dictionary) -> void:
 	var label = create_label(property)
@@ -226,19 +238,62 @@ func clear_properties():
 	for child in vbox_container.get_children():
 		vbox_container.remove_child(child)
 		child.queue_free()
+
+func set_resource_name(name: String, object: Resource) -> void:
+	object.set_name(name)
 "
 
-[sub_resource type="GDScript" id=5]
+[sub_resource type="GDScript" id=12]
 script/source = "extends HBoxContainer
 
+signal mouse_wheel_up()
+signal mouse_wheel_down()
+
+var pressed = false
+
+func _gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseMotion:
+		if pressed:
+			rect_position.x += event.relative.x
+			rect_position.x = min(rect_position.x, -get_child(2).rect_size.x + min(get_child(0).rect_size.x, get_parent().rect_size.x))
+			rect_position.x = max(rect_position.x, -(rect_size.x - max(get_parent().rect_size.x, get_child(2).rect_size.x)))
+	if event is InputEventMouseButton:
+		match event.button_index:
+			BUTTON_RIGHT:
+				pressed = event.pressed
+			BUTTON_WHEEL_UP:
+				emit_signal(\"mouse_wheel_up\")
+			BUTTON_WHEEL_DOWN:
+				emit_signal(\"mouse_wheel_down\")
+"
+
+[sub_resource type="GDScript" id=6]
+script/source = "extends Control
+
+signal motion_selected(motion)
 signal move_selected(move)
+signal zoom_changed(zoom)
+
+export(float) var zoom_sensitivity := 0.1
+
+var zoom := 1.0
 
 var button_group = ButtonGroup.new()
 
+onready var timeline_hbox = $HBoxContainer
+
+# Setters
+func set_zoom(new_zoom: float) -> void:
+	new_zoom = clamp(new_zoom, 0.01, 8)
+	if zoom != new_zoom:
+		zoom = new_zoom
+		emit_signal(\"zoom_changed\", zoom)
+		size_flags_stretch_ratio = zoom
+
 func populate_moves(motion: GridMotion):
-	for child in get_children():
-		if child is Button:
-			remove_child(child)
+	for child in timeline_hbox.get_children():
+		if child is VBoxContainer:
+			timeline_hbox.remove_child(child)
 			child.queue_free()
 
 	if not motion:
@@ -247,16 +302,49 @@ func populate_moves(motion: GridMotion):
 	populate_motion(motion)
 
 func populate_motion(motion: GridMotion) -> void:
+	var node = Button.new()
+	node.clip_text = true
+	node.toggle_mode = true
+	node.group = button_group
+	node.mouse_filter = MOUSE_FILTER_PASS
+	node.text = motion.get_name()
+	node.connect(\"pressed\", self, \"handle_motion_selected\", [motion])
+
+	var curve_edit = CurveEdit.new()
+	curve_edit.set_curve(motion.motion_curve)
+	curve_edit.size_flags_horizontal = SIZE_EXPAND_FILL
+	curve_edit.size_flags_vertical = SIZE_EXPAND_FILL
+	curve_edit.size_flags_stretch_ratio = 0.5
+	curve_edit.rect_min_size = Vector2.ONE
+
+	var move_hbox = HBoxContainer.new()
+	move_hbox.size_flags_horizontal = SIZE_EXPAND_FILL
+	move_hbox.size_flags_vertical = SIZE_EXPAND_FILL
+	move_hbox.set(\"custom_constants/separation\", 0)
+
 	for move in motion.motion_moves:
-		populate_move(move)
+		move_hbox.add_child(populate_move(move))
+
+	var vbox = VBoxContainer.new()
+	vbox.set_meta(\"grid_motion\", motion)
+	vbox.size_flags_horizontal = SIZE_EXPAND_FILL
+	vbox.size_flags_vertical = SIZE_EXPAND_FILL
+	vbox.size_flags_stretch_ratio = motion.get_duration()
+	vbox.add_child(node)
+	vbox.add_child(curve_edit)
+	vbox.add_child(move_hbox)
+	vbox.set(\"custom_constants/separation\", 0)
+
+	timeline_hbox.add_child(vbox)
 
 	if motion.next_motion:
 		populate_motion(motion.next_motion)
 
-func populate_move(move: GridMove) -> void:
+func populate_move(move: GridMove) -> Button:
 	var node = Button.new()
+	node.set_meta(\"grid_move\", move)
+	node.mouse_filter = MOUSE_FILTER_PASS
 
-	node.text = move.get_path()
 	node.clip_text = true
 	node.toggle_mode = true
 	node.group = button_group
@@ -266,31 +354,34 @@ func populate_move(move: GridMove) -> void:
 	node.size_flags_stretch_ratio = move.duration
 
 	node.connect(\"pressed\", self, \"handle_move_selected\", [move])
-	add_child(node)
+	return node
+
+func handle_motion_selected(motion: GridMotion):
+	emit_signal(\"motion_selected\", motion)
 
 func handle_move_selected(move: GridMove):
 	emit_signal(\"move_selected\", move)
+
+func adjust_zoom(delta: float):
+	set_zoom(zoom + (delta * zoom))
+
+func set_animation_progress(animation_progress: float) -> void:
+	for child in timeline_hbox.get_children():
+		if child.get_meta(\"grid_motion\") == current_motion:
+			$PlayHead.rect_position.x = child.rect_position.x + (child.rect_size.x * animation_progress)
+			break
+
+var current_motion = null
+func set_current_motion(new_current_motion: GridMotion) -> void:
+	if current_motion != new_current_motion:
+		current_motion = new_current_motion
+"
+
+[sub_resource type="GDScript" id=11]
+script/source = "extends HSlider
 "
 
 [sub_resource type="GDScript" id=9]
-script/source = "extends Control
-
-func set_animation_progress(animation_progress: float) -> void:
-	rect_position.x = animation_progress * get_parent().rect_size.x
-"
-
-[sub_resource type="StyleBoxFlat" id=8]
-content_margin_left = 6.0
-content_margin_right = 6.0
-content_margin_top = 0.0
-content_margin_bottom = 0.0
-border_width_left = 4
-border_width_top = 5
-border_width_right = 5
-border_color = Color( 0.8, 0.8, 0.8, 0 )
-corner_detail = 1
-
-[sub_resource type="GDScript" id=6]
 script/source = "extends FileDialog
 "
 
@@ -343,7 +434,7 @@ margin_right = 425.0
 margin_bottom = 23.0
 size_flags_horizontal = 3
 clip_text = true
-script = SubResource( 7 )
+script = SubResource( 2 )
 
 [node name="CloseButton" type="ToolButton" parent="VBoxContainer/PanelContainer/ToolbarHBox"]
 margin_left = 429.0
@@ -359,20 +450,21 @@ margin_bottom = 335.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 2.0
+custom_constants/separation = 0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="MotionList" type="ItemList" parent="VBoxContainer/MainHBox"]
-margin_right = 157.0
+margin_right = 160.0
 margin_bottom = 288.0
 size_flags_horizontal = 3
 allow_reselect = true
-script = SubResource( 2 )
+script = SubResource( 3 )
 
 [node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/MainHBox"]
-margin_left = 161.0
-margin_right = 318.0
+margin_left = 160.0
+margin_right = 320.0
 margin_bottom = 288.0
 size_flags_horizontal = 3
 __meta__ = {
@@ -382,10 +474,10 @@ __meta__ = {
 [node name="DemoArea" type="Control" parent="VBoxContainer/MainHBox/PanelContainer"]
 margin_left = 7.0
 margin_top = 7.0
-margin_right = 150.0
+margin_right = 153.0
 margin_bottom = 281.0
 size_flags_horizontal = 3
-script = SubResource( 3 )
+script = SubResource( 4 )
 
 [node name="GridWorld" type="Node2D" parent="VBoxContainer/MainHBox/PanelContainer/DemoArea"]
 position = Vector2( 0, 7 )
@@ -411,69 +503,163 @@ position = Vector2( 10, 10 )
 texture = ExtResource( 3 )
 
 [node name="PropertiesContainer" type="PanelContainer" parent="VBoxContainer/MainHBox"]
-margin_left = 322.0
+margin_left = 320.0
 margin_right = 480.0
 margin_bottom = 288.0
 size_flags_horizontal = 3
-script = SubResource( 4 )
+script = SubResource( 5 )
 property_blacklist = [ "motion_moves", "motion_curve" ]
 
 [node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/MainHBox/PropertiesContainer"]
 margin_left = 7.0
 margin_top = 7.0
-margin_right = 151.0
+margin_right = 153.0
 margin_bottom = 281.0
 scroll_horizontal_enabled = false
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MainHBox/PropertiesContainer/ScrollContainer"]
-margin_right = 144.0
+margin_right = 146.0
 size_flags_horizontal = 3
 
-[node name="MotionTimeline" type="PanelContainer" parent="VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer"]
 margin_top = 335.0
 margin_right = 480.0
 margin_bottom = 480.0
+mouse_filter = 2
+size_flags_vertical = 3
+custom_constants/separation = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/VBoxContainer"]
+margin_right = 480.0
+margin_bottom = 145.0
+mouse_filter = 2
 size_flags_vertical = 3
 
-[node name="ColorRect" type="ColorRect" parent="VBoxContainer/MotionTimeline"]
+[node name="ColorRect" type="ColorRect" parent="VBoxContainer/VBoxContainer/PanelContainer"]
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 473.0
 margin_bottom = 138.0
+rect_clip_content = true
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 color = Color( 0, 0, 0, 1 )
 
-[node name="MotionTimeline" type="HBoxContainer" parent="VBoxContainer/MotionTimeline/ColorRect"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/VBoxContainer/PanelContainer/ColorRect"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+custom_constants/separation = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Control" type="Control" parent="VBoxContainer/VBoxContainer/PanelContainer/ColorRect/VBoxContainer"]
+margin_right = 466.0
+margin_bottom = 115.0
+mouse_filter = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VBoxContainer/PanelContainer/ColorRect/VBoxContainer/Control"]
+anchor_left = -1.0
+anchor_right = 2.0
+anchor_bottom = 1.0
+size_flags_horizontal = 0
+size_flags_vertical = 3
+custom_constants/separation = 0
+script = SubResource( 12 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Spacer" type="Control" parent="VBoxContainer/VBoxContainer/PanelContainer/ColorRect/VBoxContainer/Control/HBoxContainer"]
+margin_right = 466.0
+margin_bottom = 115.0
+mouse_filter = 1
+size_flags_horizontal = 3
+
+[node name="MotionTimeline" type="Control" parent="VBoxContainer/VBoxContainer/PanelContainer/ColorRect/VBoxContainer/Control/HBoxContainer"]
+margin_left = 466.0
+margin_right = 932.0
+margin_bottom = 115.0
+mouse_filter = 1
+size_flags_horizontal = 3
+script = SubResource( 6 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VBoxContainer/PanelContainer/ColorRect/VBoxContainer/Control/HBoxContainer/MotionTimeline"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 1.71478
+margin_top = 0.857361
+margin_right = 1.71478
+margin_bottom = 0.857361
+custom_constants/separation = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PlayHead" type="ColorRect" parent="VBoxContainer/VBoxContainer/PanelContainer/ColorRect/VBoxContainer/Control/HBoxContainer/MotionTimeline"]
+anchor_bottom = 1.0
+margin_right = 1.0
+rect_min_size = Vector2( 1, 0 )
+size_flags_vertical = 3
+color = Color( 0.815686, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Spacer2" type="Control" parent="VBoxContainer/VBoxContainer/PanelContainer/ColorRect/VBoxContainer/Control/HBoxContainer"]
+margin_left = 932.0
+margin_right = 1398.0
+margin_bottom = 115.0
+mouse_filter = 1
+size_flags_horizontal = 3
+
+[node name="ColorRect" type="ColorRect" parent="VBoxContainer/VBoxContainer/PanelContainer/ColorRect/VBoxContainer"]
+margin_top = 115.0
 margin_right = 466.0
 margin_bottom = 131.0
-script = SubResource( 5 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+rect_min_size = Vector2( 0, 16 )
+color = Color( 0.137255, 0.137255, 0.137255, 1 )
 
-[node name="PlayHead" type="Control" parent="VBoxContainer/MotionTimeline/ColorRect"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/VBoxContainer/PanelContainer/ColorRect/VBoxContainer/ColorRect"]
+anchor_right = 1.0
 anchor_bottom = 1.0
-size_flags_vertical = 3
-script = SubResource( 9 )
+mouse_filter = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/MotionTimeline/ColorRect/PlayHead"]
-margin_left = -6.0
-margin_right = 6.0
-margin_bottom = 131.0
-rect_pivot_offset = Vector2( 6, 0 )
+[node name="Control" type="Control" parent="VBoxContainer/VBoxContainer/PanelContainer/ColorRect/VBoxContainer/ColorRect/HBoxContainer2"]
+margin_right = 231.0
+margin_bottom = 16.0
+size_flags_horizontal = 3
+
+[node name="ZoomSlider" type="HSlider" parent="VBoxContainer/VBoxContainer/PanelContainer/ColorRect/VBoxContainer/ColorRect/HBoxContainer2"]
+margin_left = 235.0
+margin_right = 466.0
+margin_bottom = 16.0
+size_flags_horizontal = 3
+min_value = 0.01
+max_value = 8.0
+step = 0.1
+value = 1.0
+allow_greater = true
+tick_count = 9
+script = SubResource( 11 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="VScrollBar" type="VScrollBar" parent="VBoxContainer/MotionTimeline/ColorRect/PlayHead/MarginContainer"]
-margin_right = 12.0
-margin_bottom = 131.0
-custom_styles/scroll = SubResource( 8 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VBoxContainer"]
+margin_top = 145.0
+margin_right = 480.0
+margin_bottom = 145.0
+
+[node name="Control" type="Control" parent="VBoxContainer/VBoxContainer/HBoxContainer"]
+margin_right = 480.0
+size_flags_horizontal = 3
 
 [node name="FileDialog" type="FileDialog" parent="."]
 anchor_right = 1.0
@@ -488,22 +674,28 @@ filters = PoolStringArray( "*.tres" )
 current_dir = "res://resources/grid_input_map"
 current_file = "basic_input_map.tres"
 current_path = "res://resources/grid_input_map/basic_input_map.tres"
-script = SubResource( 6 )
+script = SubResource( 9 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 [connection signal="moveset_changed" from="." to="VBoxContainer/PanelContainer/ToolbarHBox/TitleLabel" method="set_title_from_moveset"]
 [connection signal="moveset_changed" from="." to="VBoxContainer/MainHBox/MotionList" method="populate_moves"]
 [connection signal="moveset_invalid_changed" from="." to="VBoxContainer/PanelContainer/ToolbarHBox/CloseButton" method="set_disabled"]
-[connection signal="selected_motion_changed" from="." to="VBoxContainer/MotionTimeline/ColorRect/MotionTimeline" method="populate_moves"]
 [connection signal="selected_motion_changed" from="." to="VBoxContainer/MainHBox/PropertiesContainer" method="populate_properties"]
 [connection signal="selected_motion_changed" from="." to="VBoxContainer/MainHBox/PanelContainer/DemoArea" method="set_motion"]
+[connection signal="selected_motion_changed" from="." to="VBoxContainer/VBoxContainer/PanelContainer/ColorRect/VBoxContainer/Control/HBoxContainer/MotionTimeline" method="populate_moves"]
 [connection signal="selected_move_changed" from="." to="VBoxContainer/MainHBox/PropertiesContainer" method="populate_properties"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/ToolbarHBox/OpenButton" to="FileDialog" method="popup"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/ToolbarHBox/SaveButton" to="." method="save_moveset"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/ToolbarHBox/CloseButton" to="." method="close_moveset"]
 [connection signal="motion_selected" from="VBoxContainer/MainHBox/MotionList" to="." method="set_selected_motion_by_name"]
-[connection signal="animation_progress_changed" from="VBoxContainer/MainHBox/PanelContainer/DemoArea/GridWorld/GridActor" to="VBoxContainer/MotionTimeline/ColorRect/PlayHead" method="set_animation_progress"]
+[connection signal="animation_progress_changed" from="VBoxContainer/MainHBox/PanelContainer/DemoArea/GridWorld/GridActor" to="VBoxContainer/VBoxContainer/PanelContainer/ColorRect/VBoxContainer/Control/HBoxContainer/MotionTimeline" method="set_animation_progress"]
+[connection signal="current_motion_changed" from="VBoxContainer/MainHBox/PanelContainer/DemoArea/GridWorld/GridActor" to="VBoxContainer/VBoxContainer/PanelContainer/ColorRect/VBoxContainer/Control/HBoxContainer/MotionTimeline" method="set_current_motion"]
 [connection signal="property_changed" from="VBoxContainer/MainHBox/PropertiesContainer" to="VBoxContainer/MainHBox/PanelContainer/DemoArea" method="replay"]
-[connection signal="move_selected" from="VBoxContainer/MotionTimeline/ColorRect/MotionTimeline" to="." method="set_selected_move"]
+[connection signal="mouse_wheel_down" from="VBoxContainer/VBoxContainer/PanelContainer/ColorRect/VBoxContainer/Control/HBoxContainer" to="VBoxContainer/VBoxContainer/PanelContainer/ColorRect/VBoxContainer/Control/HBoxContainer/MotionTimeline" method="adjust_zoom" binds= [ -0.1 ]]
+[connection signal="mouse_wheel_up" from="VBoxContainer/VBoxContainer/PanelContainer/ColorRect/VBoxContainer/Control/HBoxContainer" to="VBoxContainer/VBoxContainer/PanelContainer/ColorRect/VBoxContainer/Control/HBoxContainer/MotionTimeline" method="adjust_zoom" binds= [ 0.1 ]]
+[connection signal="motion_selected" from="VBoxContainer/VBoxContainer/PanelContainer/ColorRect/VBoxContainer/Control/HBoxContainer/MotionTimeline" to="VBoxContainer/MainHBox/PropertiesContainer" method="populate_properties"]
+[connection signal="move_selected" from="VBoxContainer/VBoxContainer/PanelContainer/ColorRect/VBoxContainer/Control/HBoxContainer/MotionTimeline" to="." method="set_selected_move"]
+[connection signal="zoom_changed" from="VBoxContainer/VBoxContainer/PanelContainer/ColorRect/VBoxContainer/Control/HBoxContainer/MotionTimeline" to="VBoxContainer/VBoxContainer/PanelContainer/ColorRect/VBoxContainer/ColorRect/HBoxContainer2/ZoomSlider" method="set_value"]
+[connection signal="value_changed" from="VBoxContainer/VBoxContainer/PanelContainer/ColorRect/VBoxContainer/ColorRect/HBoxContainer2/ZoomSlider" to="VBoxContainer/VBoxContainer/PanelContainer/ColorRect/VBoxContainer/Control/HBoxContainer/MotionTimeline" method="set_zoom"]
 [connection signal="file_selected" from="FileDialog" to="." method="set_moveset_path"]

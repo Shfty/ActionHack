@@ -1,11 +1,11 @@
 [gd_resource type="Resource" load_steps=5 format=2]
 
 [ext_resource path="res://resources/curve/curve_linear.tres" type="Curve" id=1]
+[ext_resource path="res://scripts/resources/grid_move.gd" type="Script" id=2]
 [ext_resource path="res://scripts/resources/grid_motion.gd" type="Script" id=3]
-[ext_resource path="res://scripts/resources/grid_move.gd" type="Script" id=4]
 
 [sub_resource type="Resource" id=1]
-script = ExtResource( 4 )
+script = ExtResource( 2 )
 delta_position = Vector2( 0, 0 )
 delta_facing = 0
 flip_curve_x = false
@@ -21,6 +21,7 @@ input_release_motions = {
 }
 
 [resource]
+resource_name = "Sidestep Recovery"
 script = ExtResource( 3 )
 motion_moves = [ SubResource( 1 ) ]
 motion_curve = ExtResource( 1 )

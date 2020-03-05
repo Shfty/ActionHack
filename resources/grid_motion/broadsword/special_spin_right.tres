@@ -94,6 +94,7 @@ input_release_motions = {
 }
 
 [resource]
+resource_name = "Spin Right"
 script = ExtResource( 2 )
 motion_moves = [ SubResource( 9 ) ]
 motion_curve = ExtResource( 1 )

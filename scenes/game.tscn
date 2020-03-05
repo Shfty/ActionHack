@@ -12,7 +12,7 @@
 [ext_resource path="res://prefabs/Renderer2D.tscn" type="PackedScene" id=10]
 [ext_resource path="res://prefabs/UI.tscn" type="PackedScene" id=11]
 
-[node name="CharacterActionDungeon" type="Node"]
+[node name="Game" type="Node"]
 
 [node name="Renderer2D" parent="." instance=ExtResource( 10 )]
 rect_clip_content = true
