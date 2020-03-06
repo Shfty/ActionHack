@@ -20,6 +20,7 @@
 [ext_resource path="res://resources/grid_motion/broadsword/special_hop_back.tres" type="Resource" id=18]
 
 [resource]
+resource_name = "Arming Sword"
 script = ExtResource( 1 )
 map = {
 "attack": ExtResource( 10 ),

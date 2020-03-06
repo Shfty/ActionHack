@@ -14,15 +14,20 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/compass.gd"
 }, {
-"base": "DraggableRect",
-"class": "CurveControlPoint",
+"base": "Control",
+"class": "CurveControlPoints",
 "language": "GDScript",
-"path": "res://scenes/curve_control_point.gd"
+"path": "res://scenes/curve_control_points.gd"
 }, {
 "base": "Control",
 "class": "CurveEdit",
 "language": "GDScript",
-"path": "res://scenes/curve_editor.gd"
+"path": "res://scenes/curve_edit.gd"
+}, {
+"base": "Control",
+"class": "CurveRect",
+"language": "GDScript",
+"path": "res://scenes/curve_rect.gd"
 }, {
 "base": "ColorRect",
 "class": "DraggableRect",
@@ -116,8 +121,9 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "Compass": "",
-"CurveControlPoint": "",
+"CurveControlPoints": "",
 "CurveEdit": "",
+"CurveRect": "",
 "DraggableRect": "",
 "GridActor": "",
 "GridCamera": "",
