@@ -64,8 +64,6 @@ func _ready() -> void:
 	update_node()
 	update_property()
 
-	update_configuration_warning()
-
 func _process(delta: float) -> void:
 	if not _node:
 		return
@@ -127,12 +125,7 @@ func _get_value():
 				if key in value:
 					return value[key]
 		elif value is Object:
-			if key.substr(key.size() - 3, 2) == "()":
-				var func_name = key.substr(0, key.size() - 2)
-				if value.has_method(func_name):
-					return value.call(func_name)
-			elif key in value:
-				return value[key]
+			return value[key]
 		else:
 			return _node.get_indexed(_property)
 
