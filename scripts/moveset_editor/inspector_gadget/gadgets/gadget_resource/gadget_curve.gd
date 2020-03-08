@@ -6,9 +6,9 @@ func _init(in_node_path: NodePath = NodePath(), in_subnames: String = "", in_met
 	pass
 
 static func supports_type(value) -> bool:
-	return value is Curve
+	return value is Curve or value == null
 
-func supports_resource(classname: String) -> bool:
+static func supports_resource(classname: String) -> bool:
 	return classname == "Curve"
 
 func has_controls() -> bool:

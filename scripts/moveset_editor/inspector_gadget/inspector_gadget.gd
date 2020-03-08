@@ -90,8 +90,8 @@ func populate_gadgets() -> void:
 	var vbox = $ScrollContainer/VBoxContainer
 	var property_list = target.get_property_list()
 	for property in property_list:
-		if property in property_blacklist:
-			return
+		if property['name'] in property_blacklist:
+			continue
 
 		var is_editor_variable = PROPERTY_USAGE_EDITOR & property['usage'] == PROPERTY_USAGE_EDITOR
 		var is_script_variable = PROPERTY_USAGE_SCRIPT_VARIABLE & property['usage'] == PROPERTY_USAGE_SCRIPT_VARIABLE
@@ -211,8 +211,8 @@ func get_gadget_for_type(value, property_name = "") -> InspectorGadgetBase:
 
 	return gadget
 
-func change_property_begin(object: Object, property: String) -> void:
-	emit_signal("change_property_begin", object, property)
+func change_property_begin(object, key) -> void:
+	emit_signal("change_property_begin", object, key)
 
-func change_property_end(object: Object, property: String) -> void:
-	emit_signal("change_property_end", object, property)
+func change_property_end(object, key) -> void:
+	emit_signal("change_property_end", object, key)

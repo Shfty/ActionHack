@@ -3,6 +3,7 @@ extends Control
 signal moveset_changed(moveset)
 signal moveset_invalid_changed(moveset_invalid)
 signal moveset_motions_changed()
+signal moveset_motions_changed_value(motions)
 
 signal motion_selected(motion)
 signal motion_invalid_changed(motion_invalid)
@@ -42,6 +43,7 @@ func set_moveset(new_moveset: GridMoveset) -> void:
 
 	emit_signal("moveset_changed", moveset)
 	emit_signal("moveset_invalid_changed", moveset == null)
+	moveset_motions_changed()
 
 	if moveset:
 		show_moveset_editor()
@@ -88,10 +90,10 @@ func move_selected(move: GridMove) -> void:
 func curve_selected(curve: Curve, min_value: float, max_value: float, color: Color) -> void:
 	emit_signal("curve_selected", curve, min_value, max_value, color)
 
-func property_change_begin(object: Object, property: String) -> void:
+func property_change_begin(object, property) -> void:
 	emit_signal("property_change_begin", object, property)
 
-func property_change_end(object: Object, property: String) -> void:
+func property_change_end(object, property) -> void:
 	emit_signal("property_change_end", object, property)
 	property_changed()
 
@@ -126,6 +128,7 @@ func delete_moveset_motion(motion: GridMotion) -> void:
 
 func moveset_motions_changed() -> void:
 	emit_signal("moveset_motions_changed")
+	emit_signal("moveset_motions_changed_value", moveset.motions)
 
 func show_moveset_editor() -> void:
 	emit_signal("show_moveset_editor")

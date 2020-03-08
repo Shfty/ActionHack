@@ -6,7 +6,7 @@ func _init(in_node_path: NodePath = NodePath(), in_subnames: String = "", in_met
 	pass
 
 static func supports_type(value) -> bool:
-	return value is GridMotion
+	return value is GridMotion or value == null
 
 static func supports_resource(classname: String) -> bool:
 	return classname == "GridMotion"
@@ -29,21 +29,25 @@ func set_motion_choice_value(value: int) -> void:
 		_set_value(null)
 	else:
 		if 'grid_motions' in metadata:
-			_set_value(metadata['grid_motions'][value - 1])
+			var id = $OptionButton.get_item_id(value)
+			_set_value(metadata['grid_motions'][id])
 
 func populate_value(value) -> void:
-	var option_button = get_controls()[0]
+	var option_button = get_controls()[0] as OptionButton
 	option_button.set_block_signals(true)
 
 	option_button.add_item("None")
 	if 'grid_motions' in metadata:
-		for motion in metadata['grid_motions']:
+		for i in range(0, metadata['grid_motions'].size()):
+			var motion = metadata['grid_motions'][i]
 			if 'grid_motions_ignore' in metadata:
 				if motion in metadata['grid_motions_ignore']:
 					continue
-			option_button.add_item(motion.get_name())
+			option_button.add_item(motion.get_name(), i)
 
-		option_button._select_int(metadata['grid_motions'].find(value) + 1)
+		var selected_id = metadata['grid_motions'].find(value)
+		var index = option_button.get_item_index(selected_id)
+		option_button._select_int(index)
 
 	option_button.set_block_signals(false)
 	option_button.disabled = !editable

@@ -224,6 +224,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/grid_controller/monster_controller.gd"
 }, {
+"base": "InspectorGadget",
+"class": "MovesetEditorInspectorGadget",
+"language": "GDScript",
+"path": "res://scripts/moveset_editor/moveset_editor_inspector_gadget.gd"
+}, {
 "base": "Reference",
 "class": "MovesetEditorUtil",
 "language": "GDScript",
@@ -288,6 +293,7 @@ _global_script_class_icons={
 "InspectorGadgetBase": "",
 "InspectorGadgetBaseUtil": "",
 "MonsterController": "",
+"MovesetEditorInspectorGadget": "",
 "MovesetEditorUtil": "",
 "PlayerController": "",
 "Renderer2D": "",

@@ -151,17 +151,25 @@ func _set_value(new_value) -> void:
 		var value = _node.get_indexed(property_subnames)
 
 		if key.is_valid_integer() and InspectorGadgetBaseUtil.is_array_type(value):
+			change_property_begin(value, key.to_int())
 			value[key.to_int()] = new_value
 			_set_indexed(_node, property_subnames, value)
+			change_property_end(value, key.to_int())
 		elif value is Dictionary:
+			change_property_begin(value, key)
 			if key in value:
 				value[key] = new_value
 				_set_indexed(_node, property_subnames, value)
+			change_property_end(value, key)
 		elif value is Object:
+			change_property_begin(value, key)
 			value[key] = new_value
 			_set_indexed(_node, property_subnames, value)
+			change_property_end(value, key)
 		else:
+			change_property_begin(_node, _property)
 			_set_indexed(_node, _property, new_value)
+			change_property_end(_node, _property)
 
 func _set_indexed(node: Node, subnames: String, new_value) -> void:
 	var subname_comps = subnames.split(":")
@@ -193,9 +201,7 @@ func _set_indexed(node: Node, subnames: String, new_value) -> void:
 		if target_chain.size() > 0:
 			target_chain[-1][1][key] = value
 		else:
-			change_property_begin(node, key)
 			node[key] = value
-			change_property_end(node, key)
 			break
 
 func _try_populate_controls() -> void:
@@ -257,8 +263,8 @@ func update_node() -> void:
 func update_property() -> void:
 	set_property(subnames)
 
-func change_property_begin(object: Object, property: String) -> void:
-	emit_signal("change_property_begin", object, property)
+func change_property_begin(object, key) -> void:
+	emit_signal("change_property_begin", object, key)
 
-func change_property_end(object: Object, property: String) -> void:
-	emit_signal("change_property_end", object, property)
+func change_property_end(object, key) -> void:
+	emit_signal("change_property_end", object, key)

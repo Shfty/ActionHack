@@ -5,22 +5,22 @@ signal property_changed()
 var undo_redo = UndoRedo.new()
 
 class PropertyChangeAction:
-	var target_object: Object
-	var target_property: String
+	var target_object
+	var target_property
 	var from_value
 	var to_value
 
-	func _init(in_target_object: Object, in_property: String, in_from_value):
+	func _init(in_target_object, in_property, in_from_value):
 		target_object = in_target_object
 		target_property = in_property
 		from_value = in_from_value
 
 var property_change_actions := []
 
-func property_change_begin(object: Object, property: String) -> void:
+func property_change_begin(object, property) -> void:
 	property_change_actions.append(PropertyChangeAction.new(object, property, object[property]))
 
-func property_change_end(object: Object, property: String) -> void:
+func property_change_end(object, property) -> void:
 	var action = null
 	for action_comp in property_change_actions:
 		if action_comp.target_object == object and action_comp.target_property == property:
@@ -31,7 +31,7 @@ func property_change_end(object: Object, property: String) -> void:
 		return
 
 	action.to_value = object[property]
-	undo_redo.create_action("Set " + property)
+	undo_redo.create_action("Set %s" % [property])
 	undo_redo.add_do_method(self, "do_change_property", action)
 	undo_redo.add_undo_method(self, "undo_change_property", action)
 	undo_redo.commit_action()
