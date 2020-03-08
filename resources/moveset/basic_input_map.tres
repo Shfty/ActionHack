@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=15 format=2]
+[gd_resource type="Resource" load_steps=9 format=2]
 
 [ext_resource path="res://scripts/resources/grid_moveset.gd" type="Script" id=1]
 [ext_resource path="res://scripts/resources/grid_motion.gd" type="Script" id=2]
@@ -9,30 +9,11 @@ _data = [ Vector2( 0, 0 ), 0.0, 1.0, 0, 0, Vector2( 1, 1 ), 1.0, 0.0, 0, 0 ]
 [sub_resource type="Curve" id=2]
 _data = [ Vector2( 0, 0 ), 0.0, 1.0, 0, 0, Vector2( 1, 1 ), 1.0, 0.0, 0, 0 ]
 
-[sub_resource type="Curve" id=3]
-_data = [ Vector2( 0, 0 ), 0.0, 1.0, 0, 0, Vector2( 1, 1 ), 1.0, 0.0, 0, 0 ]
-
-[sub_resource type="Curve" id=4]
-_data = [ Vector2( 0, 0 ), 0.0, 1.0, 0, 0, Vector2( 1, 1 ), 1.0, 0.0, 0, 0 ]
-
 [sub_resource type="Curve" id=5]
 _data = [ Vector2( 0, 0 ), 0.0, 1.0, 0, 0, Vector2( 1, 1 ), 1.0, 0.0, 0, 0 ]
 
-[sub_resource type="Curve" id=6]
-_data = [ Vector2( 0, 0 ), 0.0, 1.0, 0, 0, Vector2( 1, 1 ), 1.0, 0.0, 0, 0 ]
-
-[sub_resource type="Resource" id=7]
-resource_name = "New Motion 6"
-script = ExtResource( 2 )
-motion_moves = [  ]
-motion_curve = SubResource( 6 )
-looping = false
-cancelable = false
-lock_input_buffer = false
-lock_inputs = [  ]
-
-[sub_resource type="Resource" id=8]
-resource_name = "New Motion 5"
+[sub_resource type="Resource" id=6]
+resource_name = "New Motion 3"
 script = ExtResource( 2 )
 motion_moves = [  ]
 motion_curve = SubResource( 5 )
@@ -40,31 +21,8 @@ looping = false
 cancelable = false
 lock_input_buffer = false
 lock_inputs = [  ]
-next_motion = SubResource( 7 )
 
-[sub_resource type="Resource" id=9]
-resource_name = "New Motion 4"
-script = ExtResource( 2 )
-motion_moves = [  ]
-motion_curve = SubResource( 4 )
-looping = false
-cancelable = false
-lock_input_buffer = false
-lock_inputs = [  ]
-next_motion = SubResource( 8 )
-
-[sub_resource type="Resource" id=10]
-resource_name = "New Motion 3"
-script = ExtResource( 2 )
-motion_moves = [  ]
-motion_curve = SubResource( 3 )
-looping = false
-cancelable = false
-lock_input_buffer = false
-lock_inputs = [  ]
-next_motion = SubResource( 9 )
-
-[sub_resource type="Resource" id=11]
+[sub_resource type="Resource" id=3]
 resource_name = "New Motion 2"
 script = ExtResource( 2 )
 motion_moves = [  ]
@@ -73,9 +31,9 @@ looping = false
 cancelable = false
 lock_input_buffer = false
 lock_inputs = [  ]
-next_motion = SubResource( 10 )
+next_motion = SubResource( 6 )
 
-[sub_resource type="Resource" id=12]
+[sub_resource type="Resource" id=4]
 resource_name = "New Motion 1"
 script = ExtResource( 2 )
 motion_moves = [  ]
@@ -84,7 +42,7 @@ looping = false
 cancelable = false
 lock_input_buffer = false
 lock_inputs = [  ]
-next_motion = SubResource( 11 )
+next_motion = SubResource( 3 )
 
 [resource]
 resource_name = "Basic"
@@ -109,4 +67,4 @@ input_map = {
 "turn_left": null,
 "turn_right": null
 }
-motions = [ SubResource( 12 ), SubResource( 11 ), SubResource( 10 ), SubResource( 9 ), SubResource( 8 ), SubResource( 7 ) ]
+motions = [ SubResource( 4 ), SubResource( 3 ), SubResource( 6 ) ]

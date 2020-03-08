@@ -1,12 +1,12 @@
-class_name GadgetRID
-extends GadgetString
+class_name GadgetNodePath
+extends GadgetStringEdit
 tool
 
 func _init(in_node_path: NodePath = NodePath(), in_subnames: String = "").(in_node_path, in_subnames):
 	pass
 
 static func supports_type(value) -> bool:
-	if value is RID:
+	if value is NodePath:
 		return true
 	return false
 

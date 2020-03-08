@@ -26,11 +26,11 @@ func populate_controls() -> void:
 
 func set_motion_choice_value(value: int) -> void:
 	if value == 0:
-		_set_value(null)
+		set_node_value(null)
 	else:
 		if 'grid_motions' in metadata:
 			var id = $OptionButton.get_item_id(value)
-			_set_value(metadata['grid_motions'][id])
+			set_node_value(metadata['grid_motions'][id])
 
 func populate_value(value) -> void:
 	var option_button = get_controls()[0] as OptionButton

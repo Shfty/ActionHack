@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://textures/icons/ei-archive.svg" type="Texture" id=1]
 [ext_resource path="res://textures/icons/ei-share-apple.svg" type="Texture" id=2]
@@ -13,12 +13,13 @@
 [ext_resource path="res://scripts/moveset_editor/moveset_editor.gd" type="Script" id=11]
 [ext_resource path="res://scripts/moveset_editor/demo_area.gd" type="Script" id=12]
 [ext_resource path="res://scripts/moveset_editor/moveset_editor_inspector_gadget.gd" type="Script" id=13]
-[ext_resource path="res://scripts/moveset_editor/inspector_gadget/gadgets/gadget_string.gd" type="Script" id=14]
+[ext_resource path="res://scripts/inspector_gadget/gadgets/gadget_string_edit.gd" type="Script" id=14]
 [ext_resource path="res://scripts/moveset_editor/input_list.gd" type="Script" id=15]
 [ext_resource path="res://textures/icons/ei-plus.svg" type="Texture" id=16]
 [ext_resource path="res://scripts/signal_receiver.gd" type="Script" id=17]
-[ext_resource path="res://scripts/moveset_editor/motion_list.gd" type="Script" id=18]
-[ext_resource path="res://scripts/moveset_editor/inspector_gadget/gadgets/gadget_resource/gadget_motion_choice.gd" type="Script" id=20]
+[ext_resource path="res://scripts/inspector_gadget/inspector_gadget.gd" type="Script" id=19]
+[ext_resource path="res://scripts/inspector_gadget/gadgets/gadget_resource/gadget_motion_choice.gd" type="Script" id=20]
+[ext_resource path="res://scripts/inspector_gadget/gadgets/gadget_resource/gadget_motion_button.gd" type="Script" id=21]
 
 [sub_resource type="ButtonGroup" id=1]
 resource_name = "Header Button Group"
@@ -479,7 +480,6 @@ size_flags_vertical = 3
 script = SubResource( 2 )
 
 [node name="MovesetHBox" type="HBoxContainer" parent="VBoxContainer/MainArea"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 custom_constants/separation = 0
@@ -619,6 +619,7 @@ margin_right = 466.0
 margin_bottom = 25.0
 rect_min_size = Vector2( 25, 25 )
 size_flags_horizontal = 8
+size_flags_vertical = 0
 disabled = true
 expand_icon = true
 script = ExtResource( 17 )
@@ -636,22 +637,21 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/MainArea/MovesetHBox/VBoxContainer/HBoxContainer/VBoxContainer2/PanelContainer2/VBoxContainer"]
+[node name="InspectorGadgetNew" type="MarginContainer" parent="VBoxContainer/MainArea/MovesetHBox/VBoxContainer/HBoxContainer/VBoxContainer2/PanelContainer2/VBoxContainer"]
 margin_top = 29.0
 margin_right = 466.0
 margin_bottom = 797.0
-size_flags_horizontal = 3
 size_flags_vertical = 3
-scroll_horizontal_enabled = false
+script = ExtResource( 19 )
+node_path = NodePath("../../../../../../../../..")
+subnames = ":moveset:motions"
+resource_gadgets = [ ExtResource( 21 ) ]
+resource_gadget_metadata = {
 
-[node name="MotionList" type="VBoxContainer" parent="VBoxContainer/MainArea/MovesetHBox/VBoxContainer/HBoxContainer/VBoxContainer2/PanelContainer2/VBoxContainer/ScrollContainer"]
-margin_right = 466.0
-margin_bottom = 768.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-script = ExtResource( 18 )
+}
 
 [node name="MotionVBox" type="VBoxContainer" parent="VBoxContainer/MainArea"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 custom_constants/separation = 0
@@ -714,7 +714,7 @@ size_override_stretch = true
 handle_input_locally = false
 hdr = false
 usage = 0
-render_target_update_mode = 3
+render_target_update_mode = 0
 audio_listener_enable_2d = true
 
 [node name="GridWorld" type="Node2D" parent="VBoxContainer/MainArea/MotionVBox/MainHBox/VBoxContainer2/PanelContainer/Control/ViewportContainer/Viewport"]
@@ -741,10 +741,6 @@ __meta__ = {
 sprite_texture = ExtResource( 3 )
 x = 5
 y = 5
-facing = 0
-opacity = 1.0
-solid = true
-moveset = null
 
 [node name="Offset" type="Node2D" parent="VBoxContainer/MainArea/MotionVBox/MainHBox/VBoxContainer2/PanelContainer/Control/ViewportContainer/Viewport/GridWorld/GridActor"]
 position = Vector2( 10, 10 )
@@ -813,7 +809,7 @@ script = ExtResource( 14 )
 node_path = NodePath("../../../../../../../..")
 subnames = ":selected_motion:resource_name"
 
-[node name="InspectorGadget" type="PanelContainer" parent="VBoxContainer/MainArea/MotionVBox/MainHBox/VBoxContainer"]
+[node name="InspectorGadget" type="MarginContainer" parent="VBoxContainer/MainArea/MotionVBox/MainHBox/VBoxContainer"]
 margin_top = 56.0
 margin_right = 480.0
 margin_bottom = 532.0
@@ -1007,13 +1003,11 @@ __meta__ = {
 [connection signal="motion_invalid_changed" from="." to="VBoxContainer/Toolbar/ToolbarHBox/MotionTab" method="set_disabled"]
 [connection signal="motion_selected" from="." to="VBoxContainer/MainArea/MotionVBox/MainHBox/VBoxContainer/CurveEditPanel" method="motion_selected"]
 [connection signal="move_selected" from="." to="VBoxContainer/MainArea/MotionVBox/MainHBox/VBoxContainer/CurveEditPanel" method="move_selected"]
-[connection signal="moveset_changed" from="." to="VBoxContainer/MainArea/MovesetHBox/VBoxContainer/HBoxContainer/VBoxContainer2/PanelContainer2/VBoxContainer/ScrollContainer/MotionList" method="populate_moveset"]
 [connection signal="moveset_changed" from="." to="VBoxContainer/MainArea/MovesetHBox/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer/ScrollContainer/InputList" method="populate_moveset"]
+[connection signal="moveset_invalid_changed" from="." to="VBoxContainer/Toolbar/ToolbarHBox/MovesetTab" method="set_disabled"]
 [connection signal="moveset_invalid_changed" from="." to="VBoxContainer/Toolbar/ToolbarHBox/CloseButton" method="set_disabled"]
 [connection signal="moveset_invalid_changed" from="." to="VBoxContainer/MainArea/MovesetHBox/VBoxContainer/HBoxContainer/VBoxContainer2/PanelContainer2/VBoxContainer/HBoxContainer/NewMotionButton" method="set_disabled"]
 [connection signal="moveset_invalid_changed" from="." to="VBoxContainer/Toolbar/ToolbarHBox/SaveButton" method="set_disabled"]
-[connection signal="moveset_invalid_changed" from="." to="VBoxContainer/Toolbar/ToolbarHBox/MovesetTab" method="set_disabled"]
-[connection signal="moveset_motions_changed" from="." to="VBoxContainer/MainArea/MovesetHBox/VBoxContainer/HBoxContainer/VBoxContainer2/PanelContainer2/VBoxContainer/ScrollContainer/MotionList" method="repopulate_moveset"]
 [connection signal="moveset_motions_changed" from="." to="VBoxContainer/MainArea/MovesetHBox/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer/ScrollContainer/InputList" method="repopulate_moveset"]
 [connection signal="moveset_motions_changed_value" from="." to="VBoxContainer/MainArea/MotionVBox/MainHBox/VBoxContainer/InspectorGadget" method="set_moveset_motions"]
 [connection signal="property_change_begin" from="." to="ActionManager" method="property_change_begin"]
@@ -1021,10 +1015,10 @@ __meta__ = {
 [connection signal="property_changed" from="." to="VBoxContainer/MainArea/MotionVBox/TimelineVBox/PanelContainer/ColorRect/VBoxContainer/Control/HBoxContainer/MotionTimeline" method="repopulate_motion"]
 [connection signal="selected_motion_changed" from="." to="VBoxContainer/MainArea/MotionVBox/MainHBox/VBoxContainer/InspectorGadget" method="set_ignore_motion"]
 [connection signal="selected_motion_changed" from="." to="VBoxContainer/MainArea/MotionVBox/TimelineVBox/PanelContainer/ColorRect/VBoxContainer/Control/HBoxContainer/MotionTimeline" method="populate_motion"]
-[connection signal="show_motion_editor" from="." to="VBoxContainer/MainArea" method="show_motion_editor"]
 [connection signal="show_motion_editor" from="." to="VBoxContainer/Toolbar/ToolbarHBox/MotionTab" method="set_pressed" binds= [ true ]]
-[connection signal="show_moveset_editor" from="." to="VBoxContainer/MainArea" method="show_moveset_editor"]
+[connection signal="show_motion_editor" from="." to="VBoxContainer/MainArea" method="show_motion_editor"]
 [connection signal="show_moveset_editor" from="." to="VBoxContainer/Toolbar/ToolbarHBox/MovesetTab" method="set_pressed" binds= [ true ]]
+[connection signal="show_moveset_editor" from="." to="VBoxContainer/MainArea" method="show_moveset_editor"]
 [connection signal="property_changed" from="ActionManager" to="." method="property_changed"]
 [connection signal="pressed" from="VBoxContainer/Toolbar/ToolbarHBox/OpenButton" to="MovesetFileDialog" method="popup"]
 [connection signal="pressed" from="VBoxContainer/Toolbar/ToolbarHBox/SaveButton" to="." method="save_moveset"]
@@ -1034,13 +1028,10 @@ __meta__ = {
 [connection signal="change_property_begin" from="VBoxContainer/MainArea/MovesetHBox/VBoxContainer/MovesetProperties/VBoxContainer/NameGadget" to="." method="property_change_begin"]
 [connection signal="change_property_end" from="VBoxContainer/MainArea/MovesetHBox/VBoxContainer/MovesetProperties/VBoxContainer/NameGadget" to="." method="property_change_end"]
 [connection signal="pressed" from="VBoxContainer/MainArea/MovesetHBox/VBoxContainer/HBoxContainer/VBoxContainer2/PanelContainer2/VBoxContainer/HBoxContainer/NewMotionButton" to="." method="add_moveset_motion"]
-[connection signal="delete_moveset_motion" from="VBoxContainer/MainArea/MovesetHBox/VBoxContainer/HBoxContainer/VBoxContainer2/PanelContainer2/VBoxContainer/ScrollContainer/MotionList" to="." method="delete_moveset_motion"]
-[connection signal="motion_selected" from="VBoxContainer/MainArea/MovesetHBox/VBoxContainer/HBoxContainer/VBoxContainer2/PanelContainer2/VBoxContainer/ScrollContainer/MotionList" to="." method="set_selected_motion"]
+[connection signal="gadget_event" from="VBoxContainer/MainArea/MovesetHBox/VBoxContainer/HBoxContainer/VBoxContainer2/PanelContainer2/VBoxContainer/InspectorGadgetNew" to="." method="moveset_motion_list_gadget_event"]
 [connection signal="animation_progress_changed" from="VBoxContainer/MainArea/MotionVBox/MainHBox/VBoxContainer2/PanelContainer/Control/ViewportContainer/Viewport/GridWorld/GridActor" to="VBoxContainer/MainArea/MotionVBox/TimelineVBox/PanelContainer/ColorRect/VBoxContainer/Control/HBoxContainer/MotionTimeline" method="set_animation_progress"]
 [connection signal="current_motion_changed" from="VBoxContainer/MainArea/MotionVBox/MainHBox/VBoxContainer2/PanelContainer/Control/ViewportContainer/Viewport/GridWorld/GridActor" to="VBoxContainer/MainArea/MotionVBox/TimelineVBox/PanelContainer/ColorRect/VBoxContainer/Control/HBoxContainer/MotionTimeline" method="set_current_motion"]
 [connection signal="pressed" from="VBoxContainer/MainArea/MotionVBox/MainHBox/VBoxContainer2/PanelContainer2/HBoxContainer/Button" to="." method="demo_replay"]
-[connection signal="change_property_begin" from="VBoxContainer/MainArea/MotionVBox/MainHBox/VBoxContainer/Header/VBoxContainer/GadgetString" to="." method="property_change_begin"]
-[connection signal="change_property_end" from="VBoxContainer/MainArea/MotionVBox/MainHBox/VBoxContainer/Header/VBoxContainer/GadgetString" to="." method="property_change_end"]
 [connection signal="change_property_begin" from="VBoxContainer/MainArea/MotionVBox/MainHBox/VBoxContainer/InspectorGadget" to="." method="property_change_begin"]
 [connection signal="change_property_end" from="VBoxContainer/MainArea/MotionVBox/MainHBox/VBoxContainer/InspectorGadget" to="." method="property_change_end"]
 [connection signal="mouse_wheel_down" from="VBoxContainer/MainArea/MotionVBox/TimelineVBox/PanelContainer/ColorRect/VBoxContainer/Control/HBoxContainer" to="VBoxContainer/MainArea/MotionVBox/TimelineVBox/PanelContainer/ColorRect/VBoxContainer/Control/HBoxContainer/MotionTimeline" method="adjust_zoom" binds= [ -0.1 ]]

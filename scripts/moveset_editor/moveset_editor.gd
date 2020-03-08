@@ -139,3 +139,11 @@ func show_motion_editor() -> void:
 
 func hide_editors() -> void:
 	emit_signal("hide_editors")
+
+func moveset_motion_list_gadget_event(event) -> void:
+	var name = event.name
+	match name:
+		"grid_motion_select":
+			set_selected_motion(event['motion'])
+		"grid_motion_delete":
+			delete_moveset_motion(event['motion'])

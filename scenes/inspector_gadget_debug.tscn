@@ -1,13 +1,7 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://scripts/moveset_editor/inspector_gadget/inspector_gadget.gd" type="Script" id=1]
-[ext_resource path="res://scripts/moveset_editor/inspector_gadget/gadgets/gadget_resource/gadget_curve.gd" type="Script" id=2]
+[ext_resource path="res://scripts/inspector_gadget/inspector_gadget.gd" type="Script" id=1]
 [ext_resource path="res://resources/grid_motion/attack_forward.tres" type="Resource" id=3]
-[ext_resource path="res://scripts/moveset_editor/inspector_gadget/gadgets/gadget_resource/gadget_motion_choice.gd" type="Script" id=4]
-[ext_resource path="res://resources/grid_motion/move_forward.tres" type="Resource" id=5]
-[ext_resource path="res://resources/grid_motion/move_backward.tres" type="Resource" id=6]
-[ext_resource path="res://resources/grid_motion/move_right.tres" type="Resource" id=7]
-[ext_resource path="res://resources/grid_motion/move_left.tres" type="Resource" id=8]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends Node
@@ -32,7 +26,9 @@ export(Array, String) var array_value := [
 	true,
 	12,
 	140.5,
-	\"Hello\"
+	\"Hello\",
+	[1,2,3],
+	[\"one\", \"two\", \"three\"]
 ] setget set_array_value
 
 export(Dictionary) var dictionary_value := {
@@ -203,21 +199,26 @@ script = SubResource( 1 )
 curve_value = SubResource( 2 )
 grid_motion = ExtResource( 3 )
 
-[node name="InspectorGadget" type="PanelContainer" parent="."]
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="InspectorGadgetNew" type="MarginContainer" parent="ScrollContainer"]
+margin_right = 960.0
+margin_bottom = 960.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-node_path = NodePath("../TestProperties")
-resource_gadgets = [ ExtResource( 2 ), ExtResource( 4 ) ]
+node_path = NodePath("../../TestProperties")
 resource_gadget_metadata = {
-"grid_motions": [ ExtResource( 5 ), ExtResource( 6 ), ExtResource( 8 ), ExtResource( 7 ) ],
-"grid_motions_ignore": [ ExtResource( 5 ) ]
+
 }
 
 [node name="Node" type="Node" parent="."]
 script = SubResource( 3 )
-[connection signal="change_property_begin" from="InspectorGadget" to="Node" method="change_property_begin"]
-[connection signal="change_property_end" from="InspectorGadget" to="Node" method="change_property_end"]

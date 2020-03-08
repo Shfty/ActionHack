@@ -20,7 +20,7 @@ func populate_controls() -> void:
 	var check_box = CheckBox.new()
 	check_box.name = "CheckBox"
 	check_box.set_anchors_and_margins_preset(PRESET_WIDE)
-	check_box.connect("toggled", self, "_set_value")
+	check_box.connect("toggled", self, "set_node_value")
 	add_child(check_box)
 
 func populate_value(value) -> void:
