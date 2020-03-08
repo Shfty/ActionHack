@@ -16,7 +16,6 @@ func _ready() -> void:
 func handle_resized() -> void:
 	var grid_size = get_parent().rect_size / GridUtil.TILE_SIZE * 0.5
 
-	print(grid_size.posmod(1.0))
 	rect_position = grid_size.posmod(1.0) * GridUtil.TILE_SIZE
 
 	grid_size = grid_size.floor()

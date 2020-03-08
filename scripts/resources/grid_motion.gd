@@ -10,9 +10,9 @@ export(bool) var cancelable = false
 export(bool) var lock_input_buffer = false
 export(Array, String) var lock_inputs setget set_lock_inputs
 
-export(Resource) var hit_wall_motion = null
-export(Resource) var hit_entity_motion = null
-export(Resource) var next_motion = null
+var hit_wall_motion = null
+var hit_entity_motion = null
+var next_motion = null
 
 func _init() -> void:
 	if not motion_curve:
@@ -36,3 +36,28 @@ func get_duration() -> float:
 	for move in motion_moves:
 		duration += move.duration
 	return duration
+
+func _get_property_list() -> Array:
+	return [
+		{
+			'name': 'hit_wall_motion',
+			'type': TYPE_OBJECT,
+			'hint': PROPERTY_HINT_RESOURCE_TYPE,
+			'hint_string': "GridMotion",
+			'usage': PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_SCRIPT_VARIABLE
+		},
+		{
+			'name': 'hit_entity_motion',
+			'type': TYPE_OBJECT,
+			'hint': PROPERTY_HINT_RESOURCE_TYPE,
+			'hint_string': "GridMotion",
+			'usage': PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_SCRIPT_VARIABLE
+		},
+		{
+			'name': 'next_motion',
+			'type': TYPE_OBJECT,
+			'hint': PROPERTY_HINT_RESOURCE_TYPE,
+			'hint_string': "GridMotion",
+			'usage': PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_SCRIPT_VARIABLE
+		}
+	]

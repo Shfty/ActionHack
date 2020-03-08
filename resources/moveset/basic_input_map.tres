@@ -12,9 +12,9 @@ script = ExtResource( 2 )
 motion_moves = [  ]
 motion_curve = SubResource( 1 )
 looping = false
-lock_input_buffer = false
-lock_inputs = [  ]
 cancelable = false
+lock_input_buffer = false
+lock_inputs = [ "asdf" ]
 
 [sub_resource type="Curve" id=3]
 _data = [ Vector2( 0, 0 ), 0.0, 1.0, 0, 0, Vector2( 1, 1 ), 1.0, 0.0, 0, 0 ]
@@ -24,11 +24,10 @@ resource_name = "New Motion 2"
 script = ExtResource( 2 )
 motion_moves = [  ]
 motion_curve = SubResource( 3 )
-next_motion = SubResource( 2 )
 looping = false
+cancelable = false
 lock_input_buffer = false
 lock_inputs = [  ]
-cancelable = false
 
 [resource]
 resource_name = "Basic"

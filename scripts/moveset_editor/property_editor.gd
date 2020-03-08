@@ -13,7 +13,6 @@ export(Array, String) var property_blacklist := [
 ]
 
 onready var vbox_container = $VBoxContainer/ScrollContainer/VBoxContainer
-onready var motion_name_line_edit = $VBoxContainer/MotionNameLineEdit
 
 var cached_object: Object
 
@@ -24,18 +23,7 @@ func populate_properties(object: Object):
 	clear_properties()
 
 	if not object:
-		motion_name_line_edit.visible = false
-		motion_name_line_edit.editable = false
-		motion_name_line_edit.text = ""
-		if motion_name_line_edit.is_connected("text_entered", self, "set_resource_name"):
-			motion_name_line_edit.disconnect("text_entered", self, "set_resource_name")
 		return
-
-	if object is Resource:
-		motion_name_line_edit.visible = true
-		motion_name_line_edit.editable = true
-		motion_name_line_edit.text = object.get_name()
-		motion_name_line_edit.connect("text_entered", self, "set_resource_name")
 
 	for property in object.get_property_list():
 		if property['name'] in property_blacklist:

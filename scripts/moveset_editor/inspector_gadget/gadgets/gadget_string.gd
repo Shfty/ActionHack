@@ -2,6 +2,15 @@ class_name GadgetString
 extends InspectorGadgetBase
 tool
 
+export(String) var placeholder_text setget set_placeholder_text
+
+func set_placeholder_text(new_placeholder_text: String) -> void:
+	if placeholder_text != new_placeholder_text:
+		placeholder_text = new_placeholder_text
+
+		if has_controls():
+			get_controls()[0].placeholder_text = placeholder_text
+
 func _init(in_node_path: NodePath = NodePath(), in_subnames: String = "").(in_node_path, in_subnames):
 	pass
 
@@ -19,6 +28,7 @@ func get_controls() -> Array:
 func populate_controls() -> void:
 	var line_edit = LineEdit.new()
 	line_edit.name = "LineEdit"
+	line_edit.placeholder_text = placeholder_text
 	line_edit.set_anchors_and_margins_preset(PRESET_WIDE)
 	line_edit.connect("text_entered", self, "_set_value")
 	add_child(line_edit)

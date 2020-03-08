@@ -158,8 +158,6 @@ func _gui_input(event: InputEvent) -> void:
 			point.x *= rect_size.x - 1.5
 			point.y = range_lerp(point.y, min_value, max_value, rect_size.y, 0) + 1.5
 
-			print(point.x, ", ", point.y, " / ", local_position.x, ", ", local_position.y)
-
 			var start = drag_start
 			if Input.is_key_pressed(KEY_CONTROL):
 				var snap_vec = Vector2(1.0 / (rect_size.x / position_snap), 1.0 / (rect_size.y / position_snap))

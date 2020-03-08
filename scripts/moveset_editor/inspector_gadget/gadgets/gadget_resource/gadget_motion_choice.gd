@@ -8,6 +8,9 @@ func _init(in_node_path: NodePath = NodePath(), in_subnames: String = "", in_met
 static func supports_type(value) -> bool:
 	return value is GridMotion
 
+static func supports_resource(classname: String) -> bool:
+	return classname == "GridMotion"
+
 func has_controls() -> bool:
 	return has_node("OptionButton")
 

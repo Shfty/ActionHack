@@ -8,11 +8,13 @@ signal change_property_end(object, property)
 export(NodePath) var node_path setget set_node_path
 export(String) var subnames setget set_subnames
 
+export(Array, String) var property_blacklist := []
+
 export(Array, Script) var resource_gadgets := []
 export(Dictionary) var resource_gadget_metadata := {}
 
 var node: Node
-var target: Object
+var target: Object setget set_target
 
 func set_node_path(new_node_path: NodePath) -> void:
 	if node_path != new_node_path:
@@ -24,24 +26,31 @@ func set_subnames(new_subnames: String) -> void:
 		subnames = new_subnames
 		update_node()
 
+func set_target(new_target: Object) -> void:
+	if target != new_target:
+		target = new_target
+
+		depopulate_gadgets()
+		if target:
+			populate_gadgets()
+
 func update_node() -> void:
-	depopulate_controls()
-	populate_controls()
-
-	depopulate_gadgets()
-
 	if has_node(node_path):
 		node = get_node(node_path)
 		if subnames != "":
-			target = node.get_indexed(subnames)
+			set_target(node.get_indexed(subnames))
 		else:
-			target = node
+			set_target(node)
 	else:
 		node = null
-
-	populate_gadgets()
+		set_target(null)
 
 func _ready() -> void:
+	depopulate_controls()
+	populate_controls()
+	update_node()
+
+func _process(delta: float) -> void:
 	update_node()
 
 func has_controls() -> bool:
@@ -81,7 +90,12 @@ func populate_gadgets() -> void:
 	var vbox = $ScrollContainer/VBoxContainer
 	var property_list = target.get_property_list()
 	for property in property_list:
-		if PROPERTY_USAGE_SCRIPT_VARIABLE & property['usage'] == PROPERTY_USAGE_SCRIPT_VARIABLE:
+		if property in property_blacklist:
+			return
+
+		var is_editor_variable = PROPERTY_USAGE_EDITOR & property['usage'] == PROPERTY_USAGE_EDITOR
+		var is_script_variable = PROPERTY_USAGE_SCRIPT_VARIABLE & property['usage'] == PROPERTY_USAGE_SCRIPT_VARIABLE
+		if is_editor_variable and is_script_variable:
 			var property_name = property['name']
 
 			var label = Label.new()
@@ -89,11 +103,14 @@ func populate_gadgets() -> void:
 			vbox.add_child(label)
 
 			var value = target[property_name]
-			var gadget: InspectorGadgetBase = get_gadget_for_type(value)
+			var gadget: InspectorGadgetBase = get_gadget_for_type(value, property_name)
 			if gadget:
 				gadget.size_flags_horizontal = SIZE_EXPAND_FILL
 				gadget.node_path = "../../../" + node_path
-				gadget.subnames = ":" + property_name
+				if subnames != "":
+					gadget.subnames = subnames + ":" + property_name
+				else:
+					gadget.subnames = ":" + property_name
 				gadget.connect("change_property_begin", self, "change_property_begin")
 				gadget.connect("change_property_end", self, "change_property_end")
 				vbox.add_child(gadget)
@@ -111,10 +128,25 @@ func depopulate_gadgets() -> void:
 		vbox.remove_child(child)
 		child.queue_free()
 
-func get_gadget_for_type(value) -> InspectorGadgetBase:
+func get_gadget_for_type(value, property_name = "") -> InspectorGadgetBase:
 	var gadget: InspectorGadgetBase = null
 
 	match typeof(value):
+		TYPE_NIL:
+			for i in range(resource_gadgets.size() - 1, -1, -1):
+				var  resource_gadget = resource_gadgets[i]
+				if not resource_gadget:
+					continue
+
+				if not resource_gadget.get_base_script() == GadgetResource:
+					continue
+
+				var property_list = target.get_property_list()
+				for property in property_list:
+					if property['name'] == property_name:
+						if resource_gadget.supports_resource(property['hint_string']):
+							gadget = resource_gadget.new(NodePath(), "", resource_gadget_metadata)
+							break
 		TYPE_BOOL:
 			gadget = GadgetBool.new()
 		TYPE_INT:
@@ -157,6 +189,7 @@ func get_gadget_for_type(value) -> InspectorGadgetBase:
 				if resource_gadget.supports_type(value):
 					gadget = resource_gadget.new(NodePath(), "", resource_gadget_metadata)
 					break
+
 		TYPE_DICTIONARY:
 			pass
 		TYPE_ARRAY:
