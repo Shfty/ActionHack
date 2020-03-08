@@ -3,6 +3,9 @@ extends Control
 tool
 
 export(Curve) var curve: Curve setget set_curve
+export(float) var min_value = -1.0 setget set_min_value
+export(float) var max_value = 1.0 setget set_max_value
+export(Color) var color = Color.white setget set_color
 export(int) var position_snap = 20
 export(float) var angle_snap = 1.0 / (PI / 8)
 
@@ -33,6 +36,21 @@ func set_curve(new_curve: Curve) -> void:
 
 		update()
 
+func set_min_value(new_min_value: float) -> void:
+	if min_value != new_min_value:
+		min_value = new_min_value
+		update()
+
+func set_max_value(new_max_value: float) -> void:
+	if max_value != new_max_value:
+		max_value = new_max_value
+		update()
+
+func set_color(new_color: Color) -> void:
+	if color != new_color:
+		color = new_color
+		update()
+
 # Overrides
 func _draw() -> void:
 	if not curve:
@@ -41,7 +59,7 @@ func _draw() -> void:
 	# Draw control points
 	for i in range(0, curve.get_point_count()):
 		var curve_position = curve.get_point_position(i)
-		curve_position.y = range_lerp(curve_position.y, curve.min_value, curve.max_value, 1, 0)
+		curve_position.y = range_lerp(curve_position.y, min_value, max_value, 1, 0)
 		var local_position = curve_position * rect_size
 		local_position = local_position.floor()
 
@@ -71,7 +89,7 @@ func get_tangent_position(index: int, left: bool) -> Vector2:
 		return Vector2.ZERO
 
 	var curve_position = curve.get_point_position(index)
-	curve_position.y = range_lerp(curve_position.y, curve.min_value, curve.max_value, 1, 0)
+	curve_position.y = range_lerp(curve_position.y, min_value, max_value, 1, 0)
 	var local_position = Vector2(curve_position.x, curve_position.y) * rect_size
 
 	var tangent = curve.get_point_left_tangent(index) if left else curve.get_point_right_tangent(index)
@@ -100,7 +118,7 @@ func _gui_input(event: InputEvent) -> void:
 			for i in range(curve.get_point_count()):
 				var point = curve.get_point_position(i)
 				point.x *= rect_size.x
-				point.y = range_lerp(point.y, curve.min_value, curve.max_value, rect_size.y, 0)
+				point.y = range_lerp(point.y, min_value, max_value, rect_size.y, 0)
 
 				var left_tangent = get_tangent_position(i, false)
 				var right_tangent = get_tangent_position(i, true)
@@ -138,7 +156,7 @@ func _gui_input(event: InputEvent) -> void:
 		else:
 			var point = curve.get_point_position(selected_point)
 			point.x *= rect_size.x - 1.5
-			point.y = range_lerp(point.y, curve.min_value, curve.max_value, rect_size.y, 0) + 1.5
+			point.y = range_lerp(point.y, min_value, max_value, rect_size.y, 0) + 1.5
 
 			print(point.x, ", ", point.y, " / ", local_position.x, ", ", local_position.y)
 
@@ -170,7 +188,7 @@ func _gui_input(event: InputEvent) -> void:
 			match hovered_tangent_sign:
 				0:
 					var dest_offset = (start.x + delta.x) / rect_size.x
-					var dest_value = range_lerp(start.y + delta.y, rect_size.y, 0, curve.min_value, curve.max_value)
+					var dest_value = range_lerp(start.y + delta.y, rect_size.y, 0, min_value, max_value)
 
 					if selected_point > 0 and dest_offset < curve.get_point_position(selected_point - 1).x:
 						selected_point -= 1

@@ -1,0 +1,737 @@
+[gd_scene load_steps=19 format=2]
+
+[ext_resource path="res://scripts/moveset_editor/inspector_gadget/gadgets/gadget_string.gd" type="Script" id=1]
+[ext_resource path="res://scripts/moveset_editor/inspector_gadget/gadgets/gadget_bool.gd" type="Script" id=2]
+[ext_resource path="res://scripts/moveset_editor/inspector_gadget/gadgets/gadget_int.gd" type="Script" id=3]
+[ext_resource path="res://scripts/moveset_editor/inspector_gadget/gadgets/gadget_float.gd" type="Script" id=4]
+[ext_resource path="res://scripts/moveset_editor/inspector_gadget/gadgets/gadget_vector3.gd" type="Script" id=5]
+[ext_resource path="res://scripts/moveset_editor/inspector_gadget/gadgets/gadget_vector2.gd" type="Script" id=6]
+[ext_resource path="res://scripts/moveset_editor/inspector_gadget/gadgets/gadget_rect2.gd" type="Script" id=7]
+[ext_resource path="res://scripts/moveset_editor/inspector_gadget/gadgets/gadget_transform2d.gd" type="Script" id=8]
+[ext_resource path="res://scripts/moveset_editor/inspector_gadget/gadgets/gadget_vector4/gadget_color.gd" type="Script" id=9]
+[ext_resource path="res://scripts/moveset_editor/inspector_gadget/gadgets/gadget_vector4/gadget_quat.gd" type="Script" id=10]
+[ext_resource path="res://scripts/moveset_editor/inspector_gadget/gadgets/gadget_vector4/gadget_plane.gd" type="Script" id=11]
+[ext_resource path="res://scripts/moveset_editor/inspector_gadget/gadgets/gadget_aabb.gd" type="Script" id=12]
+[ext_resource path="res://scripts/moveset_editor/inspector_gadget/gadgets/gadget_basis.gd" type="Script" id=13]
+[ext_resource path="res://scripts/moveset_editor/inspector_gadget/gadgets/gadget_transform.gd" type="Script" id=14]
+[ext_resource path="res://scripts/moveset_editor/inspector_gadget/gadgets/gadget_node_path.gd" type="Script" id=15]
+[ext_resource path="res://scripts/moveset_editor/inspector_gadget/gadgets/gadget_rid.gd" type="Script" id=16]
+[ext_resource path="res://scripts/moveset_editor/inspector_gadget/gadgets/gadget_array.gd" type="Script" id=17]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node
+
+export(bool) var bool_value := true setget set_bool_value
+export(int) var int_value := 1234 setget set_int_value
+export(float) var float_value := PI setget set_float_value
+export(String) var string_value := \"Foo Bar Baz Decafisbad\" setget set_string_value
+export(Vector2) var vector2_value := Vector2(16.0, 9.0) setget set_vector2_value
+export(Rect2) var rect2_value := Rect2(Vector2(4.0, 4.0), Vector2(16.0, 24.0)) setget set_rect2_value
+export(Vector3) var vector3_value := Vector3(1.0, 2.0, 3.0) setget set_vector3_value
+export(Transform2D) var transform2d_value := Transform2D(Vector2(1.0, 0.0), Vector2(0.0, 1.0), Vector2(24.0, 32.0)) setget set_transform2d_value
+export(Plane) var plane_value := Plane(1.0, 0.0, 0.0, 10.0) setget set_plane_value
+export(Quat) var quat_value := Quat(PI, 0.0, 0.0, 1.0) setget set_quat_value
+export(Color) var color_value := Color.orangered setget set_color_value
+export(AABB) var aabb_value := AABB(Vector3(10.0, 20.0, 30.0), Vector3(10.0, 15.0, 15.0)) setget set_aabb_value
+export(Basis) var basis_value := Basis(Vector3.RIGHT, Vector3.UP, Vector3.FORWARD) setget set_basis_value
+export(Transform) var transform_value := Transform(Basis(Vector3.RIGHT, Vector3.UP, Vector3.FORWARD), Vector3(20.0, 40.0, 60.0)) setget set_transform_value
+export(RID) var rid_value setget set_rid_value
+
+export(Array, String) var array_value := [
+	true,
+	12,
+	140.5,
+	\"Hello\"
+] setget set_array_value
+
+export(Dictionary) var dictionary_value := {
+	\"foo\": \"foo string\",
+	\"bar\": \"bar string\",
+	\"baz\": \"baz string\",
+} setget set_dictionary_value
+
+export(PoolByteArray) var pool_byte_array_value := PoolByteArray([0, 1, 2, 3, 7, 15, 31, 63, 127, 255]) setget set_pool_byte_array_value
+export(PoolIntArray) var pool_int_array_value := PoolIntArray([0, 100, 200, 300, 400, 500, 600, 65536]) setget set_pool_int_array_value
+export(PoolRealArray) var pool_real_array_value := PoolRealArray([0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]) setget set_pool_real_array_value
+export(PoolStringArray) var pool_string_array_value := PoolStringArray([\"foo\", \"bar\", \"baz\"]) setget set_pool_string_array_value
+export(PoolVector2Array) var pool_vector2_array_value := PoolVector2Array([Vector2.ZERO, Vector2.UP, Vector2.RIGHT, Vector2.ONE]) setget set_pool_vector2_array_value
+export(PoolVector3Array) var pool_vector3_array_value := PoolVector3Array([Vector3.ZERO, Vector3.UP, Vector3.RIGHT, Vector3.BACK]) setget set_pool_vector3_array_value
+export(PoolColorArray) var pool_color_array_value := PoolColorArray([Color.red, Color.green, Color.blue, Color.black, Color.white]) setget set_pool_color_array_value
+
+func set_bool_value(new_bool_value: bool) -> void:
+	if bool_value != new_bool_value:
+		bool_value = new_bool_value
+	print(\"set bool value: \", bool_value)
+
+func set_int_value(new_int_value: int) -> void:
+	if int_value != new_int_value:
+		int_value = new_int_value
+	print(\"set int value: \", int_value)
+
+func set_float_value(new_float_value: float) -> void:
+	if float_value != new_float_value:
+		float_value = new_float_value
+	print(\"set float value: \", float_value)
+
+func set_string_value(new_string_value: String) -> void:
+	if string_value != new_string_value:
+		string_value = new_string_value
+	print(\"set string value: \", string_value)
+
+func set_vector2_value(new_vector2_value: Vector2) -> void:
+	if vector2_value != new_vector2_value:
+		vector2_value = new_vector2_value
+	print(\"set vector2 value: \", vector2_value)
+
+func set_rect2_value(new_rect2_value: Rect2) -> void:
+	if rect2_value != new_rect2_value:
+		rect2_value = new_rect2_value
+	print(\"set rect2 value: \", rect2_value)
+
+func set_vector3_value(new_vector3_value: Vector3) -> void:
+	if vector3_value != new_vector3_value:
+		vector3_value = new_vector3_value
+	print(\"set vector3 value: \", vector3_value)
+
+func set_transform2d_value(new_transform2d_value: Transform2D) -> void:
+	if transform2d_value != new_transform2d_value:
+		transform2d_value = new_transform2d_value
+	print(\"set transform2d value: \", transform2d_value)
+
+func set_plane_value(new_plane_value: Plane) -> void:
+	if plane_value != new_plane_value:
+		plane_value = new_plane_value
+	print(\"set plane value: \", plane_value)
+
+func set_quat_value(new_quat_value: Quat) -> void:
+	if quat_value != new_quat_value:
+		quat_value = new_quat_value
+	print(\"set quat value: \", quat_value)
+
+func set_color_value(new_color_value: Color) -> void:
+	if color_value != new_color_value:
+		color_value = new_color_value
+	print(\"set color value: \", color_value)
+
+func set_aabb_value(new_aabb_value: AABB) -> void:
+	if aabb_value != new_aabb_value:
+		aabb_value = new_aabb_value
+	print(\"set aabb value: \", aabb_value)
+
+func set_basis_value(new_basis_value: Basis) -> void:
+	if basis_value != new_basis_value:
+		basis_value = new_basis_value
+	print(\"set basis value: \", basis_value)
+
+func set_transform_value(new_transform_value: Transform) -> void:
+	if transform_value != new_transform_value:
+		transform_value = new_transform_value
+	print(\"set transform value: \", transform_value)
+
+func set_rid_value(new_rid_value: RID) -> void:
+	if rid_value != new_rid_value:
+		rid_value = new_rid_value
+	print(\"set rid value: \", rid_value)
+
+func set_array_value(new_array_value: Array) -> void:
+	if array_value != new_array_value:
+		array_value = new_array_value
+	print(\"set array value: \", array_value)
+
+func set_dictionary_value(new_dictionary_value: Dictionary) -> void:
+	if dictionary_value != new_dictionary_value:
+		dictionary_value = new_dictionary_value
+	print(\"set dictionary value: \", dictionary_value)
+
+func set_pool_byte_array_value(new_pool_byte_array_value: PoolByteArray) -> void:
+	if pool_byte_array_value != new_pool_byte_array_value:
+		pool_byte_array_value = new_pool_byte_array_value
+	print(\"set pool byte array value: \", pool_byte_array_value)
+
+func set_pool_int_array_value(new_pool_int_array_value: PoolIntArray) -> void:
+	if pool_int_array_value != new_pool_int_array_value:
+		pool_int_array_value = new_pool_int_array_value
+	print(\"set pool int array value: \", pool_int_array_value)
+
+func set_pool_real_array_value(new_pool_real_array_value: PoolRealArray) -> void:
+	if pool_real_array_value != new_pool_real_array_value:
+		pool_real_array_value = new_pool_real_array_value
+	print(\"set pool real array value: \", pool_real_array_value)
+
+func set_pool_string_array_value(new_pool_string_array_value: PoolStringArray) -> void:
+	if pool_string_array_value != new_pool_string_array_value:
+		pool_string_array_value = new_pool_string_array_value
+	print(\"set pool string array value: \", pool_string_array_value)
+
+func set_pool_vector2_array_value(new_pool_vector2_array_value: PoolVector2Array) -> void:
+	if pool_vector2_array_value != new_pool_vector2_array_value:
+		pool_vector2_array_value = new_pool_vector2_array_value
+	print(\"set pool vector2 array value: \", pool_vector2_array_value)
+
+func set_pool_vector3_array_value(new_pool_vector3_array_value: PoolVector3Array) -> void:
+	if pool_vector3_array_value != new_pool_vector3_array_value:
+		pool_vector3_array_value = new_pool_vector3_array_value
+	print(\"set pool vector3 array value: \", pool_vector3_array_value)
+
+func set_pool_color_array_value(new_pool_color_array_value: PoolColorArray) -> void:
+	if pool_color_array_value != new_pool_color_array_value:
+		pool_color_array_value = new_pool_color_array_value
+	print(\"set pool color array value: \", pool_color_array_value)
+"
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TestProperties" type="Node" parent="."]
+script = SubResource( 1 )
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="."]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 953.0
+margin_bottom = 953.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer2"]
+margin_right = 946.0
+margin_bottom = 28.0
+
+[node name="LabelBool2" type="Label" parent="VBoxContainer2/PanelContainer"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 939.0
+margin_bottom = 21.0
+text = "Inspector Gadget"
+
+[node name="PanelContainer2" type="PanelContainer" parent="VBoxContainer2"]
+margin_top = 32.0
+margin_right = 946.0
+margin_bottom = 946.0
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer2/PanelContainer2"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 939.0
+margin_bottom = 907.0
+scroll_horizontal_enabled = false
+scroll_vertical = 100
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer2/PanelContainer2/ScrollContainer"]
+margin_top = -100.0
+margin_right = 920.0
+margin_bottom = 2906.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LabelBool" type="Label" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_right = 920.0
+margin_bottom = 14.0
+text = "TYPE_BOOL"
+
+[node name="GadgetBool" type="MarginContainer" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 18.0
+margin_right = 920.0
+margin_bottom = 42.0
+script = ExtResource( 2 )
+node_path = NodePath("../../../../../TestProperties")
+subnames = ":bool_value"
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 46.0
+margin_right = 920.0
+margin_bottom = 50.0
+size_flags_vertical = 3
+
+[node name="LabelInt" type="Label" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 54.0
+margin_right = 920.0
+margin_bottom = 68.0
+text = "TYPE_INT"
+
+[node name="GadgetInt" type="MarginContainer" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 72.0
+margin_right = 920.0
+margin_bottom = 96.0
+script = ExtResource( 3 )
+node_path = NodePath("../../../../../TestProperties")
+subnames = ":int_value"
+
+[node name="HSeparator2" type="HSeparator" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 100.0
+margin_right = 920.0
+margin_bottom = 104.0
+size_flags_vertical = 3
+
+[node name="LabelFloat" type="Label" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 108.0
+margin_right = 920.0
+margin_bottom = 122.0
+text = "TYPE_REAL"
+
+[node name="GadgetFloat" type="MarginContainer" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 126.0
+margin_right = 920.0
+margin_bottom = 150.0
+script = ExtResource( 4 )
+node_path = NodePath("../../../../../TestProperties")
+subnames = ":float_value"
+
+[node name="HSeparator3" type="HSeparator" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 154.0
+margin_right = 920.0
+margin_bottom = 158.0
+size_flags_vertical = 3
+
+[node name="LabelString" type="Label" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 162.0
+margin_right = 920.0
+margin_bottom = 176.0
+text = "TYPE_STRING"
+
+[node name="GadgetString" type="MarginContainer" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 180.0
+margin_right = 920.0
+margin_bottom = 204.0
+script = ExtResource( 1 )
+node_path = NodePath("../../../../../TestProperties")
+subnames = ":string_value"
+
+[node name="HSeparator4" type="HSeparator" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 208.0
+margin_right = 920.0
+margin_bottom = 212.0
+size_flags_vertical = 3
+
+[node name="LabelVector4" type="Label" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 216.0
+margin_right = 920.0
+margin_bottom = 230.0
+text = "TYPE_VECTOR2"
+
+[node name="GadgetVector2" type="MarginContainer" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 234.0
+margin_right = 920.0
+margin_bottom = 258.0
+script = ExtResource( 6 )
+node_path = NodePath("../../../../../TestProperties")
+subnames = ":vector2_value"
+
+[node name="HSeparator5" type="HSeparator" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 262.0
+margin_right = 920.0
+margin_bottom = 266.0
+size_flags_vertical = 3
+
+[node name="LabelRect2" type="Label" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 270.0
+margin_right = 920.0
+margin_bottom = 284.0
+text = "TYPE_RECT2"
+
+[node name="GadgetRect2" type="MarginContainer" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 288.0
+margin_right = 920.0
+margin_bottom = 376.0
+script = ExtResource( 7 )
+node_path = NodePath("../../../../../TestProperties")
+subnames = ":rect2_value"
+
+[node name="HSeparator6" type="HSeparator" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 380.0
+margin_right = 920.0
+margin_bottom = 384.0
+size_flags_vertical = 3
+
+[node name="LabelVector3" type="Label" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 388.0
+margin_right = 920.0
+margin_bottom = 402.0
+text = "TYPE_VECTOR3"
+
+[node name="GadgetVector3" type="MarginContainer" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 406.0
+margin_right = 920.0
+margin_bottom = 430.0
+script = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+node_path = NodePath("../../../../../TestProperties")
+subnames = ":vector3_value"
+
+[node name="HSeparator7" type="HSeparator" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 434.0
+margin_right = 920.0
+margin_bottom = 438.0
+size_flags_vertical = 3
+
+[node name="LabelTransform2D" type="Label" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 442.0
+margin_right = 920.0
+margin_bottom = 456.0
+text = "TYPE_TRANSFORM2D"
+
+[node name="GadgetTransform2D" type="MarginContainer" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 460.0
+margin_right = 920.0
+margin_bottom = 594.0
+script = ExtResource( 8 )
+node_path = NodePath("../../../../../TestProperties")
+subnames = ":transform2d_value"
+
+[node name="HSeparator8" type="HSeparator" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 598.0
+margin_right = 920.0
+margin_bottom = 602.0
+size_flags_vertical = 3
+
+[node name="LabelPlane" type="Label" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 606.0
+margin_right = 920.0
+margin_bottom = 620.0
+text = "TYPE_PLANE"
+
+[node name="GadgetPlane" type="MarginContainer" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 624.0
+margin_right = 920.0
+margin_bottom = 648.0
+script = ExtResource( 11 )
+node_path = NodePath("../../../../../TestProperties")
+subnames = ":plane_value"
+
+[node name="HSeparator9" type="HSeparator" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 652.0
+margin_right = 920.0
+margin_bottom = 656.0
+size_flags_vertical = 3
+
+[node name="LabelQuat" type="Label" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 660.0
+margin_right = 920.0
+margin_bottom = 674.0
+text = "TYPE_QUAT"
+
+[node name="GadgetQuat" type="MarginContainer" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 678.0
+margin_right = 920.0
+margin_bottom = 702.0
+script = ExtResource( 10 )
+node_path = NodePath("../../../../../TestProperties")
+subnames = ":quat_value"
+
+[node name="HSeparator11" type="HSeparator" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 706.0
+margin_right = 920.0
+margin_bottom = 710.0
+size_flags_vertical = 3
+
+[node name="LabelAABB" type="Label" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 714.0
+margin_right = 920.0
+margin_bottom = 728.0
+text = "TYPE_AABB"
+
+[node name="GadgetAABB" type="MarginContainer" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 732.0
+margin_right = 920.0
+margin_bottom = 820.0
+script = ExtResource( 12 )
+node_path = NodePath("../../../../../TestProperties")
+subnames = ":aabb_value"
+
+[node name="HSeparator12" type="HSeparator" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 824.0
+margin_right = 920.0
+margin_bottom = 828.0
+size_flags_vertical = 3
+
+[node name="LabelBasis" type="Label" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 832.0
+margin_right = 920.0
+margin_bottom = 846.0
+text = "TYPE_BASIS"
+
+[node name="GadgetBasis" type="MarginContainer" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 850.0
+margin_right = 920.0
+margin_bottom = 984.0
+script = ExtResource( 13 )
+node_path = NodePath("../../../../../TestProperties")
+subnames = ":basis_value"
+
+[node name="HSeparator13" type="HSeparator" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 988.0
+margin_right = 920.0
+margin_bottom = 992.0
+size_flags_vertical = 3
+
+[node name="LabelTransform" type="Label" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 996.0
+margin_right = 920.0
+margin_bottom = 1010.0
+text = "TYPE_TRANSFORM"
+
+[node name="GadgetTransform" type="MarginContainer" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 1014.0
+margin_right = 920.0
+margin_bottom = 1212.0
+script = ExtResource( 14 )
+node_path = NodePath("../../../../../TestProperties")
+subnames = ":transform_value"
+
+[node name="HSeparator10" type="HSeparator" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 1216.0
+margin_right = 920.0
+margin_bottom = 1220.0
+size_flags_vertical = 3
+
+[node name="LabelColor" type="Label" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 1224.0
+margin_right = 920.0
+margin_bottom = 1238.0
+text = "TYPE_COLOR"
+
+[node name="GadgetColor" type="MarginContainer" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 1242.0
+margin_right = 920.0
+margin_bottom = 1266.0
+script = ExtResource( 9 )
+node_path = NodePath("../../../../../TestProperties")
+subnames = ":color_value"
+
+[node name="HSeparator14" type="HSeparator" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 1270.0
+margin_right = 920.0
+margin_bottom = 1274.0
+size_flags_vertical = 3
+
+[node name="LabelNodePath" type="Label" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 1278.0
+margin_right = 920.0
+margin_bottom = 1292.0
+text = "TYPE_NODE_PATH"
+
+[node name="GadgetNodePath" type="MarginContainer" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 1296.0
+margin_right = 920.0
+margin_bottom = 1320.0
+script = ExtResource( 15 )
+node_path = NodePath("../GadgetBool")
+subnames = ":node_path"
+
+[node name="HSeparator15" type="HSeparator" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 1324.0
+margin_right = 920.0
+margin_bottom = 1328.0
+size_flags_vertical = 3
+
+[node name="LabelRID" type="Label" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 1332.0
+margin_right = 920.0
+margin_bottom = 1346.0
+text = "TYPE_RID"
+
+[node name="GadgetRID" type="MarginContainer" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 1350.0
+margin_right = 920.0
+margin_bottom = 1374.0
+script = ExtResource( 16 )
+node_path = NodePath("../../../../../TestProperties")
+subnames = ":rid_value"
+
+[node name="HSeparator16" type="HSeparator" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 1378.0
+margin_right = 920.0
+margin_bottom = 1382.0
+size_flags_vertical = 3
+
+[node name="LabelObject" type="Label" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 1386.0
+margin_right = 920.0
+margin_bottom = 1400.0
+text = "TYPE_OBJECT"
+
+[node name="HSeparator17" type="HSeparator" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 1404.0
+margin_right = 920.0
+margin_bottom = 1408.0
+size_flags_vertical = 3
+
+[node name="LabelDictionary" type="Label" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 1412.0
+margin_right = 920.0
+margin_bottom = 1426.0
+text = "TYPE_DICTIONARY"
+
+[node name="HSeparator18" type="HSeparator" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 1430.0
+margin_right = 920.0
+margin_bottom = 1434.0
+size_flags_vertical = 3
+
+[node name="LabelArray" type="Label" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 1438.0
+margin_right = 920.0
+margin_bottom = 1452.0
+text = "TYPE_ARRAY"
+
+[node name="GadgetArray" type="MarginContainer" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 1456.0
+margin_right = 920.0
+margin_bottom = 1564.0
+script = ExtResource( 17 )
+node_path = NodePath("../../../../../TestProperties")
+subnames = ":array_value"
+
+[node name="HSeparator19" type="HSeparator" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 1568.0
+margin_right = 920.0
+margin_bottom = 1572.0
+size_flags_vertical = 3
+
+[node name="LabelPoolByteArray" type="Label" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 1576.0
+margin_right = 920.0
+margin_bottom = 1590.0
+text = "TYPE_RAW_ARRAY"
+
+[node name="GadgetArray2" type="MarginContainer" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 1594.0
+margin_right = 920.0
+margin_bottom = 1870.0
+script = ExtResource( 17 )
+node_path = NodePath("../../../../../TestProperties")
+subnames = ":pool_byte_array_value"
+
+[node name="HSeparator20" type="HSeparator" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 1874.0
+margin_right = 920.0
+margin_bottom = 1878.0
+size_flags_vertical = 3
+
+[node name="LabelPoolIntArray" type="Label" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 1882.0
+margin_right = 920.0
+margin_bottom = 1896.0
+text = "TYPE_INT_ARRAY"
+
+[node name="GadgetArray3" type="MarginContainer" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 1900.0
+margin_right = 920.0
+margin_bottom = 2120.0
+script = ExtResource( 17 )
+node_path = NodePath("../../../../../TestProperties")
+subnames = ":pool_int_array_value"
+
+[node name="HSeparator21" type="HSeparator" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 2124.0
+margin_right = 920.0
+margin_bottom = 2128.0
+size_flags_vertical = 3
+
+[node name="LabelPoolRealArray" type="Label" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 2132.0
+margin_right = 920.0
+margin_bottom = 2146.0
+text = "TYPE_REAL_ARRAY"
+
+[node name="GadgetArray4" type="MarginContainer" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 2150.0
+margin_right = 920.0
+margin_bottom = 2454.0
+script = ExtResource( 17 )
+node_path = NodePath("../../../../../TestProperties")
+subnames = ":pool_real_array_value"
+
+[node name="HSeparator22" type="HSeparator" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 2458.0
+margin_right = 920.0
+margin_bottom = 2462.0
+size_flags_vertical = 3
+
+[node name="LabelPoolStringArray" type="Label" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 2466.0
+margin_right = 920.0
+margin_bottom = 2480.0
+text = "TYPE_STRING_ARRAY"
+
+[node name="GadgetArray5" type="MarginContainer" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 2484.0
+margin_right = 920.0
+margin_bottom = 2564.0
+script = ExtResource( 17 )
+node_path = NodePath("../../../../../TestProperties")
+subnames = ":pool_string_array_value"
+
+[node name="HSeparator23" type="HSeparator" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 2568.0
+margin_right = 920.0
+margin_bottom = 2572.0
+size_flags_vertical = 3
+
+[node name="LabelPoolVector2Array" type="Label" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 2576.0
+margin_right = 920.0
+margin_bottom = 2590.0
+text = "TYPE_VECTOR2_ARRAY"
+
+[node name="GadgetArray6" type="MarginContainer" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 2594.0
+margin_right = 920.0
+margin_bottom = 2702.0
+script = ExtResource( 17 )
+node_path = NodePath("../../../../../TestProperties")
+subnames = ":pool_vector2_array_value"
+
+[node name="HSeparator24" type="HSeparator" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 2706.0
+margin_right = 920.0
+margin_bottom = 2710.0
+size_flags_vertical = 3
+
+[node name="LabelPoolVector3Array" type="Label" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 2714.0
+margin_right = 920.0
+margin_bottom = 2728.0
+text = "TYPE_VECTOR3_ARRAY"
+
+[node name="GadgetArray7" type="MarginContainer" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 2732.0
+margin_right = 920.0
+margin_bottom = 2840.0
+script = ExtResource( 17 )
+node_path = NodePath("../../../../../TestProperties")
+subnames = ":pool_vector3_array_value"
+
+[node name="HSeparator25" type="HSeparator" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 2844.0
+margin_right = 920.0
+margin_bottom = 2848.0
+size_flags_vertical = 3
+
+[node name="LabelPoolColorArray" type="Label" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 2852.0
+margin_right = 920.0
+margin_bottom = 2866.0
+text = "TYPE_COLOR_ARRAY"
+
+[node name="GadgetArray8" type="MarginContainer" parent="VBoxContainer2/PanelContainer2/ScrollContainer/VBoxContainer"]
+margin_top = 2870.0
+margin_right = 920.0
+margin_bottom = 3006.0
+script = ExtResource( 17 )
+node_path = NodePath("../../../../../TestProperties")
+subnames = ":pool_color_array_value"

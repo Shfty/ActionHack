@@ -60,41 +60,41 @@ __meta__ = {
 }
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
-margin_right = 464.0
-margin_bottom = 60.0
+margin_right = 944.0
+margin_bottom = 120.0
 mouse_filter = 2
 custom_constants/separation = 0
 
 [node name="Spacer" type="Control" parent="VBoxContainer/HBoxContainer"]
-margin_right = 404.0
-margin_bottom = 60.0
+margin_right = 824.0
+margin_bottom = 120.0
 mouse_filter = 2
 size_flags_horizontal = 3
 
 [node name="Compass" type="Control" parent="VBoxContainer/HBoxContainer"]
-margin_left = 404.0
-margin_right = 464.0
-margin_bottom = 60.0
-rect_min_size = Vector2( 60, 60 )
+margin_left = 824.0
+margin_right = 944.0
+margin_bottom = 120.0
+rect_min_size = Vector2( 120, 120 )
 script = ExtResource( 1 )
 angle = 0.0
 
 [node name="Spacer" type="Control" parent="VBoxContainer"]
-margin_top = 60.0
-margin_right = 464.0
-margin_bottom = 454.0
+margin_top = 120.0
+margin_right = 944.0
+margin_bottom = 934.0
 mouse_filter = 2
 size_flags_vertical = 3
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
-margin_top = 454.0
-margin_right = 464.0
-margin_bottom = 464.0
+margin_top = 934.0
+margin_right = 944.0
+margin_bottom = 944.0
 mouse_filter = 2
 custom_constants/separation = 0
 
 [node name="ProgressBar" type="ProgressBar" parent="VBoxContainer/HBoxContainer2"]
-margin_right = 348.0
+margin_right = 708.0
 margin_bottom = 10.0
 size_flags_horizontal = 3
 size_flags_vertical = 1
@@ -107,8 +107,8 @@ value = 5.0
 percent_visible = false
 
 [node name="Spacer2" type="Control" parent="VBoxContainer/HBoxContainer2"]
-margin_left = 348.0
-margin_right = 464.0
+margin_left = 708.0
+margin_right = 944.0
 margin_bottom = 10.0
 mouse_filter = 2
 size_flags_horizontal = 3

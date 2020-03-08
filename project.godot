@@ -34,6 +34,111 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/tangent_handle.gd"
 }, {
+"base": "InspectorGadgetBase",
+"class": "GadgetAABB",
+"language": "GDScript",
+"path": "res://scripts/moveset_editor/inspector_gadget/gadgets/gadget_aabb.gd"
+}, {
+"base": "InspectorGadgetBase",
+"class": "GadgetArray",
+"language": "GDScript",
+"path": "res://scripts/moveset_editor/inspector_gadget/gadgets/gadget_array.gd"
+}, {
+"base": "InspectorGadgetBase",
+"class": "GadgetBasis",
+"language": "GDScript",
+"path": "res://scripts/moveset_editor/inspector_gadget/gadgets/gadget_basis.gd"
+}, {
+"base": "InspectorGadgetBase",
+"class": "GadgetBool",
+"language": "GDScript",
+"path": "res://scripts/moveset_editor/inspector_gadget/gadgets/gadget_bool.gd"
+}, {
+"base": "GadgetVector4",
+"class": "GadgetColor",
+"language": "GDScript",
+"path": "res://scripts/moveset_editor/inspector_gadget/gadgets/gadget_vector4/gadget_color.gd"
+}, {
+"base": "GadgetResource",
+"class": "GadgetCurve",
+"language": "GDScript",
+"path": "res://scripts/moveset_editor/inspector_gadget/gadgets/gadget_resource/gadget_curve.gd"
+}, {
+"base": "InspectorGadgetBase",
+"class": "GadgetFloat",
+"language": "GDScript",
+"path": "res://scripts/moveset_editor/inspector_gadget/gadgets/gadget_float.gd"
+}, {
+"base": "InspectorGadgetBase",
+"class": "GadgetInt",
+"language": "GDScript",
+"path": "res://scripts/moveset_editor/inspector_gadget/gadgets/gadget_int.gd"
+}, {
+"base": "GadgetResource",
+"class": "GadgetMotionChoice",
+"language": "GDScript",
+"path": "res://scripts/moveset_editor/inspector_gadget/gadgets/gadget_resource/gadget_motion_choice.gd"
+}, {
+"base": "GadgetString",
+"class": "GadgetNodePath",
+"language": "GDScript",
+"path": "res://scripts/moveset_editor/inspector_gadget/gadgets/gadget_node_path.gd"
+}, {
+"base": "GadgetVector4",
+"class": "GadgetPlane",
+"language": "GDScript",
+"path": "res://scripts/moveset_editor/inspector_gadget/gadgets/gadget_vector4/gadget_plane.gd"
+}, {
+"base": "GadgetVector4",
+"class": "GadgetQuat",
+"language": "GDScript",
+"path": "res://scripts/moveset_editor/inspector_gadget/gadgets/gadget_vector4/gadget_quat.gd"
+}, {
+"base": "GadgetString",
+"class": "GadgetRID",
+"language": "GDScript",
+"path": "res://scripts/moveset_editor/inspector_gadget/gadgets/gadget_rid.gd"
+}, {
+"base": "InspectorGadgetBase",
+"class": "GadgetRect2",
+"language": "GDScript",
+"path": "res://scripts/moveset_editor/inspector_gadget/gadgets/gadget_rect2.gd"
+}, {
+"base": "InspectorGadgetBase",
+"class": "GadgetResource",
+"language": "GDScript",
+"path": "res://scripts/moveset_editor/inspector_gadget/gadgets/gadget_resource.gd"
+}, {
+"base": "InspectorGadgetBase",
+"class": "GadgetString",
+"language": "GDScript",
+"path": "res://scripts/moveset_editor/inspector_gadget/gadgets/gadget_string.gd"
+}, {
+"base": "InspectorGadgetBase",
+"class": "GadgetTransform",
+"language": "GDScript",
+"path": "res://scripts/moveset_editor/inspector_gadget/gadgets/gadget_transform.gd"
+}, {
+"base": "InspectorGadgetBase",
+"class": "GadgetTransform2D",
+"language": "GDScript",
+"path": "res://scripts/moveset_editor/inspector_gadget/gadgets/gadget_transform2d.gd"
+}, {
+"base": "InspectorGadgetBase",
+"class": "GadgetVector2",
+"language": "GDScript",
+"path": "res://scripts/moveset_editor/inspector_gadget/gadgets/gadget_vector2.gd"
+}, {
+"base": "InspectorGadgetBase",
+"class": "GadgetVector3",
+"language": "GDScript",
+"path": "res://scripts/moveset_editor/inspector_gadget/gadgets/gadget_vector3.gd"
+}, {
+"base": "InspectorGadgetBase",
+"class": "GadgetVector4",
+"language": "GDScript",
+"path": "res://scripts/moveset_editor/inspector_gadget/gadgets/gadget_vector4.gd"
+}, {
 "base": "GridEntity",
 "class": "GridActor",
 "language": "GDScript",
@@ -70,11 +175,6 @@ _global_script_classes=[ {
 "path": "res://scripts/grid_entity/grid_hitbox.gd"
 }, {
 "base": "Resource",
-"class": "GridInputMap",
-"language": "GDScript",
-"path": "res://scripts/resources/grid_input_map.gd"
-}, {
-"base": "Resource",
 "class": "GridMotion",
 "language": "GDScript",
 "path": "res://scripts/resources/grid_motion.gd"
@@ -83,6 +183,11 @@ _global_script_classes=[ {
 "class": "GridMove",
 "language": "GDScript",
 "path": "res://scripts/resources/grid_move.gd"
+}, {
+"base": "Resource",
+"class": "GridMoveset",
+"language": "GDScript",
+"path": "res://scripts/resources/grid_moveset.gd"
 }, {
 "base": "Control",
 "class": "GridUI",
@@ -99,10 +204,30 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/grid_world.gd"
 }, {
+"base": "PanelContainer",
+"class": "InspectorGadget",
+"language": "GDScript",
+"path": "res://scripts/moveset_editor/inspector_gadget/inspector_gadget.gd"
+}, {
+"base": "MarginContainer",
+"class": "InspectorGadgetBase",
+"language": "GDScript",
+"path": "res://scripts/moveset_editor/inspector_gadget/inspector_gadget_base.gd"
+}, {
+"base": "Reference",
+"class": "InspectorGadgetBaseUtil",
+"language": "GDScript",
+"path": "res://scripts/moveset_editor/inspector_gadget/inspector_gadget_util.gd"
+}, {
 "base": "GridController",
 "class": "MonsterController",
 "language": "GDScript",
 "path": "res://scripts/grid_controller/monster_controller.gd"
+}, {
+"base": "Reference",
+"class": "MovesetEditorUtil",
+"language": "GDScript",
+"path": "res://scripts/moveset_editor/moveset_editor_util.gd"
 }, {
 "base": "GridController",
 "class": "PlayerController",
@@ -125,6 +250,27 @@ _global_script_class_icons={
 "CurveEdit": "",
 "CurveRect": "",
 "DraggableRect": "",
+"GadgetAABB": "",
+"GadgetArray": "",
+"GadgetBasis": "",
+"GadgetBool": "",
+"GadgetColor": "",
+"GadgetCurve": "",
+"GadgetFloat": "",
+"GadgetInt": "",
+"GadgetMotionChoice": "",
+"GadgetNodePath": "",
+"GadgetPlane": "",
+"GadgetQuat": "",
+"GadgetRID": "",
+"GadgetRect2": "",
+"GadgetResource": "",
+"GadgetString": "",
+"GadgetTransform": "",
+"GadgetTransform2D": "",
+"GadgetVector2": "",
+"GadgetVector3": "",
+"GadgetVector4": "",
 "GridActor": "",
 "GridCamera": "",
 "GridCombatant": "",
@@ -132,13 +278,17 @@ _global_script_class_icons={
 "GridEntity": "",
 "GridEvent": "",
 "GridHitbox": "",
-"GridInputMap": "",
 "GridMotion": "",
 "GridMove": "",
+"GridMoveset": "",
 "GridUI": "",
 "GridUtil": "",
 "GridWorld": "",
+"InspectorGadget": "",
+"InspectorGadgetBase": "",
+"InspectorGadgetBaseUtil": "",
 "MonsterController": "",
+"MovesetEditorUtil": "",
 "PlayerController": "",
 "Renderer2D": "",
 "TextureSubregionRect": ""
@@ -146,20 +296,16 @@ _global_script_class_icons={
 
 [application]
 
-config/name="Character Action Dungeon"
+config/name="ActionHACK"
 run/main_scene="res://scenes/game.tscn"
 config/icon="res://icon.png"
 
 [display]
 
-window/size/width=480
-window/size/height=480
+window/size/width=960
+window/size/height=960
 window/size/resizable=false
-window/size/test_width=960
-window/size/test_height=960
 window/vsync/use_vsync=false
-window/stretch/mode="viewport"
-window/stretch/aspect="keep"
 
 [importer_defaults]
 
@@ -239,5 +385,7 @@ special={
 
 [rendering]
 
+quality/intended_usage/framebuffer_allocation=0
+quality/intended_usage/framebuffer_allocation.mobile=1
 environment/default_clear_color=Color( 0, 0, 0, 1 )
 environment/default_environment="res://default_env.tres"

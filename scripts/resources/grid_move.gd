@@ -5,9 +5,9 @@ tool
 export(Vector2) var delta_position
 export(int) var delta_facing
 
-export(Curve) var curve_x
-export(Curve) var curve_y
-export(Curve) var curve_facing
+export(Curve) var curve_x = null
+export(Curve) var curve_y = null
+export(Curve) var curve_facing = null
 
 export(bool) var flip_curve_x = false
 export(bool) var flip_curve_y = false
@@ -18,6 +18,22 @@ export(Array, Resource) var events setget set_events
 
 export(Dictionary) var input_press_motions := {}
 export(Dictionary) var input_release_motions := {}
+
+func _init() -> void:
+	if not curve_x:
+		curve_x = Curve.new()
+		curve_x.add_point(Vector2.ZERO, 0, tan(deg2rad(45)))
+		curve_x.add_point(Vector2.ONE, tan(deg2rad(45)), 0)
+
+	if not curve_y:
+		curve_y = Curve.new()
+		curve_y.add_point(Vector2.ZERO, 0, tan(deg2rad(45)))
+		curve_y.add_point(Vector2.ONE, tan(deg2rad(45)), 0)
+
+	if not curve_facing:
+		curve_facing = Curve.new()
+		curve_facing.add_point(Vector2.ZERO, 0, tan(deg2rad(45)))
+		curve_facing.add_point(Vector2.ONE, tan(deg2rad(45)), 0)
 
 func set_events(new_events: Array) -> void:
 	if events != new_events:

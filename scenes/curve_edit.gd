@@ -5,6 +5,7 @@ tool
 export(Curve) var curve: Curve setget set_curve
 export(float) var min_value = -1.0 setget set_min_value
 export(float) var max_value = 1.0 setget set_max_value
+export(Color) var color = Color.white setget set_color
 
 # Getters
 func get_curve_rect():
@@ -55,27 +56,32 @@ func set_curve(new_curve: Curve) -> void:
 			if not curve.is_connected("changed", self, "update"):
 				curve.connect("changed", self, "update")
 
-			curve.min_value = min_value
-			curve.max_value = max_value
-
 		get_curve_rect().set_curve(curve)
 		get_curve_control_points().set_curve(curve)
-
 		update()
 
 func set_min_value(new_min_value: float) -> void:
 	if min_value != new_min_value:
 		min_value = new_min_value
 
-		if curve:
-			curve.min_value = min_value
+		get_curve_rect().set_min_value(min_value)
+		get_curve_control_points().set_min_value(min_value)
+		update()
 
 func set_max_value(new_max_value: float) -> void:
 	if max_value != new_max_value:
 		max_value = new_max_value
 
-		if curve:
-			curve.max_value = max_value
+		get_curve_rect().set_max_value(max_value)
+		get_curve_control_points().set_max_value(max_value)
+		update()
+
+func set_color(new_color: Color) -> void:
+	if not color == new_color:
+		color = new_color
+
+		get_curve_rect().set_color(color)
+		get_curve_control_points().set_color(color)
 
 # Overrides
 func _ready() -> void:
@@ -113,7 +119,7 @@ func _draw() -> void:
 	draw_line(Vector2(0, curve_rect_relative.y), Vector2(rect_size.x, curve_rect_relative.y), Color.white)
 	draw_line(Vector2(0, curve_rect_relative.y + curve_rect_size.y), Vector2(rect_size.x, curve_rect_relative.y + curve_rect_size.y), Color.white)
 
-	var zero = range_lerp(0.0, curve.min_value, curve.max_value, 0, curve_rect_size.y)
+	var zero = range_lerp(0.0, min_value, max_value, 0, curve_rect_size.y)
 	draw_line(Vector2(0, curve_rect_relative.y + zero), Vector2(rect_size.x, curve_rect_relative.y + zero), Color.white)
 
 func _input(event: InputEvent) -> void:

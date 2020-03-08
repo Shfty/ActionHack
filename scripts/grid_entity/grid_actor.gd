@@ -31,6 +31,10 @@ func _physics_process(delta: float) -> void:
 
 func update_motion(progress: float = 0.0):
 	var current_move = get_current_move(progress)
+
+	if not current_move:
+		return
+
 	if current_move != prev_move or prev_move == null:
 		var rotated_delta_position = GridUtil.rotate_vec2_by_facing(current_move.delta_position, facing)
 		var target_x = x + rotated_delta_position.x
@@ -78,6 +82,12 @@ func get_curve_index(curve_sample: float) -> int:
 	return min(floor(curve_sample * current_motion.motion_moves.size()), current_motion.motion_moves.size() - 1) as int
 
 func get_current_move(motion_progress: float) -> GridMove:
+	if not current_motion:
+		return null
+
+	if current_motion.motion_moves.size() == 0:
+		return null
+
 	var curve_sample = current_motion.motion_curve.interpolate(get_curve_coord(motion_progress))
 	var curve_idx := get_curve_index(curve_sample)
 	return current_motion.motion_moves[curve_idx] as GridMove
@@ -97,58 +107,61 @@ func update_animation(delta: float = 0.0):
 	var world_rot = GridUtil.facing_to_angle(facing)
 
 	if current_motion:
-		animation_progress = animation_progress + delta
-		emit_signal("animation_progress_changed", clamp(animation_progress / current_motion.get_duration(), 0.0, 1.0))
+		var motion_duration = current_motion.get_duration()
 
-		var current_move = get_current_move(motion_progress)
-		var move_start = current_move_dict[current_move]['start']
-		var move_end = current_move_dict[current_move]['end']
+		if motion_duration > 0.0:
+			animation_progress = animation_progress + delta
+			emit_signal("animation_progress_changed", clamp(animation_progress / motion_duration, 0.0, 1.0))
 
-		var curve_sample = current_motion.motion_curve.interpolate(get_curve_coord(animation_progress))
-		var curve_progress = curve_sample * current_motion.motion_moves.size()
-		var curve_idx = get_curve_index(current_motion.motion_curve.interpolate(get_curve_coord(motion_progress)))
-		curve_progress -= curve_idx
+			var current_move = get_current_move(motion_progress)
+			var move_start = current_move_dict[current_move]['start']
+			var move_end = current_move_dict[current_move]['end']
 
-		var normalized_start = move_start / motion_duration
-		var normalized_duration = current_move.duration / motion_duration
-		var move_progress = (animation_progress - move_start) / current_move.duration
+			var curve_sample = current_motion.motion_curve.interpolate(get_curve_coord(animation_progress))
+			var curve_progress = curve_sample * current_motion.motion_moves.size()
+			var curve_idx = get_curve_index(current_motion.motion_curve.interpolate(get_curve_coord(motion_progress)))
+			curve_progress -= curve_idx
 
-		var animation_delta = 1.0 - curve_progress
+			var normalized_start = move_start / motion_duration
+			var normalized_duration = current_move.duration / motion_duration
+			var move_progress = (animation_progress - move_start) / current_move.duration
 
-		var delta_position_rotated = GridUtil.rotate_vec2_by_facing(current_move.delta_position, facing)
+			var animation_delta = 1.0 - curve_progress
 
-		world_pos -= delta_position_rotated * animation_delta * GridUtil.TILE_SIZE
-		world_rot -= GridUtil.facing_to_angle(current_move.delta_facing) * animation_delta
+			var delta_position_rotated = GridUtil.rotate_vec2_by_facing(current_move.delta_position, facing)
 
-		var sprite_offset = Vector2.ZERO
-		if current_move.curve_x:
-			sprite_offset.x = current_move.curve_x.interpolate(move_progress) * GridUtil.TILE_SIZE
+			world_pos -= delta_position_rotated * animation_delta * GridUtil.TILE_SIZE
+			world_rot -= GridUtil.facing_to_angle(current_move.delta_facing) * animation_delta
 
-			if current_move.flip_curve_x:
-				sprite_offset.x *= -1
+			var sprite_offset = Vector2.ZERO
+			if current_move.curve_x:
+				sprite_offset.x = current_move.curve_x.interpolate(move_progress) * GridUtil.TILE_SIZE
 
-		if current_move.curve_y:
-			sprite_offset.y = current_move.curve_y.interpolate(move_progress) * GridUtil.TILE_SIZE
+				if current_move.flip_curve_x:
+					sprite_offset.x *= -1
 
-			if current_move.flip_curve_y:
-				sprite_offset.y *= -1
+			if current_move.curve_y:
+				sprite_offset.y = current_move.curve_y.interpolate(move_progress) * GridUtil.TILE_SIZE
 
-		if sprite_offset != Vector2.ZERO:
-			$Offset/Sprite.position = GridUtil.rotate_vec2_by_facing(sprite_offset, facing)
-		else:
-			$Offset/Sprite.position = lerp($Offset/Sprite.position, Vector2.ZERO, 0.1)
+				if current_move.flip_curve_y:
+					sprite_offset.y *= -1
 
-		if current_move.curve_facing:
-			$Offset/Sprite.rotation_degrees = current_move.curve_facing.interpolate(move_progress) * 90
+			if sprite_offset != Vector2.ZERO:
+				$Offset/Sprite.position = GridUtil.rotate_vec2_by_facing(sprite_offset, facing)
+			else:
+				$Offset/Sprite.position = lerp($Offset/Sprite.position, Vector2.ZERO, 0.1)
 
-			if current_move.flip_curve_facing:
-				$Offset/Sprite.rotation_degrees *= -1
-		else:
-			$Offset/Sprite.rotation_degrees = lerp($Offset/Sprite.rotation_degrees, 0.0, 0.1)
+			if current_move.curve_facing:
+				$Offset/Sprite.rotation_degrees = current_move.curve_facing.interpolate(move_progress) * 90
 
-		# If finished, move to the next motion
-		if not animation_progress < motion_duration:
-			process_input()
+				if current_move.flip_curve_facing:
+					$Offset/Sprite.rotation_degrees *= -1
+			else:
+				$Offset/Sprite.rotation_degrees = lerp($Offset/Sprite.rotation_degrees, 0.0, 0.1)
+
+			# If finished, move to the next motion
+			if not animation_progress < motion_duration:
+				process_input()
 
 	position = world_pos
 	position.x = round(position.x)
@@ -189,7 +202,7 @@ func process_input():
 	var action = input[0]
 	var pressed = input[1]
 
-	if not action in moveset.map:
+	if not action in moveset.input_map:
 		set_motion(null)
 		return
 
@@ -210,7 +223,7 @@ func process_input():
 					consume_input = true
 					process_next = false
 			elif not current_motion.lock_input_buffer:
-				motion = moveset.map[action] as GridMotion
+				motion = moveset.input_map[action] as GridMotion
 				consume_input = true
 				process_next = false
 			else:
@@ -234,7 +247,7 @@ func process_input():
 	else:
 		if pressed:
 			# Pressed during idle
-			motion = moveset.map[action] as GridMotion
+			motion = moveset.input_map[action] as GridMotion
 			consume_input = true
 			process_next = false
 		else:

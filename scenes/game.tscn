@@ -1,9 +1,9 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://scripts/grid_controller/player_controller.gd" type="Script" id=1]
 [ext_resource path="res://scripts/grid_camera.gd" type="Script" id=2]
 [ext_resource path="res://scripts/grid_world.gd" type="Script" id=3]
-[ext_resource path="res://resources/moveset/broadsword_input_map.tres" type="Resource" id=4]
+[ext_resource path="res://scripts/resources/grid_move.gd" type="Script" id=4]
 [ext_resource path="res://resources/moveset/basic_input_map.tres" type="Resource" id=5]
 [ext_resource path="res://tilesets/test_tileset.tres" type="TileSet" id=6]
 [ext_resource path="res://textures/tiles/player.png" type="Texture" id=7]
@@ -12,18 +12,75 @@
 [ext_resource path="res://prefabs/Renderer2D.tscn" type="PackedScene" id=10]
 [ext_resource path="res://prefabs/UI.tscn" type="PackedScene" id=11]
 
-[node name="Game" type="Node"]
+[sub_resource type="Curve" id=1]
 
-[node name="Renderer2D" parent="." instance=ExtResource( 10 )]
+[sub_resource type="Curve" id=2]
+
+[sub_resource type="Curve" id=3]
+
+[sub_resource type="Resource" id=4]
+script = ExtResource( 4 )
+delta_position = Vector2( 0, -1 )
+delta_facing = 0
+curve_x = SubResource( 2 )
+curve_y = SubResource( 3 )
+curve_facing = SubResource( 1 )
+flip_curve_x = false
+flip_curve_y = false
+flip_curve_facing = false
+duration = 0.2
+events = [  ]
+input_press_motions = {
+
+}
+input_release_motions = {
+"move_forward": null
+}
+
+[sub_resource type="Resource" id=5]
+resource_name = "Arming Sword"
+script = SubResource( 4 )
+
+[node name="Game" type="MarginContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ViewportContainer" type="ViewportContainer" parent="."]
+margin_right = 960.0
+margin_bottom = 960.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+stretch = true
+stretch_shrink = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Viewport" type="Viewport" parent="ViewportContainer"]
+size = Vector2( 480, 480 )
+handle_input_locally = false
+render_target_update_mode = 3
+
+[node name="Renderer2D" parent="ViewportContainer/Viewport" instance=ExtResource( 10 )]
 rect_clip_content = true
+invalidate_cache = false
 width = 34
 height = 34
 offset = Vector2( -7, 3 )
 
 [node name="UI" parent="." instance=ExtResource( 11 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 960.0
+margin_bottom = 960.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
 [node name="World" type="Node2D" parent="."]
-position = Vector2( 0, 500 )
+position = Vector2( 0, 960 )
 script = ExtResource( 3 )
 
 [node name="Camera2D" type="Node2D" parent="World"]
@@ -44,7 +101,12 @@ script = ExtResource( 9 )
 sprite_texture = ExtResource( 7 )
 x = 9
 y = 19
-moveset = ExtResource( 4 )
+facing = 0
+opacity = 1.0
+solid = true
+moveset = SubResource( 5 )
+health = 5
+hitstun_threshold = 1
 hitstun_recovery_rate = 0.2
 
 [node name="PlayerController" type="Node" parent="World/Player"]
@@ -66,8 +128,12 @@ sprite_texture = ExtResource( 7 )
 x = 18
 y = 7
 facing = 2
+opacity = 1.0
+solid = true
 moveset = ExtResource( 5 )
 health = 15
+hitstun_threshold = 1
+hitstun_recovery_rate = 0.5
 
 [node name="MonsterController" type="Node" parent="World/Monster"]
 script = ExtResource( 8 )
@@ -86,8 +152,12 @@ sprite_texture = ExtResource( 7 )
 x = 7
 y = 10
 facing = 2
+opacity = 1.0
+solid = true
 moveset = ExtResource( 5 )
 health = 15
+hitstun_threshold = 1
+hitstun_recovery_rate = 0.5
 
 [node name="MonsterController2" type="Node" parent="World/Monster2"]
 script = ExtResource( 8 )
@@ -106,8 +176,12 @@ sprite_texture = ExtResource( 7 )
 x = 12
 y = 3
 facing = 2
+opacity = 1.0
+solid = true
 moveset = ExtResource( 5 )
 health = 20
+hitstun_threshold = 1
+hitstun_recovery_rate = 0.5
 
 [node name="MonsterController3" type="Node" parent="World/Monster3"]
 script = ExtResource( 8 )

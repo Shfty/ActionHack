@@ -3,14 +3,22 @@ extends Resource
 tool
 
 export(Array, Resource) var motion_moves setget set_moves
-export(Curve) var motion_curve = preload("res://resources/curve/curve_linear.tres")
-export(Resource) var hit_wall_motion
-export(Resource) var hit_entity_motion
-export(Resource) var next_motion
+export(Curve) var motion_curve = null
+
 export(bool) var looping = false
+export(bool) var cancelable = false
 export(bool) var lock_input_buffer = false
 export(Array, String) var lock_inputs setget set_lock_inputs
-export(bool) var cancelable = false
+
+export(Resource) var hit_wall_motion = null
+export(Resource) var hit_entity_motion = null
+export(Resource) var next_motion = null
+
+func _init() -> void:
+	if not motion_curve:
+		motion_curve = Curve.new()
+		motion_curve.add_point(Vector2.ZERO, 0, tan(deg2rad(45)))
+		motion_curve.add_point(Vector2.ONE, tan(deg2rad(45)), 0)
 
 func set_moves(new_motion_moves: Array) -> void:
 	if motion_moves != new_motion_moves:

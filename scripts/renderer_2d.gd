@@ -97,7 +97,7 @@ func invalidate_wall_cache() -> void:
 	actor_sprites.clear()
 
 func _process(delta: float) -> void:
-	var world = get_node("../World")
+	var world = get_node("../../../World")
 	if not world:
 		return
 
