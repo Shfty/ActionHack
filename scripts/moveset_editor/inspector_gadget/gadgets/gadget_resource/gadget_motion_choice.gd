@@ -25,7 +25,7 @@ func populate_controls() -> void:
 	add_child(option_button)
 
 func set_motion_choice_value(value: int) -> void:
-	if value == -1:
+	if value == 0:
 		_set_value(null)
 	else:
 		if 'grid_motions' in metadata:

@@ -47,4 +47,4 @@ func set_motions(new_motions: Array) -> void:
 func save() -> void:
 	var path = get_path()
 	if path != "":
-		ResourceSaver.save(path, self, ResourceSaver.FLAG_REPLACE_SUBRESOURCE_PATHS)
+		ResourceSaver.save(path, self)

@@ -26,8 +26,8 @@ signal hide_editors()
 
 var moveset_path: String
 var moveset: GridMoveset = null setget set_moveset
-var selected_motion: GridMotion = null
-var selected_move: GridMove = null
+var selected_motion: GridMotion
+var selected_move: GridMove
 
 # Setters
 func set_moveset_path(new_moveset_path: String) -> void:
@@ -128,7 +128,7 @@ func delete_moveset_motion(motion: GridMotion) -> void:
 
 func moveset_motions_changed() -> void:
 	emit_signal("moveset_motions_changed")
-	emit_signal("moveset_motions_changed_value", moveset.motions)
+	emit_signal("moveset_motions_changed_value", moveset.motions if moveset else [])
 
 func show_moveset_editor() -> void:
 	emit_signal("show_moveset_editor")

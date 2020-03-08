@@ -42,22 +42,22 @@ func _get_property_list() -> Array:
 		{
 			'name': 'hit_wall_motion',
 			'type': TYPE_OBJECT,
-			'hint': PROPERTY_HINT_RESOURCE_TYPE,
+			'hint': InspectorGadget.HINT_INSPECTOR_GADGET_RESOURCE_TYPE,
 			'hint_string': "GridMotion",
-			'usage': PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_SCRIPT_VARIABLE
+			'usage': PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_SCRIPT_VARIABLE
 		},
 		{
 			'name': 'hit_entity_motion',
 			'type': TYPE_OBJECT,
-			'hint': PROPERTY_HINT_RESOURCE_TYPE,
+			'hint': InspectorGadget.HINT_INSPECTOR_GADGET_RESOURCE_TYPE,
 			'hint_string': "GridMotion",
-			'usage': PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_SCRIPT_VARIABLE
+			'usage': PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_SCRIPT_VARIABLE
 		},
 		{
 			'name': 'next_motion',
 			'type': TYPE_OBJECT,
-			'hint': PROPERTY_HINT_RESOURCE_TYPE,
+			'hint': InspectorGadget.HINT_INSPECTOR_GADGET_RESOURCE_TYPE,
 			'hint_string': "GridMotion",
-			'usage': PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_SCRIPT_VARIABLE
+			'usage': PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_SCRIPT_VARIABLE
 		}
 	]
