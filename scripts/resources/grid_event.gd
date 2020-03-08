@@ -7,12 +7,12 @@ enum EventType {
 	SPAWN
 }
 
-export(float, 0, 1) var time
-export(EventType) var event_type
+export(float, 0, 1) var time := 0.0
+export(EventType) var event_type := EventType.NONE
 
-export(Script) var spawn_class
-export(Vector2) var spawn_relative_position
-export(Array) var spawn_params
+export(Script) var spawn_class: Script = null
+export(Vector2) var spawn_relative_position := Vector2.ZERO
+export(Array) var spawn_params := []
 
 func run(args: Dictionary):
 	match event_type:

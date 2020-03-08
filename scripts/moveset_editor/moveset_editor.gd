@@ -24,10 +24,10 @@ signal show_moveset_editor()
 signal show_motion_editor()
 signal hide_editors()
 
-var moveset_path: String
+var moveset_path: String = ""
 var moveset: GridMoveset = null setget set_moveset
-var selected_motion: GridMotion
-var selected_move: GridMove
+var selected_motion: GridMotion = null
+var selected_move: GridMove = null
 
 # Setters
 func set_moveset_path(new_moveset_path: String) -> void:
@@ -106,6 +106,7 @@ func add_moveset_motion() -> void:
 
 	var motion = GridMotion.new()
 	motion.set_name("New Motion")
+	#ResourceSaver.save(motion.get_path(), motion)
 	moveset.motions.append(motion)
 	moveset_motions_changed()
 

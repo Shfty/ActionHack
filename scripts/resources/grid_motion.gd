@@ -2,17 +2,17 @@ class_name GridMotion
 extends Resource
 tool
 
-export(Array, Resource) var motion_moves setget set_moves
-export(Curve) var motion_curve = null
+export(Array, Resource) var motion_moves := [] setget set_moves
+export(Curve) var motion_curve: Curve = null
 
-export(bool) var looping = false
-export(bool) var cancelable = false
-export(bool) var lock_input_buffer = false
-export(Array, String) var lock_inputs setget set_lock_inputs
+export(bool) var looping := false
+export(bool) var cancelable := false
+export(bool) var lock_input_buffer := false
+export(Array, String) var lock_inputs := [] setget set_lock_inputs
 
-var hit_wall_motion = null
-var hit_entity_motion = null
-var next_motion = null
+var hit_wall_motion: GridMotion = null
+var hit_entity_motion: GridMotion = null
+var next_motion: GridMotion = null
 
 func _init() -> void:
 	if not motion_curve:
@@ -40,23 +40,26 @@ func get_duration() -> float:
 func _get_property_list() -> Array:
 	return [
 		{
+			'class_name': 'Resource',
 			'name': 'hit_wall_motion',
 			'type': TYPE_OBJECT,
-			'hint': InspectorGadget.HINT_INSPECTOR_GADGET_RESOURCE_TYPE,
+			'hint': PROPERTY_HINT_RESOURCE_TYPE,
 			'hint_string': "GridMotion",
 			'usage': PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_SCRIPT_VARIABLE
 		},
 		{
+			'class_name': 'Resource',
 			'name': 'hit_entity_motion',
 			'type': TYPE_OBJECT,
-			'hint': InspectorGadget.HINT_INSPECTOR_GADGET_RESOURCE_TYPE,
+			'hint': PROPERTY_HINT_RESOURCE_TYPE,
 			'hint_string': "GridMotion",
 			'usage': PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_SCRIPT_VARIABLE
 		},
 		{
+			'class_name': 'Resource',
 			'name': 'next_motion',
 			'type': TYPE_OBJECT,
-			'hint': InspectorGadget.HINT_INSPECTOR_GADGET_RESOURCE_TYPE,
+			'hint': PROPERTY_HINT_RESOURCE_TYPE,
 			'hint_string': "GridMotion",
 			'usage': PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_SCRIPT_VARIABLE
 		}

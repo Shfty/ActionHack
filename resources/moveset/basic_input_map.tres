@@ -1,46 +1,6 @@
-[gd_resource type="Resource" load_steps=9 format=2]
+[gd_resource type="Resource" load_steps=2 format=2]
 
 [ext_resource path="res://scripts/resources/grid_moveset.gd" type="Script" id=1]
-[ext_resource path="res://scripts/resources/grid_motion.gd" type="Script" id=2]
-
-[sub_resource type="Curve" id=1]
-_data = [ Vector2( 0, 0 ), 0.0, 1.0, 0, 0, Vector2( 1, 1 ), 1.0, 0.0, 0, 0 ]
-
-[sub_resource type="Resource" id=2]
-resource_name = "New Motion 1"
-script = ExtResource( 2 )
-motion_moves = [  ]
-motion_curve = SubResource( 1 )
-looping = false
-cancelable = false
-lock_input_buffer = false
-lock_inputs = [  ]
-
-[sub_resource type="Curve" id=3]
-_data = [ Vector2( 0, 0 ), 0.0, 1.0, 0, 0, Vector2( 1, 1 ), 1.0, 0.0, 0, 0 ]
-
-[sub_resource type="Resource" id=4]
-resource_name = "New Motion 2"
-script = ExtResource( 2 )
-motion_moves = [  ]
-motion_curve = SubResource( 3 )
-looping = false
-cancelable = false
-lock_input_buffer = false
-lock_inputs = [  ]
-
-[sub_resource type="Curve" id=5]
-_data = [ Vector2( 0, 0 ), 0.0, 1.0, 0, 0, Vector2( 1, 1 ), 1.0, 0.0, 0, 0 ]
-
-[sub_resource type="Resource" id=6]
-resource_name = "New Motion 3"
-script = ExtResource( 2 )
-motion_moves = [  ]
-motion_curve = SubResource( 5 )
-looping = false
-cancelable = false
-lock_input_buffer = false
-lock_inputs = [  ]
 
 [resource]
 resource_name = "Basic"
@@ -65,4 +25,4 @@ input_map = {
 "turn_left": null,
 "turn_right": null
 }
-motions = [ SubResource( 2 ), SubResource( 4 ), SubResource( 6 ) ]
+motions = [  ]

@@ -146,7 +146,7 @@ func get_gadget_for_type(value, property_name = "") -> InspectorGadgetBase:
 				var property_list = target.get_property_list()
 				for property in property_list:
 					if property['name'] == property_name:
-						if property['hint'] == HINT_INSPECTOR_GADGET_RESOURCE_TYPE:
+						if property['hint'] == PROPERTY_HINT_RESOURCE_TYPE:
 							if resource_gadget.supports_resource(property['hint_string']):
 								gadget = resource_gadget.new(NodePath(), "", resource_gadget_metadata)
 								break

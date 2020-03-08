@@ -2,19 +2,19 @@ class_name GridMove
 extends Resource
 tool
 
-export(Vector2) var delta_position
-export(int) var delta_facing
+export(Vector2) var delta_position := Vector2.ZERO
+export(int) var delta_facing := 0
 
-export(Curve) var curve_x = null
-export(Curve) var curve_y = null
-export(Curve) var curve_facing = null
+export(Curve) var curve_x: Curve = null
+export(Curve) var curve_y: Curve = null
+export(Curve) var curve_facing: Curve = null
 
-export(bool) var flip_curve_x = false
-export(bool) var flip_curve_y = false
-export(bool) var flip_curve_facing = false
+export(bool) var flip_curve_x := false
+export(bool) var flip_curve_y := false
+export(bool) var flip_curve_facing := false
 
-export(float) var duration = 0.2
-export(Array, Resource) var events setget set_events
+export(float) var duration := 0.2
+export(Array, Resource) var events := [] setget set_events
 
 export(Dictionary) var input_press_motions := {}
 export(Dictionary) var input_release_motions := {}
