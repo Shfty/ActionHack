@@ -63,7 +63,7 @@ static func get_indexed_ex(node: Node, subnames: String):
 
 		target = _traverse(target, property)
 
-		if target == null:
+		if target == null and property_comps.size() > 0:
 			break
 
 		if property_comps.size() == 0:
@@ -121,7 +121,7 @@ static func set_indexed_ex(node: Node, subnames: String, value) -> void:
 				break
 
 		target = _traverse(target, property)
-		if target == null:
+		if target == null and property_comps.size() > 0:
 			return
 
 		target_chain.append([property, target])
