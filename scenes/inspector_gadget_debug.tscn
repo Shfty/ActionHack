@@ -200,7 +200,7 @@ __meta__ = {
 
 [node name="InspectorGadgetNew" type="MarginContainer" parent="ScrollContainer"]
 margin_right = 948.0
-margin_bottom = 4930.0
+margin_bottom = 5658.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 1 )
@@ -208,7 +208,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 node_path = NodePath("../../TestProperties")
-resource_gadget_metadata = {
+custom_gadget_metadata = {
 
 }
 

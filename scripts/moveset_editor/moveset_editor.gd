@@ -34,9 +34,6 @@ func set_moveset_path(new_moveset_path: String) -> void:
 	moveset_path = new_moveset_path
 	var moveset = load(moveset_path)
 
-	for motion in moveset.motions:
-		print("loaded motion: %s %s %s" % [motion.get_name(), motion.get_path(), motion.get_class()])
-
 	set_moveset(moveset)
 
 func set_moveset(new_moveset: GridMoveset) -> void:
@@ -84,9 +81,6 @@ func save_moveset() -> void:
 	if not moveset:
 		return
 
-	for motion in moveset.motions:
-		print("saving motion: %s %s %s" % [motion.get_name(), motion.get_path(), motion.get_class()])
-
 	var path = moveset.get_path()
 	if path != "":
 		ResourceSaver.save(path, moveset)
@@ -133,7 +127,7 @@ func delete_moveset_motion(motion: GridMotion) -> void:
 		set_selected_motion(null)
 
 	for action in moveset.input_map:
-		if moveset.input_map[action] == motion:
+		if moveset.input_map[action] == moveset.motions.find(motion):
 			moveset.input_map[action] = null
 
 	moveset.motions.erase(motion)

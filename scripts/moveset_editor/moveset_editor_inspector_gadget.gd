@@ -2,7 +2,8 @@ class_name MovesetEditorInspectorGadget
 extends InspectorGadget
 
 func set_moveset_motions(motions: Array) -> void:
-	resource_gadget_metadata['grid_motions'] = motions
+	var motion_names := []
+	for motion in motions:
+		motion_names.append(motion.get_name())
 
-func set_ignore_motion(motion: GridMotion) -> void:
-	resource_gadget_metadata['grid_motions_ignore'] = [motion]
+	custom_gadget_metadata['grid_motion_names'] = motion_names

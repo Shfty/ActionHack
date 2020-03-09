@@ -192,5 +192,3 @@ rotation = 3.14159
 
 [node name="Sprite" type="Sprite" parent="World/Monster3/Offset"]
 texture = ExtResource( 7 )
-[connection signal="health_changed" from="World/Player" to="UI" method="set_health"]
-[connection signal="rotation_changed" from="World/Player" to="UI" method="set_compass_angle"]

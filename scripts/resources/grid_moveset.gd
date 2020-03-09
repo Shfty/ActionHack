@@ -3,42 +3,25 @@ extends Resource
 tool
 
 export(Dictionary) var input_map := {
-	"move_forward": Object(),
-	"move_back": Object(),
-	"move_left": Object(),
-	"move_right": Object(),
-	"turn_left": Object(),
-	"turn_right": Object(),
-	"quickturn_left": Object(),
-	"quickturn_right": Object(),
-	"attack": Object(),
+	"move_forward": -1,
+	"move_back": -1,
+	"move_left": -1,
+	"move_right": -1,
+	"turn_left": -1,
+	"turn_right": -1,
+	"quickturn_left": -1,
+	"quickturn_right": -1,
+	"attack": -1,
 
-	"special_move_forward": Object(),
-	"special_move_back": Object(),
-	"special_move_left": Object(),
-	"special_move_right": Object(),
-	"special_turn_left": Object(),
-	"special_turn_right": Object(),
-	"special_quickturn_left": Object(),
-	"special_quickturn_right": Object(),
-	"special_attack": Object(),
-} setget set_input_map
+	"special_move_forward": -1,
+	"special_move_back": -1,
+	"special_move_left": -1,
+	"special_move_right": -1,
+	"special_turn_left": -1,
+	"special_turn_right": -1,
+	"special_quickturn_left": -1,
+	"special_quickturn_right": -1,
+	"special_attack": -1
+}
 
-export(Array, Resource) var motions := [] setget set_motions
-
-# Setters
-func set_input_map(new_input_map: Dictionary) -> void:
-	if input_map != new_input_map:
-		input_map = new_input_map
-
-		for key in input_map:
-			if not input_map[key]:
-				input_map[key] = Object()
-
-func set_motions(new_motions: Array) -> void:
-	if motions != new_motions:
-		motions = new_motions
-
-		for i in range(0, motions.size()):
-			if motions[i] == null:
-				motions[i] = GridMotion.new()
+export(Array, Resource) var motions := []

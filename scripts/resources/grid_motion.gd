@@ -10,11 +10,14 @@ export(bool) var cancelable := false
 export(bool) var lock_input_buffer := false
 export(Array, String) var lock_inputs := [] setget set_lock_inputs
 
-export(Resource) var hit_wall_motion = null
-export(Resource) var hit_entity_motion = null
-export(Resource) var next_motion = null
+export(int) var hit_wall_motion_idx = -1
+export(int) var hit_entity_motion_idx = -1
+export(int) var next_motion_idx = -1
 
 func _init() -> void:
+	if resource_name == "":
+		resource_name = "New Motion"
+
 	if not motion_curve:
 		motion_curve = Curve.new()
 		motion_curve.add_point(Vector2.ZERO, 0, tan(deg2rad(45)))
@@ -37,18 +40,17 @@ func get_duration() -> float:
 		duration += move.duration
 	return duration
 
-func _get_inspector_gadget_type_hints() -> Array:
+func _get_inspector_gadget_classes() -> Array:
 	return [
-		{
-			'name': 'hit_wall_motion',
-			'type': 'GridMotion'
-		},
-		{
-			'name': 'hit_entity_motion',
-			'type': 'GridMotion'
-		},
-		{
-			'name': 'next_motion',
-			'type': 'GridMotion'
-		}
+		'GadgetMotionButton'
 	]
+
+func _get_inspector_gadget_property_map() -> Dictionary:
+	var motion_gadgets := [
+			'GadgetMotionChoice'
+	]
+	return {
+		'hit_wall_motion_idx': motion_gadgets,
+		'hit_entity_motion_idx': motion_gadgets,
+		'next_motion_idx': motion_gadgets
+	}

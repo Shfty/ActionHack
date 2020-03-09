@@ -5,9 +5,9 @@ tool
 export(Vector2) var delta_position := Vector2.ZERO
 export(int) var delta_facing := 0
 
-export(Curve) var curve_x: Curve = Curve.new()
-export(Curve) var curve_y: Curve = Curve.new()
-export(Curve) var curve_facing: Curve = Curve.new()
+export(Curve) var curve_x := Curve.new() as Curve
+export(Curve) var curve_y := Curve.new() as Curve
+export(Curve) var curve_facing := Curve.new() as Curve
 
 export(bool) var flip_curve_x := false
 export(bool) var flip_curve_y := false
