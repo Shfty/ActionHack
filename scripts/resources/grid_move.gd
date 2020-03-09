@@ -5,9 +5,9 @@ tool
 export(Vector2) var delta_position := Vector2.ZERO
 export(int) var delta_facing := 0
 
-export(Curve) var curve_x: Curve = null
-export(Curve) var curve_y: Curve = null
-export(Curve) var curve_facing: Curve = null
+export(Curve) var curve_x: Curve = Curve.new()
+export(Curve) var curve_y: Curve = Curve.new()
+export(Curve) var curve_facing: Curve = Curve.new()
 
 export(bool) var flip_curve_x := false
 export(bool) var flip_curve_y := false
@@ -20,24 +20,21 @@ export(Dictionary) var input_press_motions := {}
 export(Dictionary) var input_release_motions := {}
 
 func _init() -> void:
-	if not curve_x:
-		curve_x = Curve.new()
+	if curve_x.get_point_count() == 0:
 		curve_x.add_point(Vector2.ZERO, 0, tan(deg2rad(45)))
 		curve_x.add_point(Vector2.ONE, tan(deg2rad(45)), 0)
 
-	if not curve_y:
-		curve_y = Curve.new()
+	if curve_y.get_point_count() == 0:
 		curve_y.add_point(Vector2.ZERO, 0, tan(deg2rad(45)))
 		curve_y.add_point(Vector2.ONE, tan(deg2rad(45)), 0)
 
-	if not curve_facing:
-		curve_facing = Curve.new()
+	if curve_facing.get_point_count() == 0:
 		curve_facing.add_point(Vector2.ZERO, 0, tan(deg2rad(45)))
 		curve_facing.add_point(Vector2.ONE, tan(deg2rad(45)), 0)
 
 func set_events(new_events: Array) -> void:
 	if events != new_events:
 		events = new_events
-		if events.size() > 0:
-			if not events[-1]:
-				events[-1] = GridEvent.new()
+		for i in range(0, events.size()):
+			if events[i] == null:
+				events[i] = GridEvent.new()

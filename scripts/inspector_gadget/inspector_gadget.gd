@@ -165,11 +165,11 @@ func get_gadget_for_type(value, property_name = "") -> InspectorGadgetBase:
 					continue
 
 				var target = InspectorGadgetUtil.get_indexed_ex(_node, subnames)
-				var property_list = target.get_property_list()
-				for property in property_list:
-					if property['name'] == property_name:
-						if property['hint'] == PROPERTY_HINT_RESOURCE_TYPE:
-							if resource_gadget.supports_resource(property['hint_string']):
+				if target is Resource and target.has_method("_get_inspector_gadget_type_hints"):
+					var type_hints = target._get_inspector_gadget_type_hints()
+					for property in type_hints:
+						if property['name'] == property_name:
+							if resource_gadget.supports_resource(property['type']):
 								gadget = resource_gadget.new(NodePath(), "", resource_gadget_metadata)
 								break
 		TYPE_BOOL:

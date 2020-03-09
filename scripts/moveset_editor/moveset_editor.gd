@@ -32,7 +32,12 @@ var selected_move: GridMove = null
 # Setters
 func set_moveset_path(new_moveset_path: String) -> void:
 	moveset_path = new_moveset_path
-	set_moveset(load(moveset_path) as GridMoveset)
+	var moveset = load(moveset_path)
+
+	for motion in moveset.motions:
+		print("loaded motion: %s %s %s" % [motion.get_name(), motion.get_path(), motion.get_class()])
+
+	set_moveset(moveset)
 
 func set_moveset(new_moveset: GridMoveset) -> void:
 	if moveset != new_moveset:
@@ -76,7 +81,15 @@ func _ready() -> void:
 
 # Slots
 func save_moveset() -> void:
-	moveset.save()
+	if not moveset:
+		return
+
+	for motion in moveset.motions:
+		print("saving motion: %s %s %s" % [motion.get_name(), motion.get_path(), motion.get_class()])
+
+	var path = moveset.get_path()
+	if path != "":
+		ResourceSaver.save(path, moveset)
 
 func close_moveset() -> void:
 	set_moveset(null)
@@ -106,7 +119,6 @@ func add_moveset_motion() -> void:
 
 	var motion = GridMotion.new()
 	motion.set_name("New Motion")
-	#ResourceSaver.save(motion.get_path(), motion)
 	moveset.motions.append(motion)
 	moveset_motions_changed()
 

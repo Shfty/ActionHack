@@ -40,11 +40,5 @@ func set_motions(new_motions: Array) -> void:
 		motions = new_motions
 
 		for i in range(0, motions.size()):
-			var motion = motions[i]
-			if not motion:
-				motions[i] = Object()
-
-func save() -> void:
-	var path = get_path()
-	if path != "":
-		ResourceSaver.save(path, self)
+			if motions[i] == null:
+				motions[i] = GridMotion.new()

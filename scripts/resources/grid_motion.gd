@@ -10,9 +10,9 @@ export(bool) var cancelable := false
 export(bool) var lock_input_buffer := false
 export(Array, String) var lock_inputs := [] setget set_lock_inputs
 
-var hit_wall_motion: GridMotion = null
-var hit_entity_motion: GridMotion = null
-var next_motion: GridMotion = null
+export(Resource) var hit_wall_motion = null
+export(Resource) var hit_entity_motion = null
+export(Resource) var next_motion = null
 
 func _init() -> void:
 	if not motion_curve:
@@ -37,30 +37,18 @@ func get_duration() -> float:
 		duration += move.duration
 	return duration
 
-func _get_property_list() -> Array:
+func _get_inspector_gadget_type_hints() -> Array:
 	return [
 		{
-			'class_name': 'Resource',
 			'name': 'hit_wall_motion',
-			'type': TYPE_OBJECT,
-			'hint': PROPERTY_HINT_RESOURCE_TYPE,
-			'hint_string': "GridMotion",
-			'usage': PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_SCRIPT_VARIABLE
+			'type': 'GridMotion'
 		},
 		{
-			'class_name': 'Resource',
 			'name': 'hit_entity_motion',
-			'type': TYPE_OBJECT,
-			'hint': PROPERTY_HINT_RESOURCE_TYPE,
-			'hint_string': "GridMotion",
-			'usage': PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_SCRIPT_VARIABLE
+			'type': 'GridMotion'
 		},
 		{
-			'class_name': 'Resource',
 			'name': 'next_motion',
-			'type': TYPE_OBJECT,
-			'hint': PROPERTY_HINT_RESOURCE_TYPE,
-			'hint_string': "GridMotion",
-			'usage': PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_SCRIPT_VARIABLE
+			'type': 'GridMotion'
 		}
 	]
