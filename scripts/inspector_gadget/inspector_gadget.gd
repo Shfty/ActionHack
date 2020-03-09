@@ -131,15 +131,16 @@ func populate_value(value) -> void:
 				if 'filter_built_in_properties' in gadget:
 					gadget.filter_built_in_properties = filter_built_in_properties
 
-			var delete_button := Button.new()
-			delete_button.text = "X"
-			delete_button.connect("pressed", self, "remove_array_element", [value, i])
-
 			var hbox := HBoxContainer.new()
 			hbox.size_flags_horizontal = SIZE_EXPAND_FILL
 			hbox.add_child(label)
 			hbox.add_child(gadget)
-			hbox.add_child(delete_button)
+
+			if editable:
+				var delete_button := Button.new()
+				delete_button.text = "X"
+				delete_button.connect("pressed", self, "remove_array_element", [value, i])
+				hbox.add_child(delete_button)
 
 			vbox.add_child(hbox)
 
@@ -205,16 +206,18 @@ func populate_value(value) -> void:
 				if 'filter_built_in_properties' in value_gadget:
 					value_gadget.filter_built_in_properties = filter_built_in_properties
 
-			var delete_button := Button.new()
-			delete_button.text = "X"
-			delete_button.connect("pressed", self, "remove_dictionary_element", [value, key])
 
 			var hbox = HBoxContainer.new()
 			hbox.size_flags_horizontal = SIZE_EXPAND_FILL
 			hbox.size_flags_vertical = SIZE_EXPAND_FILL
 			hbox.add_child(key_gadget)
 			hbox.add_child(value_gadget)
-			hbox.add_child(delete_button)
+
+			if editable:
+				var delete_button := Button.new()
+				delete_button.text = "X"
+				delete_button.connect("pressed", self, "remove_dictionary_element", [value, key])
+				hbox.add_child(delete_button)
 
 			var panel_container = PanelContainer.new()
 			panel_container.add_child(hbox)
