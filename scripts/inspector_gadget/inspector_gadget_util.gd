@@ -108,7 +108,7 @@ static func set_indexed_ex(node: Node, subnames: String, value) -> void:
 
 				for i in range(0, dict_clone.keys().size()):
 					var key = dict_clone.keys()[i]
-					if not i == key_idx:
+					if i != key_idx:
 						target[key] = dict_clone[key]
 					else:
 						target[value] = val

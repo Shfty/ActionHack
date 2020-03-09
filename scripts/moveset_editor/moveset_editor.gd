@@ -142,6 +142,7 @@ func delete_moveset_motion(motion: GridMotion) -> void:
 func moveset_motions_changed() -> void:
 	emit_signal("moveset_motions_changed")
 	emit_signal("moveset_motions_changed_value", moveset.motions if moveset else [])
+	save_moveset()
 
 func show_moveset_editor() -> void:
 	emit_signal("show_moveset_editor")
