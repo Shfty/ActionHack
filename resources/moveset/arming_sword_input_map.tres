@@ -11,9 +11,9 @@ script = ExtResource( 2 )
 motion_moves = [  ]
 motion_curve = SubResource( 1 )
 looping = false
+cancelable = false
 lock_input_buffer = false
 lock_inputs = [  ]
-cancelable = false
 
 [resource]
 resource_name = "Arming Sword"

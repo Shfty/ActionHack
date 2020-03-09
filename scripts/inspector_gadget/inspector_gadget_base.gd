@@ -129,7 +129,9 @@ func _depopulate_controls() -> void:
 
 # Public Business Logic
 func set_node_value(new_value) -> void:
+	emit_signal("change_property_begin", _node, subnames)
 	InspectorGadgetUtil.set_indexed_ex(_node, subnames, new_value)
+	emit_signal("change_property_end", _node, subnames)
 
 # Virtuals
 static func supports_type(value) -> bool:

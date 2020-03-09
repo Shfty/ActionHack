@@ -1,7 +1,6 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://scripts/inspector_gadget/inspector_gadget.gd" type="Script" id=1]
-[ext_resource path="res://resources/grid_motion/attack_forward.tres" type="Resource" id=3]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends Node
@@ -46,7 +45,6 @@ export(PoolVector3Array) var pool_vector3_array_value := PoolVector3Array([Vecto
 export(PoolColorArray) var pool_color_array_value := PoolColorArray([Color.red, Color.green, Color.blue, Color.black, Color.white]) setget set_pool_color_array_value
 
 export(Curve) var curve_value
-export(Resource) var grid_motion setget set_grid_motion
 
 func set_bool_value(new_bool_value: bool) -> void:
 	if bool_value != new_bool_value:
@@ -167,11 +165,6 @@ func set_pool_color_array_value(new_pool_color_array_value: PoolColorArray) -> v
 	if pool_color_array_value != new_pool_color_array_value:
 		pool_color_array_value = new_pool_color_array_value
 	print(\"set pool color array value: \", pool_color_array_value)
-
-func set_grid_motion(new_grid_motion: GridMotion) -> void:
-	if grid_motion != new_grid_motion:
-		grid_motion = new_grid_motion
-	print(\"set grid motion value: \", grid_motion)
 "
 
 [sub_resource type="Curve" id=2]
@@ -197,7 +190,6 @@ __meta__ = {
 [node name="TestProperties" type="Node" parent="."]
 script = SubResource( 1 )
 curve_value = SubResource( 2 )
-grid_motion = ExtResource( 3 )
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 anchor_right = 1.0
@@ -207,8 +199,8 @@ __meta__ = {
 }
 
 [node name="InspectorGadgetNew" type="MarginContainer" parent="ScrollContainer"]
-margin_right = 960.0
-margin_bottom = 960.0
+margin_right = 948.0
+margin_bottom = 4930.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 1 )

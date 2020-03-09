@@ -83,6 +83,7 @@ static func set_indexed_ex(node: Node, subnames: String, value) -> void:
 
 	var target_chain = []
 	var target = node
+	var target_value = value
 	while property_comps.size() > 0:
 		var property = property_comps[0]
 		property_comps.remove(0)
@@ -90,13 +91,42 @@ static func set_indexed_ex(node: Node, subnames: String, value) -> void:
 		if property == "":
 			continue
 
+		var is_keys_subname = property == '[keys]'
+		var is_values_subname = property == '[values]'
+		if target is Dictionary and property_comps.size() == 1 and (is_keys_subname or is_values_subname):
+			var end_property = property_comps[0]
+			if not end_property.is_valid_integer():
+				return
+
+			var key_idx = end_property.to_int()
+			var end_key = target.keys()[key_idx]
+			if is_keys_subname:
+				var dict_clone = target.duplicate()
+				target.clear()
+
+				var val = dict_clone[end_key]
+
+				for i in range(0, dict_clone.keys().size()):
+					var key = dict_clone.keys()[i]
+					if not i == key_idx:
+						target[key] = dict_clone[key]
+					else:
+						target[value] = val
+
+				target_chain.append([value, target])
+				target_value = val
+				break
+			elif is_values_subname:
+				target_chain.append([end_key, target])
+				break
+
 		target = _traverse(target, property)
-		if target == null and property_comps.size() > 0:
+		if target == null:
 			return
 
 		target_chain.append([property, target])
 
-	target_chain[-1][1] = value
+	target_chain[-1][1] = target_value
 
 	while true:
 		var pair = target_chain[-1]
@@ -106,7 +136,7 @@ static func set_indexed_ex(node: Node, subnames: String, value) -> void:
 
 		if target_chain.size() > 0:
 			var key_mod = key
-			if target_chain[-1][1] is Array:
+			if is_array_type(target_chain[-1][1]):
 				key_mod = key_mod.to_int()
 
 			target_chain[-1][1][key_mod] = val
@@ -118,7 +148,7 @@ static func _traverse(target, property):
 	if target is Object:
 		if property in target:
 			return target[property]
-	elif target is Array:
+	elif is_array_type(target):
 		if property.is_valid_integer():
 			var idx = property.to_int()
 			if idx >= 0 and idx < target.size():
@@ -126,9 +156,9 @@ static func _traverse(target, property):
 	elif target is Dictionary:
 		if property in target:
 			return target[property]
-		elif property == "keys":
+		elif property == "[keys]":
 			return target.keys()
-		elif property == "values":
+		elif property == "[values]":
 			return target.values()
 	else:
 		if typeof(target) in BASIC_TYPE_INT_INDEXED and property.is_valid_integer():

@@ -6,14 +6,34 @@
 [sub_resource type="Curve" id=1]
 _data = [ Vector2( 0, 0 ), 0.0, 1.0, 0, 0, Vector2( 1, 1 ), 1.0, 0.0, 0, 0 ]
 
-[sub_resource type="Curve" id=2]
+[sub_resource type="Resource" id=2]
+resource_name = "New Motion A"
+script = ExtResource( 2 )
+motion_moves = [  ]
+motion_curve = SubResource( 1 )
+looping = false
+cancelable = false
+lock_input_buffer = false
+lock_inputs = [  ]
+
+[sub_resource type="Curve" id=3]
 _data = [ Vector2( 0, 0 ), 0.0, 1.0, 0, 0, Vector2( 1, 1 ), 1.0, 0.0, 0, 0 ]
+
+[sub_resource type="Resource" id=4]
+resource_name = "New Motion B"
+script = ExtResource( 2 )
+motion_moves = [  ]
+motion_curve = SubResource( 3 )
+looping = false
+cancelable = false
+lock_input_buffer = false
+lock_inputs = [  ]
 
 [sub_resource type="Curve" id=5]
 _data = [ Vector2( 0, 0 ), 0.0, 1.0, 0, 0, Vector2( 1, 1 ), 1.0, 0.0, 0, 0 ]
 
 [sub_resource type="Resource" id=6]
-resource_name = "New Motion 3"
+resource_name = "New Motion C"
 script = ExtResource( 2 )
 motion_moves = [  ]
 motion_curve = SubResource( 5 )
@@ -22,30 +42,8 @@ cancelable = false
 lock_input_buffer = false
 lock_inputs = [  ]
 
-[sub_resource type="Resource" id=3]
-resource_name = "New Motion 2"
-script = ExtResource( 2 )
-motion_moves = [  ]
-motion_curve = SubResource( 2 )
-looping = false
-cancelable = false
-lock_input_buffer = false
-lock_inputs = [  ]
-next_motion = SubResource( 6 )
-
-[sub_resource type="Resource" id=4]
-resource_name = "New Motion 1"
-script = ExtResource( 2 )
-motion_moves = [  ]
-motion_curve = SubResource( 1 )
-looping = false
-cancelable = false
-lock_input_buffer = false
-lock_inputs = [  ]
-next_motion = SubResource( 3 )
-
 [resource]
-resource_name = "Basic"
+resource_name = "Basic Moveset"
 script = ExtResource( 1 )
 input_map = {
 "attack": null,
@@ -67,4 +65,4 @@ input_map = {
 "turn_left": null,
 "turn_right": null
 }
-motions = [ SubResource( 4 ), SubResource( 3 ), SubResource( 6 ) ]
+motions = [ SubResource( 2 ), SubResource( 4 ), SubResource( 6 ) ]

@@ -32,7 +32,7 @@ func set_subnames(new_subnames: String):
 		child.node_path = node_path
 
 static func supports_type(value) -> bool:
-	return value is Object or InspectorGadgetUtil.is_array_type(value) or value == null
+	return value is Object or value is Dictionary or InspectorGadgetUtil.is_array_type(value) or value == null
 
 func has_controls() -> bool:
 	return has_node("PanelContainer")
@@ -85,7 +85,7 @@ func populate_value(value) -> void:
 					var separator = HSeparator.new()
 					separator.size_flags_horizontal = SIZE_EXPAND_FILL
 					vbox.add_child(separator)
-	if value is Array:
+	elif InspectorGadgetUtil.is_array_type(value):
 		for i in range(0, value.size()):
 			var label = Label.new()
 			label.text = String(i)
@@ -104,6 +104,46 @@ func populate_value(value) -> void:
 				var separator = HSeparator.new()
 				separator.size_flags_horizontal = SIZE_EXPAND_FILL
 				vbox.add_child(separator)
+	elif value is Dictionary:
+		var keys = value.keys()
+		var vals = value.values()
+		for i in range(0, keys.size()):
+			var key = keys[i]
+			var val = vals[i]
+
+			var key_gadget: InspectorGadgetBase = get_gadget_for_type(key)
+			if key_gadget:
+				key_gadget.size_flags_horizontal = SIZE_EXPAND_FILL
+				key_gadget.node_path = "../../../../../" + node_path
+				key_gadget.subnames = subnames + ":[keys]:" + String(i)
+				key_gadget.connect("change_property_begin", self, "change_property_begin")
+				key_gadget.connect("change_property_end", self, "change_property_end")
+				key_gadget.connect("gadget_event", self, "gadget_event")
+
+			var value_gadget: InspectorGadgetBase = get_gadget_for_type(val)
+			if value_gadget:
+				value_gadget.size_flags_horizontal = SIZE_EXPAND_FILL
+				value_gadget.node_path = "../../../../../" + node_path
+				value_gadget.subnames = subnames + ":[values]:" + String(i)
+				value_gadget.connect("change_property_begin", self, "change_property_begin")
+				value_gadget.connect("change_property_end", self, "change_property_end")
+				value_gadget.connect("gadget_event", self, "gadget_event")
+
+			var hbox = HBoxContainer.new()
+			hbox.size_flags_horizontal = SIZE_EXPAND_FILL
+			hbox.size_flags_vertical = SIZE_EXPAND_FILL
+			hbox.add_child(key_gadget)
+			hbox.add_child(value_gadget)
+
+			var panel_container = PanelContainer.new()
+			panel_container.add_child(hbox)
+
+			vbox.add_child(panel_container)
+
+
+		var separator = HSeparator.new()
+		separator.size_flags_horizontal = SIZE_EXPAND_FILL
+		vbox.add_child(separator)
 
 func depopulate_value() -> void:
 	var vbox = get_controls()[0]
@@ -177,6 +217,8 @@ func get_gadget_for_type(value, property_name = "") -> InspectorGadgetBase:
 
 			if not gadget:
 				gadget = get_script().new()
+		TYPE_DICTIONARY:
+			gadget = get_script().new()
 		TYPE_ARRAY:
 			gadget = get_script().new()
 		TYPE_RAW_ARRAY:

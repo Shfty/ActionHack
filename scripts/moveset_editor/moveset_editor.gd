@@ -90,11 +90,11 @@ func move_selected(move: GridMove) -> void:
 func curve_selected(curve: Curve, min_value: float, max_value: float, color: Color) -> void:
 	emit_signal("curve_selected", curve, min_value, max_value, color)
 
-func property_change_begin(object, property) -> void:
-	emit_signal("property_change_begin", object, property)
+func property_change_begin(object, subnames) -> void:
+	emit_signal("property_change_begin", object, subnames)
 
-func property_change_end(object, property) -> void:
-	emit_signal("property_change_end", object, property)
+func property_change_end(object, subnames) -> void:
+	emit_signal("property_change_end", object, subnames)
 	property_changed()
 
 func property_changed() -> void:
