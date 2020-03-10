@@ -74,10 +74,10 @@ func show_move_inspector() -> void:
 	$MoveHeader.visible = true
 	$MoveScrollContainer.visible = true
 
-func motion_selected(motion) -> void:
+func motion_selected(motion: WeakRef) -> void:
 	show_motion_inspector()
 
-func move_selected(move) -> void:
+func move_selected(move: WeakRef) -> void:
 	show_move_inspector()
 "
 
@@ -95,10 +95,10 @@ func close_curve() -> void:
 	$CurveEdit.set_curve(null)
 	set_visible(false)
 
-func motion_selected(motion) -> void:
+func motion_selected(motion: WeakRef) -> void:
 	close_curve()
 
-func move_selected(motion: GridMotion) -> void:
+func move_selected(motion: WeakRef) -> void:
 	close_curve()
 
 "
@@ -834,10 +834,10 @@ __meta__ = {
 [connection signal="demo_replay" from="." to="MainVBox/MainArea/MotionVBox/MainHBox/DemoAreaVBox/DemoAreaPanel/DemoAreaRect/DemoAreaViewportContainer" method="replay"]
 [connection signal="hide_editors" from="." to="MainVBox/MainArea" method="hide_editors"]
 [connection signal="motion_invalid_changed" from="." to="MainVBox/Toolbar/ToolbarHBox/MotionTab" method="set_disabled"]
-[connection signal="motion_selected" from="." to="MainVBox/MainArea/MotionVBox/MainHBox/InspectorVBox" method="motion_selected"]
 [connection signal="motion_selected" from="." to="MainVBox/MainArea/MotionVBox/MainHBox/InspectorVBox/CurveEditPanel" method="motion_selected"]
-[connection signal="move_selected" from="." to="MainVBox/MainArea/MotionVBox/MainHBox/InspectorVBox" method="move_selected"]
+[connection signal="motion_selected" from="." to="MainVBox/MainArea/MotionVBox/MainHBox/InspectorVBox" method="motion_selected"]
 [connection signal="move_selected" from="." to="MainVBox/MainArea/MotionVBox/MainHBox/InspectorVBox/CurveEditPanel" method="move_selected"]
+[connection signal="move_selected" from="." to="MainVBox/MainArea/MotionVBox/MainHBox/InspectorVBox" method="move_selected"]
 [connection signal="moveset_changed" from="." to="MainVBox/MainArea/MotionVBox/TimelineVBox/PanelContainer/ColorRect/VBoxContainer/Control/HBoxContainer/MotionTimeline" method="populate_moveset"]
 [connection signal="moveset_invalid_changed" from="." to="MainVBox/Toolbar/ToolbarHBox/MovesetTab" method="set_disabled"]
 [connection signal="moveset_invalid_changed" from="." to="MainVBox/Toolbar/ToolbarHBox/SaveButton" method="set_disabled"]
@@ -848,10 +848,10 @@ __meta__ = {
 [connection signal="property_change_end" from="." to="ActionManager" method="property_change_end"]
 [connection signal="property_changed" from="." to="MainVBox/MainArea/MotionVBox/TimelineVBox/PanelContainer/ColorRect/VBoxContainer/Control/HBoxContainer/MotionTimeline" method="repopulate_motion"]
 [connection signal="selected_motion_changed" from="." to="MainVBox/MainArea/MotionVBox/TimelineVBox/PanelContainer/ColorRect/VBoxContainer/Control/HBoxContainer/MotionTimeline" method="populate_motion"]
-[connection signal="show_motion_editor" from="." to="MainVBox/Toolbar/ToolbarHBox/MotionTab" method="set_pressed" binds= [ true ]]
 [connection signal="show_motion_editor" from="." to="MainVBox/MainArea" method="show_motion_editor"]
-[connection signal="show_moveset_editor" from="." to="MainVBox/Toolbar/ToolbarHBox/MovesetTab" method="set_pressed" binds= [ true ]]
+[connection signal="show_motion_editor" from="." to="MainVBox/Toolbar/ToolbarHBox/MotionTab" method="set_pressed" binds= [ true ]]
 [connection signal="show_moveset_editor" from="." to="MainVBox/MainArea" method="show_moveset_editor"]
+[connection signal="show_moveset_editor" from="." to="MainVBox/Toolbar/ToolbarHBox/MovesetTab" method="set_pressed" binds= [ true ]]
 [connection signal="property_changed" from="ActionManager" to="." method="property_changed"]
 [connection signal="pressed" from="MainVBox/Toolbar/ToolbarHBox/OpenButton" to="MovesetFileDialog" method="popup"]
 [connection signal="pressed" from="MainVBox/Toolbar/ToolbarHBox/SaveButton" to="." method="save_moveset"]

@@ -43,16 +43,22 @@ func repopulate_motion() -> void:
 	populate_motion(cached_motion)
 
 func populate_motion_internal(motion: GridMotion, active: bool = false) -> void:
-	var node = Button.new()
-	node.text = motion.get_name()
-	node.clip_text = true
-	node.toggle_mode = true
-	node.pressed = active
-	node.group = button_group
-	node.mouse_filter = MOUSE_FILTER_PASS
-	node.size_flags_horizontal = SIZE_EXPAND_FILL
-	node.size_flags_vertical = SIZE_EXPAND_FILL
-	node.connect("pressed", self, "handle_motion_selected", [motion])
+	var add_move_button = Button.new()
+	add_move_button.text = "+"
+	add_move_button.set_anchors_and_margins_preset(Control.PRESET_TOP_RIGHT)
+	add_move_button.connect("pressed", self, "add_motion_move", [motion])
+
+	var motion_button = Button.new()
+	motion_button.text = motion.get_name()
+	motion_button.clip_text = true
+	motion_button.toggle_mode = true
+	motion_button.pressed = active
+	motion_button.group = button_group
+	motion_button.mouse_filter = MOUSE_FILTER_PASS
+	motion_button.size_flags_horizontal = SIZE_EXPAND_FILL
+	motion_button.size_flags_vertical = SIZE_EXPAND_FILL
+	motion_button.connect("pressed", self, "handle_motion_selected", [motion])
+	motion_button.add_child(add_move_button)
 
 	var curve_rect = CurveRect.new()
 	curve_rect.set_curve(motion.motion_curve)
@@ -79,14 +85,14 @@ func populate_motion_internal(motion: GridMotion, active: bool = false) -> void:
 	move_hbox.set("custom_constants/separation", 0)
 
 	for move in motion.motion_moves:
-		move_hbox.add_child(populate_move(move))
+		move_hbox.add_child(populate_move(motion, move))
 
 	var vbox = VBoxContainer.new()
 	vbox.set_meta("grid_motion", motion)
 	vbox.size_flags_horizontal = SIZE_EXPAND_FILL
 	vbox.size_flags_vertical = SIZE_EXPAND_FILL
 	vbox.size_flags_stretch_ratio = motion.get_duration() if motion.motion_moves.size() > 0 else 1.0
-	vbox.add_child(node)
+	vbox.add_child(motion_button)
 	vbox.add_child(curve_button)
 	vbox.add_child(move_hbox)
 	vbox.set("custom_constants/separation", 0)
@@ -96,23 +102,25 @@ func populate_motion_internal(motion: GridMotion, active: bool = false) -> void:
 	if motion.next_motion_idx != -1:
 		populate_motion_internal(cached_moveset.motions[motion.next_motion_idx])
 
-func populate_move(move: GridMove) -> Button:
-	var node = Button.new()
+func populate_move(motion: GridMotion, move: GridMove) -> Button:
+	var delete_button = Button.new()
+	delete_button.text = "-"
+	delete_button.set_anchors_and_margins_preset(Control.PRESET_TOP_RIGHT)
+	delete_button.connect("pressed", self, "delete_motion_move", [motion, move])
 
-	node.text = move.get_name()
-	node.size_flags_horizontal = SIZE_EXPAND_FILL
-	node.size_flags_vertical = SIZE_EXPAND_FILL
-	node.clip_text = true
-	node.toggle_mode = true
-	node.group = button_group
-	node.set_meta("grid_move", move)
-
-	node.mouse_filter = MOUSE_FILTER_PASS
-
-	node.size_flags_horizontal = SIZE_EXPAND_FILL
-	node.size_flags_vertical = SIZE_EXPAND_FILL
-
-	node.connect("pressed", self, "handle_move_selected", [move])
+	var move_button = Button.new()
+	move_button.text = move.get_name()
+	move_button.size_flags_horizontal = SIZE_EXPAND_FILL
+	move_button.size_flags_vertical = SIZE_EXPAND_FILL
+	move_button.clip_text = true
+	move_button.toggle_mode = true
+	move_button.group = button_group
+	move_button.set_meta("grid_move", move)
+	move_button.mouse_filter = MOUSE_FILTER_PASS
+	move_button.size_flags_horizontal = SIZE_EXPAND_FILL
+	move_button.size_flags_vertical = SIZE_EXPAND_FILL
+	move_button.connect("pressed", self, "handle_move_selected", [move])
+	move_button.add_child(delete_button)
 
 	var curve_rect_x = CurveRect.new()
 	curve_rect_x.set_curve(move.curve_x)
@@ -167,7 +175,7 @@ func populate_move(move: GridMove) -> Button:
 	vbox.size_flags_vertical = SIZE_EXPAND_FILL
 	vbox.size_flags_stretch_ratio = move.duration
 	vbox.set("custom_constants/separation", 0)
-	vbox.add_child(node)
+	vbox.add_child(move_button)
 	vbox.add_child(curve_button_x)
 	vbox.add_child(curve_button_y)
 	vbox.add_child(curve_button_facing)
@@ -196,3 +204,11 @@ var current_motion = null
 func set_current_motion(new_current_motion: GridMotion) -> void:
 	if current_motion != new_current_motion:
 		current_motion = new_current_motion
+
+func add_motion_move(motion: GridMotion) -> void:
+	motion.add_move()
+	repopulate_motion()
+
+func delete_motion_move(motion: GridMotion, move: GridMove) -> void:
+	motion.delete_move(move)
+	repopulate_motion()

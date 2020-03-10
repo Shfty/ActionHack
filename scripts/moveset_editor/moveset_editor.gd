@@ -83,7 +83,8 @@ func save_moveset() -> void:
 
 	var path = moveset.get_path()
 	if path != "":
-		ResourceSaver.save(path, moveset)
+		var result = ResourceSaver.save(path, moveset)
+		print("Save result: %s" % [result])
 
 func close_moveset() -> void:
 	set_moveset(null)

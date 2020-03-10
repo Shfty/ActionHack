@@ -44,3 +44,10 @@ func get_duration() -> float:
 	for move in motion_moves:
 		duration += move.duration
 	return duration
+
+func add_move() -> void:
+	motion_moves.append(GridMove.new())
+
+func delete_move(move: GridMove) -> void:
+	if move in motion_moves:
+		motion_moves.erase(move)
