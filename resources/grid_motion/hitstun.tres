@@ -15,6 +15,7 @@ max_value = 0.2
 _data = [ Vector2( 0, 0 ), 0.0, 2.20893, 0, 0, Vector2( 0.247082, 0.2 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
 
 [sub_resource type="Resource" id=4]
+resource_name = "Move"
 script = ExtResource( 1 )
 delta_position = Vector2( 0, 0 )
 delta_facing = 0

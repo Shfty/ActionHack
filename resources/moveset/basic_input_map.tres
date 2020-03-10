@@ -1,8 +1,9 @@
-[gd_resource type="Resource" load_steps=22 format=2]
+[gd_resource type="Resource" load_steps=24 format=2]
 
 [ext_resource path="res://scripts/resources/grid_moveset.gd" type="Script" id=1]
 [ext_resource path="res://scripts/resources/grid_move.gd" type="Script" id=2]
 [ext_resource path="res://scripts/resources/grid_motion.gd" type="Script" id=3]
+[ext_resource path="res://scripts/resources/grid_event.gd" type="Script" id=4]
 
 [sub_resource type="Curve" id=1]
 _data = [ Vector2( 0, 0 ), 0.0, 1.0, 0, 0, Vector2( 1, 1 ), 1.0, 0.0, 0, 0 ]
@@ -17,6 +18,13 @@ _data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
 _data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
 
 [sub_resource type="Resource" id=5]
+script = ExtResource( 4 )
+time = 0.0
+event_type = 0
+spawn_relative_position = Vector2( 0, 0 )
+spawn_params = [ null, null, null ]
+
+[sub_resource type="Resource" id=6]
 resource_name = "Move A"
 script = ExtResource( 2 )
 delta_position = Vector2( 0, 0 )
@@ -28,18 +36,19 @@ flip_curve_x = false
 flip_curve_y = false
 flip_curve_facing = false
 duration = 0.2
-events = [  ]
+events = [ SubResource( 5 ) ]
 input_press_motions = {
-
+"": -1,
+"move_forward": -1
 }
 input_release_motions = {
-
+"": -1
 }
 
-[sub_resource type="Resource" id=6]
+[sub_resource type="Resource" id=7]
 resource_name = "New Motion A"
 script = ExtResource( 3 )
-motion_moves = [ SubResource( 5 ) ]
+motion_moves = [ SubResource( 6 ) ]
 motion_curve = SubResource( 1 )
 looping = false
 cancelable = false
@@ -49,11 +58,8 @@ hit_wall_motion_idx = -1
 hit_entity_motion_idx = -1
 next_motion_idx = 1
 
-[sub_resource type="Curve" id=7]
-_data = [ Vector2( 0, 0 ), 0.0, 1.0, 0, 0, Vector2( 1, 1 ), 1.0, 0.0, 0, 0 ]
-
 [sub_resource type="Curve" id=8]
-_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+_data = [ Vector2( 0, 0 ), 0.0, 1.0, 0, 0, Vector2( 1, 1 ), 1.0, 0.0, 0, 0 ]
 
 [sub_resource type="Curve" id=9]
 _data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
@@ -61,14 +67,17 @@ _data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
 [sub_resource type="Curve" id=10]
 _data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="Resource" id=11]
+[sub_resource type="Curve" id=11]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Resource" id=12]
 resource_name = "Move B"
 script = ExtResource( 2 )
 delta_position = Vector2( 0, 0 )
 delta_facing = 0
-curve_x = SubResource( 9 )
-curve_y = SubResource( 10 )
-curve_facing = SubResource( 8 )
+curve_x = SubResource( 10 )
+curve_y = SubResource( 11 )
+curve_facing = SubResource( 9 )
 flip_curve_x = false
 flip_curve_y = false
 flip_curve_facing = false
@@ -81,11 +90,11 @@ input_release_motions = {
 
 }
 
-[sub_resource type="Resource" id=12]
+[sub_resource type="Resource" id=13]
 resource_name = "New Motion B"
 script = ExtResource( 3 )
-motion_moves = [ SubResource( 11 ) ]
-motion_curve = SubResource( 7 )
+motion_moves = [ SubResource( 12 ) ]
+motion_curve = SubResource( 8 )
 looping = false
 cancelable = false
 lock_input_buffer = false
@@ -94,11 +103,8 @@ hit_wall_motion_idx = -1
 hit_entity_motion_idx = -1
 next_motion_idx = 2
 
-[sub_resource type="Curve" id=13]
-_data = [ Vector2( 0, 0 ), 0.0, 1.0, 0, 0, Vector2( 1, 1 ), 1.0, 0.0, 0, 0 ]
-
 [sub_resource type="Curve" id=14]
-_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+_data = [ Vector2( 0, 0 ), 0.0, 1.0, 0, 0, Vector2( 1, 1 ), 1.0, 0.0, 0, 0 ]
 
 [sub_resource type="Curve" id=15]
 _data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
@@ -106,14 +112,17 @@ _data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
 [sub_resource type="Curve" id=16]
 _data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="Resource" id=17]
+[sub_resource type="Curve" id=17]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Resource" id=18]
 resource_name = "Move C"
 script = ExtResource( 2 )
 delta_position = Vector2( 0, 0 )
 delta_facing = 0
-curve_x = SubResource( 15 )
-curve_y = SubResource( 16 )
-curve_facing = SubResource( 14 )
+curve_x = SubResource( 16 )
+curve_y = SubResource( 17 )
+curve_facing = SubResource( 15 )
 flip_curve_x = false
 flip_curve_y = false
 flip_curve_facing = false
@@ -126,11 +135,11 @@ input_release_motions = {
 
 }
 
-[sub_resource type="Resource" id=18]
+[sub_resource type="Resource" id=19]
 resource_name = "New Motion C"
 script = ExtResource( 3 )
-motion_moves = [ SubResource( 17 ) ]
-motion_curve = SubResource( 13 )
+motion_moves = [ SubResource( 18 ) ]
+motion_curve = SubResource( 14 )
 looping = false
 cancelable = false
 lock_input_buffer = false
@@ -162,4 +171,4 @@ input_map = {
 "turn_left": -1,
 "turn_right": -1
 }
-motions = [ SubResource( 6 ), SubResource( 12 ), SubResource( 18 ) ]
+motions = [ SubResource( 7 ), SubResource( 13 ), SubResource( 19 ) ]
