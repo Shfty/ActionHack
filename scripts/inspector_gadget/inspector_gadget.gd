@@ -113,6 +113,10 @@ func populate_value(value) -> void:
 			var label = Label.new()
 			label.text = String(i)
 
+			var hbox := HBoxContainer.new()
+			hbox.size_flags_horizontal = SIZE_EXPAND_FILL
+			hbox.add_child(label)
+
 			var gadget: InspectorGadgetBase = get_gadget_for_type(value[i], subnames)
 			if gadget:
 				gadget.size_flags_horizontal = SIZE_EXPAND_FILL
@@ -134,10 +138,7 @@ func populate_value(value) -> void:
 				if 'filter_built_in_properties' in gadget:
 					gadget.filter_built_in_properties = filter_built_in_properties
 
-			var hbox := HBoxContainer.new()
-			hbox.size_flags_horizontal = SIZE_EXPAND_FILL
-			hbox.add_child(label)
-			hbox.add_child(gadget)
+				hbox.add_child(gadget)
 
 			if editable:
 				var delete_button := Button.new()
