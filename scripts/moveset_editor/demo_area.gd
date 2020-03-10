@@ -1,7 +1,7 @@
 extends ViewportContainer
 tool
 
-onready var grid_actor = $Viewport/GridWorld/GridActor
+onready var grid_actor = $DemoAreaViewport/GridWorld/GridActor
 
 onready var cached_x = grid_actor.x
 onready var cached_y = grid_actor.y
@@ -19,10 +19,10 @@ func handle_resized() -> void:
 	rect_position = grid_size.posmod(1.0) * GridUtil.TILE_SIZE
 
 	grid_size = grid_size.floor()
-	$Viewport.size = grid_size * GridUtil.TILE_SIZE
+	$DemoAreaViewport.size = grid_size * GridUtil.TILE_SIZE
 	rect_size = grid_size * GridUtil.TILE_SIZE * 2.0
 
-	var tile_map = $Viewport/GridWorld/TileMap
+	var tile_map = $DemoAreaViewport/GridWorld/TileMap
 	tile_map.clear()
 	for x in range(0, grid_size.x):
 		for y in range(0, grid_size.y):

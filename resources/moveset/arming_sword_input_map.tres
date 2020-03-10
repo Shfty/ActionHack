@@ -14,6 +14,9 @@ looping = false
 cancelable = false
 lock_input_buffer = false
 lock_inputs = [  ]
+hit_wall_motion_idx = -1
+hit_entity_motion_idx = -1
+next_motion_idx = -1
 
 [resource]
 resource_name = "Arming Sword"

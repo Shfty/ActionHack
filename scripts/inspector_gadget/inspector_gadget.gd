@@ -55,9 +55,6 @@ func populate_controls() -> void:
 	add_child(panel_container)
 
 func populate_value(value) -> void:
-	if not value:
-		return
-
 	var vbox = get_controls()[0]
 	if value is Object:
 		var property_list = value.get_property_list()
@@ -100,6 +97,9 @@ func populate_value(value) -> void:
 				if 'custom_gadget_metadata' in gadget:
 					gadget.custom_gadget_metadata = custom_gadget_metadata
 
+				if 'container_type_hints' in gadget:
+					gadget.container_type_hints = container_type_hints
+
 				if 'filter_built_in_properties' in gadget:
 					gadget.filter_built_in_properties = filter_built_in_properties
 
@@ -127,6 +127,9 @@ func populate_value(value) -> void:
 
 				if 'custom_gadget_metadata' in gadget:
 					gadget.custom_gadget_metadata = custom_gadget_metadata
+
+				if 'container_type_hints' in gadget:
+					gadget.container_type_hints = container_type_hints
 
 				if 'filter_built_in_properties' in gadget:
 					gadget.filter_built_in_properties = filter_built_in_properties
@@ -185,6 +188,9 @@ func populate_value(value) -> void:
 				if 'custom_gadget_metadata' in key_gadget:
 					key_gadget.custom_gadget_metadata = custom_gadget_metadata
 
+				if 'container_type_hints' in key_gadget:
+					key_gadget.container_type_hints = container_type_hints
+
 				if 'filter_built_in_properties' in key_gadget:
 					key_gadget.filter_built_in_properties = filter_built_in_properties
 
@@ -202,6 +208,9 @@ func populate_value(value) -> void:
 
 				if 'custom_gadget_metadata' in value_gadget:
 					value_gadget.custom_gadget_metadata = custom_gadget_metadata
+
+				if 'container_type_hints' in value_gadget:
+					value_gadget.container_type_hints = container_type_hints
 
 				if 'filter_built_in_properties' in value_gadget:
 					value_gadget.filter_built_in_properties = filter_built_in_properties

@@ -153,3 +153,7 @@ func moveset_motion_list_gadget_event(event) -> void:
 			set_selected_motion(event['motion'])
 		"grid_motion_delete":
 			delete_moveset_motion(event['motion'])
+
+
+func demo_replay() -> void:
+	emit_signal("demo_replay")

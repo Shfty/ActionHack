@@ -66,6 +66,7 @@ func populate_motion_internal(motion: GridMotion, active: bool = false) -> void:
 	curve_button.mouse_filter = MOUSE_FILTER_PASS
 	curve_button.size_flags_horizontal = SIZE_EXPAND_FILL
 	curve_button.size_flags_vertical = SIZE_EXPAND_FILL
+	curve_button.rect_clip_content = true
 	curve_button.toggle_mode = true
 	curve_button.group = button_group
 	curve_button.connect("pressed", self, "handle_curve_selected", [motion.motion_curve, 0.0, 1.0, Color.white])
@@ -98,8 +99,7 @@ func populate_motion_internal(motion: GridMotion, active: bool = false) -> void:
 func populate_move(move: GridMove) -> Button:
 	var node = Button.new()
 
-	var move_name = move.get_name()
-	node.text = move_name if not move_name == "" else "Move"
+	node.text = move.get_name()
 	node.size_flags_horizontal = SIZE_EXPAND_FILL
 	node.size_flags_vertical = SIZE_EXPAND_FILL
 	node.clip_text = true

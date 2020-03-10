@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=2]
+[gd_scene load_steps=31 format=2]
 
 [ext_resource path="res://textures/icons/ei-archive.svg" type="Texture" id=1]
 [ext_resource path="res://textures/icons/ei-share-apple.svg" type="Texture" id=2]
@@ -15,12 +15,14 @@
 [ext_resource path="res://scripts/moveset_editor/moveset_editor_inspector_gadget.gd" type="Script" id=13]
 [ext_resource path="res://scripts/inspector_gadget/gadgets/gadget_string_edit.gd" type="Script" id=14]
 [ext_resource path="res://scripts/moveset_editor/moveset_editor_timeline.gd" type="Script" id=15]
+[ext_resource path="res://scripts/signal_visualizer_2d.gd" type="Script" id=16]
 [ext_resource path="res://scripts/signal_receiver.gd" type="Script" id=17]
 [ext_resource path="res://scripts/inspector_gadget/gadgets/gadget_resource/gadget_motion_choice.gd" type="Script" id=18]
 [ext_resource path="res://scripts/inspector_gadget/inspector_gadget.gd" type="Script" id=19]
 [ext_resource path="res://scripts/inspector_gadget/gadgets/gadget_string_label.gd" type="Script" id=20]
 [ext_resource path="res://scripts/inspector_gadget/gadgets/gadget_resource/gadget_motion_button.gd" type="Script" id=21]
 [ext_resource path="res://scripts/resources/grid_motion.gd" type="Script" id=22]
+[ext_resource path="res://scripts/resources/grid_event.gd" type="Script" id=23]
 
 [sub_resource type="ButtonGroup" id=1]
 resource_name = "Header Button Group"
@@ -58,6 +60,28 @@ func toggle() -> void:
 "
 
 [sub_resource type="GDScript" id=4]
+script/source = "extends VBoxContainer
+
+func show_motion_inspector() -> void:
+	$MotionHeader.visible = true
+	$MotionScrollContainer.visible = true
+	$MoveHeader.visible = false
+	$MoveScrollContainer.visible = false
+
+func show_move_inspector() -> void:
+	$MotionHeader.visible = false
+	$MotionScrollContainer.visible = false
+	$MoveHeader.visible = true
+	$MoveScrollContainer.visible = true
+
+func motion_selected(motion) -> void:
+	show_motion_inspector()
+
+func move_selected(move) -> void:
+	show_move_inspector()
+"
+
+[sub_resource type="GDScript" id=5]
 script/source = "extends PanelContainer
 
 func populate_curve(curve: Curve, min_value: float = -1.0, max_value: float = 1.0, color: Color = Color.white) -> void:
@@ -79,7 +103,7 @@ func move_selected(motion: GridMotion) -> void:
 
 "
 
-[sub_resource type="GDScript" id=5]
+[sub_resource type="GDScript" id=6]
 script/source = "extends HBoxContainer
 
 signal mouse_wheel_up()
@@ -103,77 +127,8 @@ func _gui_input(event: InputEvent) -> void:
 				emit_signal(\"mouse_wheel_down\")
 "
 
-[sub_resource type="GDScript" id=6]
-script/source = "extends FileDialog
-"
-
 [sub_resource type="GDScript" id=7]
-script/source = "extends Control
-tool
-
-func _ready() -> void:
-	set_meta(\"_edit_lock_\", true)
-	queue_redraw()
-
-func queue_redraw():
-	update()
-	yield(get_tree().create_timer(0.1), \"timeout\")
-	queue_redraw()
-
-func _draw() -> void:
-	var root_node = get_owner()
-	draw_connections(root_node)
-
-func draw_connections(node: Node):
-	if not node.has_method('is_visible_in_tree'):
-		return
-
-	if not node.is_visible_in_tree():
-		return
-
-	var signal_list = node.get_signal_list()
-	for signal_dict in signal_list:
-		var signal_name = signal_dict['name']
-		var connections = node.get_signal_connection_list(signal_name)
-		for connection in connections:
-			draw_connection(connection)
-
-	for child in node.get_children():
-		draw_connections(child)
-
-func draw_connection(connection: Dictionary):
-	if not CONNECT_PERSIST & connection['flags'] == CONNECT_PERSIST:
-		return
-
-	var source = connection['source']
-	var target = connection['target']
-
-	if not target.has_method('is_visible_in_tree'):
-		return
-
-	if not target.is_visible_in_tree():
-		return
-
-	if not 'rect_global_position' in source or not 'rect_global_position' in target:
-		return
-
-	var from = source.rect_global_position + source.rect_size * 0.5
-	var to = target.rect_global_position + target.rect_size * 0.5
-
-	var delta = (to - from).normalized()
-
-	draw_circle(from, 2.0, Color.pink)
-	draw_circle(to, 2.0, Color.pink)
-	draw_arrow(from + delta * 5.0, to - delta * 5.0, Color.red)
-
-func draw_arrow(from: Vector2, to: Vector2, color: Color, width: float = 1.0, antialiased: bool = false):
-	draw_line(from, to, color, width, antialiased)
-
-	var tf = (from - to).normalized()
-	var left_spoke = tf.rotated(deg2rad(-30.0))
-	var right_spoke = tf.rotated(deg2rad(30.0))
-	draw_line(to, to + left_spoke * 10.0, color, width, antialiased)
-	draw_line(to, to + right_spoke * 10.0, color, width, antialiased)
+script/source = "extends FileDialog
 "
 
 [node name="MovesetEditor" type="Control"]
@@ -285,6 +240,7 @@ size_flags_vertical = 3
 script = SubResource( 2 )
 
 [node name="MovesetHBox" type="HBoxContainer" parent="MainVBox/MainArea"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 custom_constants/separation = 0
@@ -455,7 +411,6 @@ container_type_hints = {
 }
 
 [node name="MotionVBox" type="VBoxContainer" parent="MainVBox/MainArea"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 custom_constants/separation = 0
@@ -474,14 +429,14 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="MainVBox/MainArea/MotionVBox/MainHBox"]
+[node name="DemoAreaVBox" type="VBoxContainer" parent="MainVBox/MainArea/MotionVBox/MainHBox"]
 margin_right = 480.0
 margin_bottom = 532.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 0
 
-[node name="PanelContainer" type="PanelContainer" parent="MainVBox/MainArea/MotionVBox/MainHBox/VBoxContainer2"]
+[node name="DemoAreaPanel" type="PanelContainer" parent="MainVBox/MainArea/MotionVBox/MainHBox/DemoAreaVBox"]
 margin_right = 480.0
 margin_bottom = 487.0
 size_flags_horizontal = 3
@@ -490,7 +445,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Control" type="Control" parent="MainVBox/MainArea/MotionVBox/MainHBox/VBoxContainer2/PanelContainer"]
+[node name="DemoAreaRect" type="Control" parent="MainVBox/MainArea/MotionVBox/MainHBox/DemoAreaVBox/DemoAreaPanel"]
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 473.0
@@ -498,7 +453,7 @@ margin_bottom = 480.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="ViewportContainer" type="ViewportContainer" parent="MainVBox/MainArea/MotionVBox/MainHBox/VBoxContainer2/PanelContainer/Control"]
+[node name="DemoAreaViewportContainer" type="ViewportContainer" parent="MainVBox/MainArea/MotionVBox/MainHBox/DemoAreaVBox/DemoAreaPanel/DemoAreaRect"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 13.0
@@ -512,22 +467,22 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Viewport" type="Viewport" parent="MainVBox/MainArea/MotionVBox/MainHBox/VBoxContainer2/PanelContainer/Control/ViewportContainer"]
+[node name="DemoAreaViewport" type="Viewport" parent="MainVBox/MainArea/MotionVBox/MainHBox/DemoAreaVBox/DemoAreaPanel/DemoAreaRect/DemoAreaViewportContainer"]
 size = Vector2( 220, 220 )
 size_override_stretch = true
 handle_input_locally = false
 hdr = false
 usage = 0
-render_target_update_mode = 0
+render_target_update_mode = 3
 audio_listener_enable_2d = true
 
-[node name="GridWorld" type="Node2D" parent="MainVBox/MainArea/MotionVBox/MainHBox/VBoxContainer2/PanelContainer/Control/ViewportContainer/Viewport"]
+[node name="GridWorld" type="Node2D" parent="MainVBox/MainArea/MotionVBox/MainHBox/DemoAreaVBox/DemoAreaPanel/DemoAreaRect/DemoAreaViewportContainer/DemoAreaViewport"]
 script = ExtResource( 5 )
 __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="TileMap" type="TileMap" parent="MainVBox/MainArea/MotionVBox/MainHBox/VBoxContainer2/PanelContainer/Control/ViewportContainer/Viewport/GridWorld"]
+[node name="TileMap" type="TileMap" parent="MainVBox/MainArea/MotionVBox/MainHBox/DemoAreaVBox/DemoAreaPanel/DemoAreaRect/DemoAreaViewportContainer/DemoAreaViewport/GridWorld"]
 tile_set = ExtResource( 6 )
 cell_size = Vector2( 20, 20 )
 format = 1
@@ -536,7 +491,7 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="GridActor" type="Node2D" parent="MainVBox/MainArea/MotionVBox/MainHBox/VBoxContainer2/PanelContainer/Control/ViewportContainer/Viewport/GridWorld"]
+[node name="GridActor" type="Node2D" parent="MainVBox/MainArea/MotionVBox/MainHBox/DemoAreaVBox/DemoAreaPanel/DemoAreaRect/DemoAreaViewportContainer/DemoAreaViewport/GridWorld"]
 position = Vector2( 100, 100 )
 script = ExtResource( 4 )
 __meta__ = {
@@ -546,30 +501,30 @@ sprite_texture = ExtResource( 3 )
 x = 5
 y = 5
 
-[node name="Offset" type="Node2D" parent="MainVBox/MainArea/MotionVBox/MainHBox/VBoxContainer2/PanelContainer/Control/ViewportContainer/Viewport/GridWorld/GridActor"]
+[node name="Offset" type="Node2D" parent="MainVBox/MainArea/MotionVBox/MainHBox/DemoAreaVBox/DemoAreaPanel/DemoAreaRect/DemoAreaViewportContainer/DemoAreaViewport/GridWorld/GridActor"]
 position = Vector2( 10, 10 )
 __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="Sprite" type="Sprite" parent="MainVBox/MainArea/MotionVBox/MainHBox/VBoxContainer2/PanelContainer/Control/ViewportContainer/Viewport/GridWorld/GridActor/Offset"]
+[node name="Sprite" type="Sprite" parent="MainVBox/MainArea/MotionVBox/MainHBox/DemoAreaVBox/DemoAreaPanel/DemoAreaRect/DemoAreaViewportContainer/DemoAreaViewport/GridWorld/GridActor/Offset"]
 texture = ExtResource( 3 )
 __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="PanelContainer2" type="PanelContainer" parent="MainVBox/MainArea/MotionVBox/MainHBox/VBoxContainer2"]
+[node name="PanelContainer2" type="PanelContainer" parent="MainVBox/MainArea/MotionVBox/MainHBox/DemoAreaVBox"]
 margin_top = 487.0
 margin_right = 480.0
 margin_bottom = 532.0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MainVBox/MainArea/MotionVBox/MainHBox/VBoxContainer2/PanelContainer2"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainVBox/MainArea/MotionVBox/MainHBox/DemoAreaVBox/PanelContainer2"]
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 473.0
 margin_bottom = 38.0
 
-[node name="Button" type="Button" parent="MainVBox/MainArea/MotionVBox/MainHBox/VBoxContainer2/PanelContainer2/HBoxContainer"]
+[node name="Button" type="Button" parent="MainVBox/MainArea/MotionVBox/MainHBox/DemoAreaVBox/PanelContainer2/HBoxContainer"]
 margin_left = 214.0
 margin_right = 251.0
 margin_bottom = 31.0
@@ -578,20 +533,21 @@ hint_tooltip = "Play"
 size_flags_horizontal = 6
 icon = ExtResource( 9 )
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainVBox/MainArea/MotionVBox/MainHBox"]
+[node name="InspectorVBox" type="VBoxContainer" parent="MainVBox/MainArea/MotionVBox/MainHBox"]
 margin_left = 480.0
 margin_right = 960.0
 margin_bottom = 532.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 0
+script = SubResource( 4 )
 
-[node name="Header" type="PanelContainer" parent="MainVBox/MainArea/MotionVBox/MainHBox/VBoxContainer"]
+[node name="MotionHeader" type="PanelContainer" parent="MainVBox/MainArea/MotionVBox/MainHBox/InspectorVBox"]
 margin_right = 480.0
 margin_bottom = 56.0
 size_flags_horizontal = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainVBox/MainArea/MotionVBox/MainHBox/VBoxContainer/Header"]
+[node name="MotionHeaderVBox" type="VBoxContainer" parent="MainVBox/MainArea/MotionVBox/MainHBox/InspectorVBox/MotionHeader"]
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 473.0
@@ -600,12 +556,12 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="Label" type="Label" parent="MainVBox/MainArea/MotionVBox/MainHBox/VBoxContainer/Header/VBoxContainer"]
+[node name="MotionNameLabel" type="Label" parent="MainVBox/MainArea/MotionVBox/MainHBox/InspectorVBox/MotionHeader/MotionHeaderVBox"]
 margin_right = 466.0
 margin_bottom = 14.0
-text = "Name"
+text = "Motion Name"
 
-[node name="GadgetString" type="MarginContainer" parent="MainVBox/MainArea/MotionVBox/MainHBox/VBoxContainer/Header/VBoxContainer"]
+[node name="MotionNameGadgetString" type="MarginContainer" parent="MainVBox/MainArea/MotionVBox/MainHBox/InspectorVBox/MotionHeader/MotionHeaderVBox"]
 margin_top = 18.0
 margin_right = 466.0
 margin_bottom = 42.0
@@ -613,42 +569,102 @@ script = ExtResource( 14 )
 node_path = NodePath("../../../../../../../..")
 subnames = ":selected_motion:resource_name"
 
-[node name="ScrollContainer" type="ScrollContainer" parent="MainVBox/MainArea/MotionVBox/MainHBox/VBoxContainer"]
+[node name="MotionScrollContainer" type="ScrollContainer" parent="MainVBox/MainArea/MotionVBox/MainHBox/InspectorVBox"]
 margin_top = 56.0
+margin_right = 480.0
+margin_bottom = 266.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+scroll_horizontal_enabled = false
+
+[node name="MotionInspectorGadget" type="MarginContainer" parent="MainVBox/MainArea/MotionVBox/MainHBox/InspectorVBox/MotionScrollContainer"]
+margin_right = 480.0
+margin_bottom = 210.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource( 13 )
+node_path = NodePath("../../../../../../..")
+subnames = ":selected_motion"
+property_blacklist = [ "motion_moves", "motion_curve" ]
+custom_gadget_paths = {
+":selected_motion:hit_entity_motion_idx": ExtResource( 18 ),
+":selected_motion:hit_wall_motion_idx": ExtResource( 18 ),
+":selected_motion:next_motion_idx": ExtResource( 18 )
+}
+container_type_hints = {
+":selected_motion:lock_inputs": ""
+}
+
+[node name="MoveHeader" type="PanelContainer" parent="MainVBox/MainArea/MotionVBox/MainHBox/InspectorVBox"]
+margin_top = 266.0
+margin_right = 480.0
+margin_bottom = 322.0
+size_flags_horizontal = 3
+
+[node name="MoveHeaderVBox" type="VBoxContainer" parent="MainVBox/MainArea/MotionVBox/MainHBox/InspectorVBox/MoveHeader"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 473.0
+margin_bottom = 49.0
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="MoveHeaderLabel" type="Label" parent="MainVBox/MainArea/MotionVBox/MainHBox/InspectorVBox/MoveHeader/MoveHeaderVBox"]
+margin_right = 466.0
+margin_bottom = 14.0
+text = "Move Name"
+
+[node name="MoveNameGadgetString" type="MarginContainer" parent="MainVBox/MainArea/MotionVBox/MainHBox/InspectorVBox/MoveHeader/MoveHeaderVBox"]
+margin_top = 18.0
+margin_right = 466.0
+margin_bottom = 42.0
+script = ExtResource( 14 )
+node_path = NodePath("../../../../../../../..")
+subnames = ":selected_move:resource_name"
+
+[node name="MoveScrollContainer" type="ScrollContainer" parent="MainVBox/MainArea/MotionVBox/MainHBox/InspectorVBox"]
+margin_top = 322.0
 margin_right = 480.0
 margin_bottom = 532.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 scroll_horizontal_enabled = false
 
-[node name="MotionInspectorGadget" type="MarginContainer" parent="MainVBox/MainArea/MotionVBox/MainHBox/VBoxContainer/ScrollContainer"]
+[node name="MoveInspectorGadget" type="MarginContainer" parent="MainVBox/MainArea/MotionVBox/MainHBox/InspectorVBox/MoveScrollContainer"]
 margin_right = 480.0
-margin_bottom = 476.0
+margin_bottom = 210.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 13 )
 node_path = NodePath("../../../../../../..")
-subnames = ":selected_motion"
-property_blacklist = [ "motion_moves", "motion_curve", "curve_x", "curve_y", "curve_facing" ]
+subnames = ":selected_move"
+property_blacklist = [ "curve_x", "curve_y", "curve_facing" ]
 custom_gadget_paths = {
-":selected_motion:hit_entity_motion_idx": ExtResource( 18 ),
-":selected_motion:hit_wall_motion_idx": ExtResource( 18 ),
-":selected_motion:next_motion_idx": ExtResource( 18 )
+":selected_move:input_press_motions:[values]": ExtResource( 18 ),
+":selected_move:input_release_motions:[values]": ExtResource( 18 )
+}
+container_type_hints = {
+":selected_move:events": ExtResource( 23 ),
+":selected_move:input_press_motions:[keys]": "",
+":selected_move:input_press_motions:[values]": -1,
+":selected_move:input_release_motions:[keys]": "",
+":selected_move:input_release_motions:[values]": -1
 }
 
-[node name="CurveEditPanel" type="PanelContainer" parent="MainVBox/MainArea/MotionVBox/MainHBox/VBoxContainer"]
+[node name="CurveEditPanel" type="PanelContainer" parent="MainVBox/MainArea/MotionVBox/MainHBox/InspectorVBox"]
 visible = false
 margin_top = 294.0
 margin_right = 480.0
 margin_bottom = 532.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-script = SubResource( 4 )
+script = SubResource( 5 )
 __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="CurveEdit" type="Control" parent="MainVBox/MainArea/MotionVBox/MainHBox/VBoxContainer/CurveEditPanel"]
+[node name="CurveEdit" type="Control" parent="MainVBox/MainArea/MotionVBox/MainHBox/InspectorVBox/CurveEditPanel"]
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 473.0
@@ -710,7 +726,7 @@ anchor_bottom = 1.0
 size_flags_horizontal = 0
 size_flags_vertical = 3
 custom_constants/separation = 0
-script = SubResource( 5 )
+script = SubResource( 6 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -799,7 +815,7 @@ mode = 0
 filters = PoolStringArray( "*.tres" )
 current_dir = "res://resources/grid_motion"
 current_path = "res://resources/grid_motion/"
-script = SubResource( 6 )
+script = SubResource( 7 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -809,31 +825,33 @@ visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
-script = SubResource( 7 )
+script = ExtResource( 16 )
 __meta__ = {
 "_edit_lock_": true,
 "_editor_lock": true
 }
-[connection signal="curve_selected" from="." to="MainVBox/MainArea/MotionVBox/MainHBox/VBoxContainer/CurveEditPanel" method="populate_curve"]
+[connection signal="curve_selected" from="." to="MainVBox/MainArea/MotionVBox/MainHBox/InspectorVBox/CurveEditPanel" method="populate_curve"]
+[connection signal="demo_replay" from="." to="MainVBox/MainArea/MotionVBox/MainHBox/DemoAreaVBox/DemoAreaPanel/DemoAreaRect/DemoAreaViewportContainer" method="replay"]
 [connection signal="hide_editors" from="." to="MainVBox/MainArea" method="hide_editors"]
 [connection signal="motion_invalid_changed" from="." to="MainVBox/Toolbar/ToolbarHBox/MotionTab" method="set_disabled"]
-[connection signal="motion_selected" from="." to="MainVBox/MainArea/MotionVBox/MainHBox/VBoxContainer/CurveEditPanel" method="motion_selected"]
-[connection signal="move_selected" from="." to="MainVBox/MainArea/MotionVBox/MainHBox/VBoxContainer/CurveEditPanel" method="move_selected"]
+[connection signal="motion_selected" from="." to="MainVBox/MainArea/MotionVBox/MainHBox/InspectorVBox" method="motion_selected"]
+[connection signal="motion_selected" from="." to="MainVBox/MainArea/MotionVBox/MainHBox/InspectorVBox/CurveEditPanel" method="motion_selected"]
+[connection signal="move_selected" from="." to="MainVBox/MainArea/MotionVBox/MainHBox/InspectorVBox" method="move_selected"]
+[connection signal="move_selected" from="." to="MainVBox/MainArea/MotionVBox/MainHBox/InspectorVBox/CurveEditPanel" method="move_selected"]
 [connection signal="moveset_changed" from="." to="MainVBox/MainArea/MotionVBox/TimelineVBox/PanelContainer/ColorRect/VBoxContainer/Control/HBoxContainer/MotionTimeline" method="populate_moveset"]
+[connection signal="moveset_invalid_changed" from="." to="MainVBox/Toolbar/ToolbarHBox/MovesetTab" method="set_disabled"]
 [connection signal="moveset_invalid_changed" from="." to="MainVBox/Toolbar/ToolbarHBox/SaveButton" method="set_disabled"]
 [connection signal="moveset_invalid_changed" from="." to="MainVBox/Toolbar/ToolbarHBox/CloseButton" method="set_disabled"]
-[connection signal="moveset_invalid_changed" from="." to="MainVBox/Toolbar/ToolbarHBox/MovesetTab" method="set_disabled"]
+[connection signal="moveset_motions_changed_value" from="." to="MainVBox/MainArea/MotionVBox/MainHBox/InspectorVBox/MotionScrollContainer/MotionInspectorGadget" method="set_moveset_motions"]
 [connection signal="moveset_motions_changed_value" from="." to="MainVBox/MainArea/MovesetHBox/MovesetVBox/MovesetResourcesHBox/PanelContainer/VBoxContainer/ScrollContainer/InputMapInspectorGadget" method="set_moveset_motions"]
-[connection signal="moveset_motions_changed_value" from="." to="MainVBox/MainArea/MotionVBox/MainHBox/VBoxContainer/ScrollContainer/MotionInspectorGadget" method="set_moveset_motions"]
 [connection signal="property_change_begin" from="." to="ActionManager" method="property_change_begin"]
 [connection signal="property_change_end" from="." to="ActionManager" method="property_change_end"]
 [connection signal="property_changed" from="." to="MainVBox/MainArea/MotionVBox/TimelineVBox/PanelContainer/ColorRect/VBoxContainer/Control/HBoxContainer/MotionTimeline" method="repopulate_motion"]
-[connection signal="selected_motion_changed" from="." to="MainVBox/MainArea/MotionVBox/MainHBox/VBoxContainer/ScrollContainer/MotionInspectorGadget" method="set_ignore_motion"]
 [connection signal="selected_motion_changed" from="." to="MainVBox/MainArea/MotionVBox/TimelineVBox/PanelContainer/ColorRect/VBoxContainer/Control/HBoxContainer/MotionTimeline" method="populate_motion"]
-[connection signal="show_motion_editor" from="." to="MainVBox/MainArea" method="show_motion_editor"]
 [connection signal="show_motion_editor" from="." to="MainVBox/Toolbar/ToolbarHBox/MotionTab" method="set_pressed" binds= [ true ]]
-[connection signal="show_moveset_editor" from="." to="MainVBox/MainArea" method="show_moveset_editor"]
+[connection signal="show_motion_editor" from="." to="MainVBox/MainArea" method="show_motion_editor"]
 [connection signal="show_moveset_editor" from="." to="MainVBox/Toolbar/ToolbarHBox/MovesetTab" method="set_pressed" binds= [ true ]]
+[connection signal="show_moveset_editor" from="." to="MainVBox/MainArea" method="show_moveset_editor"]
 [connection signal="property_changed" from="ActionManager" to="." method="property_changed"]
 [connection signal="pressed" from="MainVBox/Toolbar/ToolbarHBox/OpenButton" to="MovesetFileDialog" method="popup"]
 [connection signal="pressed" from="MainVBox/Toolbar/ToolbarHBox/SaveButton" to="." method="save_moveset"]
@@ -848,18 +866,22 @@ __meta__ = {
 [connection signal="change_property_begin" from="MainVBox/MainArea/MovesetHBox/MovesetVBox/MovesetResourcesHBox/VBoxContainer2/PanelContainer2/VBoxContainer/ScrollContainer/MotionListInspectorGadget" to="." method="property_change_begin"]
 [connection signal="change_property_end" from="MainVBox/MainArea/MovesetHBox/MovesetVBox/MovesetResourcesHBox/VBoxContainer2/PanelContainer2/VBoxContainer/ScrollContainer/MotionListInspectorGadget" to="." method="property_change_end"]
 [connection signal="gadget_event" from="MainVBox/MainArea/MovesetHBox/MovesetVBox/MovesetResourcesHBox/VBoxContainer2/PanelContainer2/VBoxContainer/ScrollContainer/MotionListInspectorGadget" to="." method="moveset_motion_list_gadget_event"]
-[connection signal="animation_progress_changed" from="MainVBox/MainArea/MotionVBox/MainHBox/VBoxContainer2/PanelContainer/Control/ViewportContainer/Viewport/GridWorld/GridActor" to="MainVBox/MainArea/MotionVBox/TimelineVBox/PanelContainer/ColorRect/VBoxContainer/Control/HBoxContainer/MotionTimeline" method="set_animation_progress"]
-[connection signal="current_motion_changed" from="MainVBox/MainArea/MotionVBox/MainHBox/VBoxContainer2/PanelContainer/Control/ViewportContainer/Viewport/GridWorld/GridActor" to="MainVBox/MainArea/MotionVBox/TimelineVBox/PanelContainer/ColorRect/VBoxContainer/Control/HBoxContainer/MotionTimeline" method="set_current_motion"]
-[connection signal="pressed" from="MainVBox/MainArea/MotionVBox/MainHBox/VBoxContainer2/PanelContainer2/HBoxContainer/Button" to="." method="demo_replay"]
-[connection signal="change_property_begin" from="MainVBox/MainArea/MotionVBox/MainHBox/VBoxContainer/Header/VBoxContainer/GadgetString" to="." method="property_change_begin"]
-[connection signal="change_property_end" from="MainVBox/MainArea/MotionVBox/MainHBox/VBoxContainer/Header/VBoxContainer/GadgetString" to="." method="property_change_end"]
-[connection signal="change_property_begin" from="MainVBox/MainArea/MotionVBox/MainHBox/VBoxContainer/ScrollContainer/MotionInspectorGadget" to="." method="property_change_begin"]
-[connection signal="change_property_end" from="MainVBox/MainArea/MotionVBox/MainHBox/VBoxContainer/ScrollContainer/MotionInspectorGadget" to="." method="property_change_end"]
+[connection signal="animation_progress_changed" from="MainVBox/MainArea/MotionVBox/MainHBox/DemoAreaVBox/DemoAreaPanel/DemoAreaRect/DemoAreaViewportContainer/DemoAreaViewport/GridWorld/GridActor" to="MainVBox/MainArea/MotionVBox/TimelineVBox/PanelContainer/ColorRect/VBoxContainer/Control/HBoxContainer/MotionTimeline" method="set_animation_progress"]
+[connection signal="current_motion_changed" from="MainVBox/MainArea/MotionVBox/MainHBox/DemoAreaVBox/DemoAreaPanel/DemoAreaRect/DemoAreaViewportContainer/DemoAreaViewport/GridWorld/GridActor" to="MainVBox/MainArea/MotionVBox/TimelineVBox/PanelContainer/ColorRect/VBoxContainer/Control/HBoxContainer/MotionTimeline" method="set_current_motion"]
+[connection signal="pressed" from="MainVBox/MainArea/MotionVBox/MainHBox/DemoAreaVBox/PanelContainer2/HBoxContainer/Button" to="." method="demo_replay"]
+[connection signal="change_property_begin" from="MainVBox/MainArea/MotionVBox/MainHBox/InspectorVBox/MotionHeader/MotionHeaderVBox/MotionNameGadgetString" to="." method="property_change_begin"]
+[connection signal="change_property_end" from="MainVBox/MainArea/MotionVBox/MainHBox/InspectorVBox/MotionHeader/MotionHeaderVBox/MotionNameGadgetString" to="." method="property_change_end"]
+[connection signal="change_property_begin" from="MainVBox/MainArea/MotionVBox/MainHBox/InspectorVBox/MotionScrollContainer/MotionInspectorGadget" to="." method="property_change_begin"]
+[connection signal="change_property_end" from="MainVBox/MainArea/MotionVBox/MainHBox/InspectorVBox/MotionScrollContainer/MotionInspectorGadget" to="." method="property_change_end"]
+[connection signal="change_property_begin" from="MainVBox/MainArea/MotionVBox/MainHBox/InspectorVBox/MoveHeader/MoveHeaderVBox/MoveNameGadgetString" to="." method="property_change_begin"]
+[connection signal="change_property_end" from="MainVBox/MainArea/MotionVBox/MainHBox/InspectorVBox/MoveHeader/MoveHeaderVBox/MoveNameGadgetString" to="." method="property_change_end"]
+[connection signal="change_property_begin" from="MainVBox/MainArea/MotionVBox/MainHBox/InspectorVBox/MoveScrollContainer/MoveInspectorGadget" to="." method="property_change_begin"]
+[connection signal="change_property_end" from="MainVBox/MainArea/MotionVBox/MainHBox/InspectorVBox/MoveScrollContainer/MoveInspectorGadget" to="." method="property_change_end"]
 [connection signal="mouse_wheel_down" from="MainVBox/MainArea/MotionVBox/TimelineVBox/PanelContainer/ColorRect/VBoxContainer/Control/HBoxContainer" to="MainVBox/MainArea/MotionVBox/TimelineVBox/PanelContainer/ColorRect/VBoxContainer/Control/HBoxContainer/MotionTimeline" method="adjust_zoom" binds= [ -0.1 ]]
 [connection signal="mouse_wheel_up" from="MainVBox/MainArea/MotionVBox/TimelineVBox/PanelContainer/ColorRect/VBoxContainer/Control/HBoxContainer" to="MainVBox/MainArea/MotionVBox/TimelineVBox/PanelContainer/ColorRect/VBoxContainer/Control/HBoxContainer/MotionTimeline" method="adjust_zoom" binds= [ 0.1 ]]
 [connection signal="curve_selected" from="MainVBox/MainArea/MotionVBox/TimelineVBox/PanelContainer/ColorRect/VBoxContainer/Control/HBoxContainer/MotionTimeline" to="." method="curve_selected"]
 [connection signal="motion_selected" from="MainVBox/MainArea/MotionVBox/TimelineVBox/PanelContainer/ColorRect/VBoxContainer/Control/HBoxContainer/MotionTimeline" to="." method="set_selected_motion"]
-[connection signal="move_selected" from="MainVBox/MainArea/MotionVBox/TimelineVBox/PanelContainer/ColorRect/VBoxContainer/Control/HBoxContainer/MotionTimeline" to="." method="set_selected_move"]
 [connection signal="move_selected" from="MainVBox/MainArea/MotionVBox/TimelineVBox/PanelContainer/ColorRect/VBoxContainer/Control/HBoxContainer/MotionTimeline" to="." method="move_selected"]
+[connection signal="move_selected" from="MainVBox/MainArea/MotionVBox/TimelineVBox/PanelContainer/ColorRect/VBoxContainer/Control/HBoxContainer/MotionTimeline" to="." method="set_selected_move"]
 [connection signal="file_selected" from="MovesetFileDialog" to="." method="set_moveset_path"]
 [connection signal="file_selected" from="MotionFileDialog" to="." method="import_moveset_motion"]

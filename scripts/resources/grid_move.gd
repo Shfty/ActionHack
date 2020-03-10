@@ -20,17 +20,20 @@ export(Dictionary) var input_press_motions := {}
 export(Dictionary) var input_release_motions := {}
 
 func _init() -> void:
+	if resource_name == "":
+		resource_name = "Move"
+
 	if curve_x.get_point_count() == 0:
-		curve_x.add_point(Vector2.ZERO, 0, tan(deg2rad(45)))
-		curve_x.add_point(Vector2.ONE, tan(deg2rad(45)), 0)
+		curve_x.add_point(Vector2.ZERO)
+		curve_x.add_point(Vector2.RIGHT)
 
 	if curve_y.get_point_count() == 0:
-		curve_y.add_point(Vector2.ZERO, 0, tan(deg2rad(45)))
-		curve_y.add_point(Vector2.ONE, tan(deg2rad(45)), 0)
+		curve_y.add_point(Vector2.ZERO)
+		curve_y.add_point(Vector2.RIGHT)
 
 	if curve_facing.get_point_count() == 0:
-		curve_facing.add_point(Vector2.ZERO, 0, tan(deg2rad(45)))
-		curve_facing.add_point(Vector2.ONE, tan(deg2rad(45)), 0)
+		curve_facing.add_point(Vector2.ZERO)
+		curve_facing.add_point(Vector2.RIGHT)
 
 func set_events(new_events: Array) -> void:
 	if events != new_events:

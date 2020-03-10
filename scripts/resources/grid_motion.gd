@@ -2,7 +2,9 @@ class_name GridMotion
 extends Resource
 tool
 
-export(Array, Resource) var motion_moves := [] setget set_moves
+export(Array, Resource) var motion_moves := [
+	GridMove.new()
+] setget set_moves
 export(Curve) var motion_curve: Curve = null
 
 export(bool) var looping := false
@@ -39,18 +41,3 @@ func get_duration() -> float:
 	for move in motion_moves:
 		duration += move.duration
 	return duration
-
-func _get_inspector_gadget_classes() -> Array:
-	return [
-		'GadgetMotionButton'
-	]
-
-func _get_inspector_gadget_property_map() -> Dictionary:
-	var motion_gadgets := [
-			'GadgetMotionChoice'
-	]
-	return {
-		'hit_wall_motion_idx': motion_gadgets,
-		'hit_entity_motion_idx': motion_gadgets,
-		'next_motion_idx': motion_gadgets
-	}
