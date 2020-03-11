@@ -16,4 +16,3 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 curve = SubResource( 1 )
-max_value = 1.0

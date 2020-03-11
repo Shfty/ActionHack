@@ -83,8 +83,28 @@ func save_moveset() -> void:
 
 	var path = moveset.get_path()
 	if path != "":
+		var dir = Directory.new()
+
+		var path_comps = path.split("/")
+		var filename_comps = path_comps[-1].split(".")
+		path_comps.resize(path_comps.size() - 1)
+		var path_no_file = path_comps.join("/") + "/"
+
+		if not dir.dir_exists(path_no_file + "backups/"):
+			dir.make_dir(path_no_file + "backups/")
+
+		var backup_path = ""
+		var i = 1
+		while true:
+			backup_path = path_no_file + "backups/" + filename_comps[0] + "_" + String(i) + "." + filename_comps[1]
+			if not dir.file_exists(backup_path):
+				break
+			else:
+				i += 1
+
+		dir.copy(path, backup_path)
+
 		var result = ResourceSaver.save(path, moveset)
-		print("Save result: %s" % [result])
 
 func close_moveset() -> void:
 	set_moveset(null)

@@ -49,7 +49,7 @@ func hitstun(motion: GridMotion) -> void:
 			motion_mod.motion_moves[i] = move_mod
 		set_motion(motion_mod)
 	else:
-		set_motion(preload("res://resources/grid_motion/hitstun.tres"))
+		set_motion(preload("res://resources/grid_motion/basic/hitstun.tres"))
 
 	var check_motion = current_motion
 	var duration = 0.0
@@ -58,7 +58,7 @@ func hitstun(motion: GridMotion) -> void:
 			break
 
 		duration += check_motion.get_duration()
-		check_motion = check_motion.next_motion
+		check_motion = moveset.get_motion(check_motion.next_motion_idx)
 
 	emit_signal("hitstun_triggered", duration)
 

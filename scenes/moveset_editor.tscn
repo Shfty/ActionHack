@@ -671,10 +671,6 @@ margin_right = 473.0
 margin_bottom = 231.0
 size_flags_vertical = 3
 script = ExtResource( 8 )
-curve = null
-min_value = -1.0
-max_value = 1.0
-color = Color( 1, 1, 1, 1 )
 
 [node name="TimelineVBox" type="VBoxContainer" parent="MainVBox/MainArea/MotionVBox"]
 margin_top = 532.0
@@ -834,11 +830,12 @@ __meta__ = {
 [connection signal="demo_replay" from="." to="MainVBox/MainArea/MotionVBox/MainHBox/DemoAreaVBox/DemoAreaPanel/DemoAreaRect/DemoAreaViewportContainer" method="replay"]
 [connection signal="hide_editors" from="." to="MainVBox/MainArea" method="hide_editors"]
 [connection signal="motion_invalid_changed" from="." to="MainVBox/Toolbar/ToolbarHBox/MotionTab" method="set_disabled"]
-[connection signal="motion_selected" from="." to="MainVBox/MainArea/MotionVBox/MainHBox/InspectorVBox/CurveEditPanel" method="motion_selected"]
 [connection signal="motion_selected" from="." to="MainVBox/MainArea/MotionVBox/MainHBox/InspectorVBox" method="motion_selected"]
-[connection signal="move_selected" from="." to="MainVBox/MainArea/MotionVBox/MainHBox/InspectorVBox/CurveEditPanel" method="move_selected"]
+[connection signal="motion_selected" from="." to="MainVBox/MainArea/MotionVBox/MainHBox/InspectorVBox/CurveEditPanel" method="motion_selected"]
 [connection signal="move_selected" from="." to="MainVBox/MainArea/MotionVBox/MainHBox/InspectorVBox" method="move_selected"]
+[connection signal="move_selected" from="." to="MainVBox/MainArea/MotionVBox/MainHBox/InspectorVBox/CurveEditPanel" method="move_selected"]
 [connection signal="moveset_changed" from="." to="MainVBox/MainArea/MotionVBox/TimelineVBox/PanelContainer/ColorRect/VBoxContainer/Control/HBoxContainer/MotionTimeline" method="populate_moveset"]
+[connection signal="moveset_changed" from="." to="MainVBox/MainArea/MotionVBox/MainHBox/DemoAreaVBox/DemoAreaPanel/DemoAreaRect/DemoAreaViewportContainer/DemoAreaViewport/GridWorld/GridActor" method="set_moveset"]
 [connection signal="moveset_invalid_changed" from="." to="MainVBox/Toolbar/ToolbarHBox/MovesetTab" method="set_disabled"]
 [connection signal="moveset_invalid_changed" from="." to="MainVBox/Toolbar/ToolbarHBox/SaveButton" method="set_disabled"]
 [connection signal="moveset_invalid_changed" from="." to="MainVBox/Toolbar/ToolbarHBox/CloseButton" method="set_disabled"]
@@ -881,6 +878,7 @@ __meta__ = {
 [connection signal="mouse_wheel_up" from="MainVBox/MainArea/MotionVBox/TimelineVBox/PanelContainer/ColorRect/VBoxContainer/Control/HBoxContainer" to="MainVBox/MainArea/MotionVBox/TimelineVBox/PanelContainer/ColorRect/VBoxContainer/Control/HBoxContainer/MotionTimeline" method="adjust_zoom" binds= [ 0.1 ]]
 [connection signal="curve_selected" from="MainVBox/MainArea/MotionVBox/TimelineVBox/PanelContainer/ColorRect/VBoxContainer/Control/HBoxContainer/MotionTimeline" to="." method="curve_selected"]
 [connection signal="motion_selected" from="MainVBox/MainArea/MotionVBox/TimelineVBox/PanelContainer/ColorRect/VBoxContainer/Control/HBoxContainer/MotionTimeline" to="." method="set_selected_motion"]
+[connection signal="motion_selected" from="MainVBox/MainArea/MotionVBox/TimelineVBox/PanelContainer/ColorRect/VBoxContainer/Control/HBoxContainer/MotionTimeline" to="MainVBox/MainArea/MotionVBox/MainHBox/DemoAreaVBox/DemoAreaPanel/DemoAreaRect/DemoAreaViewportContainer" method="set_motion"]
 [connection signal="move_selected" from="MainVBox/MainArea/MotionVBox/TimelineVBox/PanelContainer/ColorRect/VBoxContainer/Control/HBoxContainer/MotionTimeline" to="." method="move_selected"]
 [connection signal="move_selected" from="MainVBox/MainArea/MotionVBox/TimelineVBox/PanelContainer/ColorRect/VBoxContainer/Control/HBoxContainer/MotionTimeline" to="." method="set_selected_move"]
 [connection signal="file_selected" from="MovesetFileDialog" to="." method="set_moveset_path"]

@@ -1,7 +1,8 @@
-[gd_resource type="Resource" load_steps=40 format=2]
+[gd_resource type="Resource" load_steps=41 format=2]
 
 [ext_resource path="res://scripts/resources/grid_moveset.gd" type="Script" id=1]
 [ext_resource path="res://resources/curve/curve_linear.tres" type="Curve" id=2]
+[ext_resource path="res://resources/grid_motion/broadsword/attack_3.tres" type="Resource" id=3]
 [ext_resource path="res://scripts/grid_entity/grid_hitbox.gd" type="Script" id=6]
 [ext_resource path="res://scripts/resources/grid_motion.gd" type="Script" id=7]
 [ext_resource path="res://scripts/resources/grid_event.gd" type="Script" id=8]
@@ -57,7 +58,7 @@ lock_input_buffer = false
 lock_inputs = [  ]
 hit_wall_motion_idx = -1
 hit_entity_motion_idx = -1
-next_motion_idx = 1
+next_motion_idx = -1
 
 [sub_resource type="Curve" id=7]
 min_value = -0.35
@@ -136,7 +137,7 @@ flip_curve_facing = false
 duration = 0.3
 events = [ SubResource( 15 ) ]
 input_press_motions = {
-"attack": 4
+"attack": ExtResource( 3 )
 }
 input_release_motions = {
 
@@ -153,7 +154,7 @@ lock_input_buffer = false
 lock_inputs = [  ]
 hit_wall_motion_idx = -1
 hit_entity_motion_idx = -1
-next_motion_idx = 3
+next_motion_idx = -1
 
 [sub_resource type="Curve" id=18]
 max_value = 0.35
@@ -179,7 +180,7 @@ flip_curve_facing = false
 duration = 0.2
 events = [  ]
 input_press_motions = {
-"attack": 4
+"attack": ExtResource( 3 )
 }
 input_release_motions = {
 
@@ -246,7 +247,7 @@ motion_moves = [ SubResource( 27 ) ]
 motion_curve = ExtResource( 2 )
 looping = false
 cancelable = false
-lock_input_buffer = true
+lock_input_buffer = false
 lock_inputs = [  ]
 hit_wall_motion_idx = -1
 hit_entity_motion_idx = -1

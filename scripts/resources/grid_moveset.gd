@@ -25,3 +25,16 @@ export(Dictionary) var input_map := {
 }
 
 export(Array, Resource) var motions := []
+
+# Getters
+func get_motion(index: int) -> GridMotion:
+	if index < 0 or index >= motions.size():
+		return null
+
+	return motions[index]
+
+func get_motion_by_action(action: String) -> GridMotion:
+	if not action in input_map:
+		return null
+
+	return get_motion(input_map[action])

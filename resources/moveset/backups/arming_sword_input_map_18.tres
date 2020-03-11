@@ -57,7 +57,7 @@ lock_input_buffer = false
 lock_inputs = [  ]
 hit_wall_motion_idx = -1
 hit_entity_motion_idx = -1
-next_motion_idx = 1
+next_motion_idx = -1
 
 [sub_resource type="Curve" id=7]
 min_value = -0.35
@@ -153,7 +153,7 @@ lock_input_buffer = false
 lock_inputs = [  ]
 hit_wall_motion_idx = -1
 hit_entity_motion_idx = -1
-next_motion_idx = 3
+next_motion_idx = -1
 
 [sub_resource type="Curve" id=18]
 max_value = 0.35
@@ -246,11 +246,11 @@ motion_moves = [ SubResource( 27 ) ]
 motion_curve = ExtResource( 2 )
 looping = false
 cancelable = false
-lock_input_buffer = true
+lock_input_buffer = false
 lock_inputs = [  ]
 hit_wall_motion_idx = -1
 hit_entity_motion_idx = -1
-next_motion_idx = 5
+next_motion_idx = -1
 
 [sub_resource type="Curve" id=29]
 _data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]

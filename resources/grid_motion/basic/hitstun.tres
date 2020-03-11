@@ -1,8 +1,8 @@
 [gd_resource type="Resource" load_steps=8 format=2]
 
-[ext_resource path="res://scripts/resources/grid_move.gd" type="Script" id=1]
+[ext_resource path="res://resources/curve/curve_linear.tres" type="Curve" id=1]
 [ext_resource path="res://scripts/resources/grid_motion.gd" type="Script" id=2]
-[ext_resource path="res://resources/curve/curve_linear.tres" type="Curve" id=3]
+[ext_resource path="res://scripts/resources/grid_move.gd" type="Script" id=3]
 
 [sub_resource type="Curve" id=1]
 max_value = 0.2
@@ -16,7 +16,7 @@ _data = [ Vector2( 0, 0 ), 0.0, 2.20893, 0, 0, Vector2( 0.247082, 0.2 ), 0.0, 0.
 
 [sub_resource type="Resource" id=4]
 resource_name = "Move"
-script = ExtResource( 1 )
+script = ExtResource( 3 )
 delta_position = Vector2( 0, 0 )
 delta_facing = 0
 curve_x = SubResource( 2 )
@@ -38,7 +38,7 @@ input_release_motions = {
 resource_name = "Hitstun"
 script = ExtResource( 2 )
 motion_moves = [ SubResource( 4 ) ]
-motion_curve = ExtResource( 3 )
+motion_curve = ExtResource( 1 )
 looping = false
 cancelable = false
 lock_input_buffer = false

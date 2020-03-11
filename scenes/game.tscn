@@ -1,9 +1,9 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://scripts/grid_controller/player_controller.gd" type="Script" id=1]
 [ext_resource path="res://scripts/grid_camera.gd" type="Script" id=2]
 [ext_resource path="res://scripts/grid_world.gd" type="Script" id=3]
-[ext_resource path="res://scripts/resources/grid_move.gd" type="Script" id=4]
+[ext_resource path="res://resources/moveset/arming_sword_input_map.tres" type="Resource" id=4]
 [ext_resource path="res://resources/moveset/basic_input_map.tres" type="Resource" id=5]
 [ext_resource path="res://tilesets/test_tileset.tres" type="TileSet" id=6]
 [ext_resource path="res://textures/tiles/player.png" type="Texture" id=7]
@@ -12,39 +12,10 @@
 [ext_resource path="res://prefabs/Renderer2D.tscn" type="PackedScene" id=10]
 [ext_resource path="res://prefabs/UI.tscn" type="PackedScene" id=11]
 
-[sub_resource type="Curve" id=1]
-
-[sub_resource type="Curve" id=2]
-
-[sub_resource type="Curve" id=3]
-
-[sub_resource type="Resource" id=4]
-resource_name = "Move"
-script = ExtResource( 4 )
-delta_position = Vector2( 0, -1 )
-delta_facing = 0
-curve_x = SubResource( 2 )
-curve_y = SubResource( 3 )
-curve_facing = SubResource( 1 )
-flip_curve_x = false
-flip_curve_y = false
-flip_curve_facing = false
-duration = 0.2
-events = [  ]
-input_press_motions = {
-
-}
-input_release_motions = {
-"move_forward": null
-}
-
-[sub_resource type="Resource" id=5]
-resource_name = "Arming Sword"
-script = SubResource( 4 )
-
 [node name="Game" type="MarginContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+mouse_filter = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -52,6 +23,7 @@ __meta__ = {
 [node name="ViewportContainer" type="ViewportContainer" parent="."]
 margin_right = 960.0
 margin_bottom = 960.0
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 stretch = true
@@ -102,7 +74,7 @@ script = ExtResource( 9 )
 sprite_texture = ExtResource( 7 )
 x = 9
 y = 19
-moveset = SubResource( 5 )
+moveset = ExtResource( 4 )
 hitstun_recovery_rate = 0.2
 
 [node name="PlayerController" type="Node" parent="World/Player"]
@@ -176,3 +148,5 @@ rotation = 3.14159
 
 [node name="Sprite" type="Sprite" parent="World/Monster3/Offset"]
 texture = ExtResource( 7 )
+[connection signal="health_changed" from="World/Player" to="UI" method="set_health"]
+[connection signal="rotation_changed" from="World/Player" to="UI" method="set_compass_angle"]

@@ -1,0 +1,44 @@
+[gd_resource type="Resource" load_steps=5 format=2]
+
+[ext_resource path="res://scripts/resources/grid_moveset.gd" type="Script" id=1]
+[ext_resource path="res://scripts/resources/grid_motion.gd" type="Script" id=2]
+
+[sub_resource type="Curve" id=1]
+
+[sub_resource type="Resource" id=2]
+resource_name = "New Motion"
+script = ExtResource( 2 )
+motion_moves = [  ]
+motion_curve = SubResource( 1 )
+looping = false
+cancelable = false
+lock_input_buffer = false
+lock_inputs = [  ]
+hit_wall_motion_idx = -1
+hit_entity_motion_idx = -1
+next_motion_idx = -1
+
+[resource]
+resource_name = "Arming Sword"
+script = ExtResource( 1 )
+input_map = {
+"attack": null,
+"move_back": null,
+"move_forward": null,
+"move_left": null,
+"move_right": null,
+"quickturn_left": null,
+"quickturn_right": null,
+"special_attack": null,
+"special_move_back": null,
+"special_move_forward": null,
+"special_move_left": null,
+"special_move_right": null,
+"special_quickturn_left": null,
+"special_quickturn_right": null,
+"special_turn_left": null,
+"special_turn_right": null,
+"turn_left": null,
+"turn_right": null
+}
+motions = [ SubResource( 2 ) ]
