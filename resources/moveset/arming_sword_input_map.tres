@@ -1,11 +1,23 @@
-[gd_resource type="Resource" load_steps=40 format=2]
+[gd_resource type="Resource" load_steps=143 format=2]
 
 [ext_resource path="res://scripts/resources/grid_moveset.gd" type="Script" id=1]
 [ext_resource path="res://resources/curve/curve_linear.tres" type="Curve" id=2]
+[ext_resource path="res://resources/grid_motion/basic/move_left.tres" type="Resource" id=3]
+[ext_resource path="res://resources/grid_motion/basic/move_right.tres" type="Resource" id=4]
+[ext_resource path="res://resources/curve/broadsword/curve_sidestep.tres" type="Curve" id=5]
 [ext_resource path="res://scripts/grid_entity/grid_hitbox.gd" type="Script" id=6]
 [ext_resource path="res://scripts/resources/grid_motion.gd" type="Script" id=7]
 [ext_resource path="res://scripts/resources/grid_event.gd" type="Script" id=8]
 [ext_resource path="res://scripts/resources/grid_move.gd" type="Script" id=9]
+[ext_resource path="res://resources/curve/curve_smoothstep.tres" type="Curve" id=10]
+[ext_resource path="res://resources/curve/curve_ease_out.tres" type="Curve" id=11]
+[ext_resource path="res://resources/curve/broadsword/curve_turn.tres" type="Curve" id=12]
+[ext_resource path="res://resources/curve/broadsword/curve_stinger.tres" type="Curve" id=13]
+[ext_resource path="res://resources/grid_motion/arming_sword/special_stinger_knockback.tres" type="Resource" id=14]
+[ext_resource path="res://resources/grid_motion/arming_sword/spin_knock_right.tres" type="Resource" id=15]
+[ext_resource path="res://resources/grid_motion/arming_sword/spin_knock_left.tres" type="Resource" id=16]
+[ext_resource path="res://resources/grid_motion/arming_sword/spin_knock_forward.tres" type="Resource" id=17]
+[ext_resource path="res://resources/grid_motion/arming_sword/spin_knock_backward.tres" type="Resource" id=18]
 
 [sub_resource type="Curve" id=1]
 min_value = -0.35
@@ -294,6 +306,794 @@ hit_wall_motion_idx = -1
 hit_entity_motion_idx = -1
 next_motion_idx = -1
 
+[sub_resource type="Curve" id=34]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Resource" id=35]
+script = ExtResource( 8 )
+time = 0.25
+event_type = 1
+spawn_class = ExtResource( 6 )
+spawn_relative_position = Vector2( 1, -1 )
+spawn_params = [ 0.1, 1, ExtResource( 3 ) ]
+
+[sub_resource type="Resource" id=36]
+script = ExtResource( 8 )
+time = 0.5
+event_type = 1
+spawn_class = ExtResource( 6 )
+spawn_relative_position = Vector2( 0, -1 )
+spawn_params = [ 0.1, 1 ]
+
+[sub_resource type="Resource" id=37]
+resource_name = "Move"
+script = ExtResource( 9 )
+delta_position = Vector2( -1, 0 )
+delta_facing = 0
+curve_x = ExtResource( 5 )
+curve_y = SubResource( 34 )
+curve_facing = ExtResource( 5 )
+flip_curve_x = true
+flip_curve_y = false
+flip_curve_facing = true
+duration = 0.3
+events = [ SubResource( 35 ), SubResource( 36 ) ]
+input_press_motions = {
+
+}
+input_release_motions = {
+
+}
+
+[sub_resource type="Resource" id=38]
+resource_name = "Sidestep Left"
+script = ExtResource( 7 )
+motion_moves = [ SubResource( 37 ) ]
+motion_curve = ExtResource( 11 )
+looping = false
+cancelable = false
+lock_input_buffer = true
+lock_inputs = [  ]
+hit_wall_motion_idx = -1
+hit_entity_motion_idx = -1
+next_motion_idx = 8
+
+[sub_resource type="Curve" id=39]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Resource" id=40]
+script = ExtResource( 8 )
+time = 0.25
+event_type = 1
+spawn_class = ExtResource( 6 )
+spawn_relative_position = Vector2( -1, -1 )
+spawn_params = [ 0.1, 1, ExtResource( 4 ) ]
+
+[sub_resource type="Resource" id=41]
+script = ExtResource( 8 )
+time = 0.5
+event_type = 1
+spawn_class = ExtResource( 6 )
+spawn_relative_position = Vector2( 0, -1 )
+spawn_params = [ 0.1, 1 ]
+
+[sub_resource type="Resource" id=42]
+resource_name = "Move"
+script = ExtResource( 9 )
+delta_position = Vector2( 1, 0 )
+delta_facing = 0
+curve_x = ExtResource( 5 )
+curve_y = SubResource( 39 )
+curve_facing = ExtResource( 5 )
+flip_curve_x = false
+flip_curve_y = false
+flip_curve_facing = false
+duration = 0.3
+events = [ SubResource( 40 ), SubResource( 41 ) ]
+input_press_motions = {
+
+}
+input_release_motions = {
+
+}
+
+[sub_resource type="Resource" id=43]
+resource_name = "Sidestep Right"
+script = ExtResource( 7 )
+motion_moves = [ SubResource( 42 ) ]
+motion_curve = ExtResource( 11 )
+looping = false
+cancelable = false
+lock_input_buffer = true
+lock_inputs = [  ]
+hit_wall_motion_idx = -1
+hit_entity_motion_idx = -1
+next_motion_idx = 8
+
+[sub_resource type="Curve" id=44]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Curve" id=45]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Curve" id=46]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Resource" id=47]
+resource_name = "Move"
+script = ExtResource( 9 )
+delta_position = Vector2( 0, 0 )
+delta_facing = 0
+curve_x = SubResource( 45 )
+curve_y = SubResource( 46 )
+curve_facing = SubResource( 44 )
+flip_curve_x = false
+flip_curve_y = false
+flip_curve_facing = false
+duration = 0.1
+events = [  ]
+input_press_motions = {
+
+}
+input_release_motions = {
+
+}
+
+[sub_resource type="Resource" id=48]
+resource_name = "Sidestep Recovery"
+script = ExtResource( 7 )
+motion_moves = [ SubResource( 47 ) ]
+motion_curve = ExtResource( 2 )
+looping = false
+cancelable = true
+lock_input_buffer = false
+lock_inputs = [ "move_left", "move_right" ]
+hit_wall_motion_idx = -1
+hit_entity_motion_idx = -1
+next_motion_idx = -1
+
+[sub_resource type="Curve" id=49]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Curve" id=50]
+min_value = -0.4
+max_value = 0.0
+_data = [ Vector2( 0, 0 ), 0.0, -2.1, 0, 0, Vector2( 0.250973, -0.4 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Resource" id=51]
+script = ExtResource( 8 )
+time = 0.25
+event_type = 1
+spawn_class = ExtResource( 6 )
+spawn_relative_position = Vector2( 0, -2 )
+spawn_params = [ 0.1, 1 ]
+
+[sub_resource type="Resource" id=52]
+resource_name = "Move"
+script = ExtResource( 9 )
+delta_position = Vector2( 0, 1 )
+delta_facing = 0
+curve_x = SubResource( 49 )
+curve_y = SubResource( 50 )
+curve_facing = ExtResource( 5 )
+flip_curve_x = false
+flip_curve_y = false
+flip_curve_facing = false
+duration = 0.3
+events = [ SubResource( 51 ) ]
+input_press_motions = {
+
+}
+input_release_motions = {
+
+}
+
+[sub_resource type="Resource" id=53]
+resource_name = "Hop Back"
+script = ExtResource( 7 )
+motion_moves = [ SubResource( 52 ) ]
+motion_curve = ExtResource( 10 )
+looping = false
+cancelable = false
+lock_input_buffer = true
+lock_inputs = [  ]
+hit_wall_motion_idx = -1
+hit_entity_motion_idx = -1
+next_motion_idx = -1
+
+[sub_resource type="Curve" id=54]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Curve" id=55]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Resource" id=56]
+script = ExtResource( 8 )
+time = 0.5
+event_type = 1
+spawn_class = ExtResource( 6 )
+spawn_relative_position = Vector2( 1, -1 )
+spawn_params = [ 0.1, 1, ExtResource( 3 ) ]
+
+[sub_resource type="Resource" id=57]
+script = ExtResource( 8 )
+time = 0.75
+event_type = 1
+spawn_class = ExtResource( 6 )
+spawn_relative_position = Vector2( 0, -1 )
+spawn_params = [ 0.1, 1 ]
+
+[sub_resource type="Resource" id=58]
+resource_name = "Move"
+script = ExtResource( 9 )
+delta_position = Vector2( 0, 0 )
+delta_facing = -1
+curve_x = SubResource( 54 )
+curve_y = SubResource( 55 )
+curve_facing = ExtResource( 12 )
+flip_curve_x = false
+flip_curve_y = false
+flip_curve_facing = true
+duration = 0.25
+events = [ SubResource( 56 ), SubResource( 57 ) ]
+input_press_motions = {
+
+}
+input_release_motions = {
+
+}
+
+[sub_resource type="Resource" id=59]
+resource_name = "Turn Attack Left"
+script = ExtResource( 7 )
+motion_moves = [ SubResource( 58 ) ]
+motion_curve = ExtResource( 11 )
+looping = false
+cancelable = false
+lock_input_buffer = true
+lock_inputs = [  ]
+hit_wall_motion_idx = -1
+hit_entity_motion_idx = -1
+next_motion_idx = 12
+
+[sub_resource type="Curve" id=60]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Curve" id=61]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Resource" id=62]
+script = ExtResource( 8 )
+time = 0.5
+event_type = 1
+spawn_class = ExtResource( 6 )
+spawn_relative_position = Vector2( -1, -1 )
+spawn_params = [ 0.1, 1, ExtResource( 4 ) ]
+
+[sub_resource type="Resource" id=63]
+script = ExtResource( 8 )
+time = 0.75
+event_type = 1
+spawn_class = ExtResource( 6 )
+spawn_relative_position = Vector2( 0, -1 )
+spawn_params = [ 0.1, 1 ]
+
+[sub_resource type="Resource" id=64]
+resource_name = "Move"
+script = ExtResource( 9 )
+delta_position = Vector2( 0, 0 )
+delta_facing = 1
+curve_x = SubResource( 60 )
+curve_y = SubResource( 61 )
+curve_facing = ExtResource( 12 )
+flip_curve_x = false
+flip_curve_y = false
+flip_curve_facing = false
+duration = 0.25
+events = [ SubResource( 62 ), SubResource( 63 ) ]
+input_press_motions = {
+
+}
+input_release_motions = {
+
+}
+
+[sub_resource type="Resource" id=65]
+resource_name = "Turn Attack Right"
+script = ExtResource( 7 )
+motion_moves = [ SubResource( 64 ) ]
+motion_curve = ExtResource( 11 )
+looping = false
+cancelable = false
+lock_input_buffer = true
+lock_inputs = [  ]
+hit_wall_motion_idx = -1
+hit_entity_motion_idx = -1
+next_motion_idx = 12
+
+[sub_resource type="Curve" id=66]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Curve" id=67]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Curve" id=68]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Resource" id=69]
+resource_name = "Move"
+script = ExtResource( 9 )
+delta_position = Vector2( 0, 0 )
+delta_facing = 0
+curve_x = SubResource( 67 )
+curve_y = SubResource( 68 )
+curve_facing = SubResource( 66 )
+flip_curve_x = false
+flip_curve_y = false
+flip_curve_facing = false
+duration = 0.1
+events = [  ]
+input_press_motions = {
+
+}
+input_release_motions = {
+
+}
+
+[sub_resource type="Resource" id=70]
+resource_name = "Turn Recovery"
+script = ExtResource( 7 )
+motion_moves = [ SubResource( 69 ) ]
+motion_curve = ExtResource( 2 )
+looping = false
+cancelable = false
+lock_input_buffer = false
+lock_inputs = [ "turn_left", "turn_right" ]
+hit_wall_motion_idx = -1
+hit_entity_motion_idx = -1
+next_motion_idx = -1
+
+[sub_resource type="Curve" id=71]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Curve" id=72]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Curve" id=73]
+max_value = 0.5
+_data = [ Vector2( 0, 0 ), 0.0, -0.122805, 0, 0, Vector2( 1, 0.5 ), 0.5, 0.0, 1, 0 ]
+
+[sub_resource type="Resource" id=74]
+resource_name = "Move"
+script = ExtResource( 9 )
+delta_position = Vector2( 0, 0 )
+delta_facing = 0
+curve_x = SubResource( 72 )
+curve_y = SubResource( 73 )
+curve_facing = SubResource( 71 )
+flip_curve_x = false
+flip_curve_y = false
+flip_curve_facing = false
+duration = 0.15
+events = [  ]
+input_press_motions = {
+
+}
+input_release_motions = {
+
+}
+
+[sub_resource type="Resource" id=75]
+resource_name = "Stinger"
+script = ExtResource( 7 )
+motion_moves = [ SubResource( 74 ) ]
+motion_curve = ExtResource( 2 )
+looping = false
+cancelable = false
+lock_input_buffer = true
+lock_inputs = [  ]
+hit_wall_motion_idx = -1
+hit_entity_motion_idx = -1
+next_motion_idx = 14
+
+[sub_resource type="Curve" id=76]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Curve" id=77]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Curve" id=78]
+max_value = 0.5
+_data = [ Vector2( 0, 0.5 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), -1.5, 0.0, 0, 0 ]
+
+[sub_resource type="Resource" id=79]
+resource_name = "Move"
+script = ExtResource( 9 )
+delta_position = Vector2( 0, -1 )
+delta_facing = 0
+curve_x = SubResource( 77 )
+curve_y = SubResource( 78 )
+curve_facing = SubResource( 76 )
+flip_curve_x = false
+flip_curve_y = false
+flip_curve_facing = false
+duration = 0.05
+events = [  ]
+input_press_motions = {
+
+}
+input_release_motions = {
+
+}
+
+[sub_resource type="Curve" id=80]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Curve" id=81]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Curve" id=82]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Resource" id=83]
+resource_name = "Move"
+script = ExtResource( 9 )
+delta_position = Vector2( 0, -1 )
+delta_facing = 0
+curve_x = SubResource( 81 )
+curve_y = SubResource( 82 )
+curve_facing = SubResource( 80 )
+flip_curve_x = false
+flip_curve_y = false
+flip_curve_facing = false
+duration = 0.05
+events = [  ]
+input_press_motions = {
+
+}
+input_release_motions = {
+
+}
+
+[sub_resource type="Curve" id=84]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Curve" id=85]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Curve" id=86]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Resource" id=87]
+resource_name = "Move"
+script = ExtResource( 9 )
+delta_position = Vector2( 0, -1 )
+delta_facing = 0
+curve_x = SubResource( 85 )
+curve_y = SubResource( 86 )
+curve_facing = SubResource( 84 )
+flip_curve_x = false
+flip_curve_y = false
+flip_curve_facing = false
+duration = 0.05
+events = [  ]
+input_press_motions = {
+
+}
+input_release_motions = {
+
+}
+
+[sub_resource type="Curve" id=88]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Curve" id=89]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Curve" id=90]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Resource" id=91]
+resource_name = "Move"
+script = ExtResource( 9 )
+delta_position = Vector2( 0, -1 )
+delta_facing = 0
+curve_x = SubResource( 89 )
+curve_y = SubResource( 90 )
+curve_facing = SubResource( 88 )
+flip_curve_x = false
+flip_curve_y = false
+flip_curve_facing = false
+duration = 0.05
+events = [  ]
+input_press_motions = {
+
+}
+input_release_motions = {
+
+}
+
+[sub_resource type="Resource" id=92]
+resource_name = "Stinger Dash"
+script = ExtResource( 7 )
+motion_moves = [ SubResource( 79 ), SubResource( 83 ), SubResource( 87 ), SubResource( 91 ) ]
+motion_curve = ExtResource( 13 )
+looping = false
+cancelable = false
+lock_input_buffer = true
+lock_inputs = [  ]
+hit_wall_motion_idx = 15
+hit_entity_motion_idx = 15
+next_motion_idx = 15
+
+[sub_resource type="Curve" id=93]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Curve" id=94]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Curve" id=95]
+min_value = -0.25
+max_value = 0.0
+_data = [ Vector2( 0, 0 ), 0.0, -4.65598, 0, 0, Vector2( 0.140684, -0.25 ), 0.0, 0.0, 0, 0, Vector2( 0.692015, -0.25 ), 0.0, 2.57483, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Resource" id=96]
+script = ExtResource( 8 )
+time = 0.0
+event_type = 1
+spawn_class = ExtResource( 6 )
+spawn_relative_position = Vector2( 0, -1 )
+spawn_params = [ 0.1, 2, ExtResource( 14 ) ]
+
+[sub_resource type="Resource" id=97]
+resource_name = "Move"
+script = ExtResource( 9 )
+delta_position = Vector2( 0, 0 )
+delta_facing = 0
+curve_x = SubResource( 94 )
+curve_y = SubResource( 95 )
+curve_facing = SubResource( 93 )
+flip_curve_x = false
+flip_curve_y = false
+flip_curve_facing = false
+duration = 0.3
+events = [ SubResource( 96 ) ]
+input_press_motions = {
+
+}
+input_release_motions = {
+
+}
+
+[sub_resource type="Resource" id=98]
+resource_name = "Stinger Hit"
+script = ExtResource( 7 )
+motion_moves = [ SubResource( 97 ) ]
+motion_curve = ExtResource( 2 )
+looping = false
+cancelable = false
+lock_input_buffer = true
+lock_inputs = [  ]
+hit_wall_motion_idx = -1
+hit_entity_motion_idx = -1
+next_motion_idx = -1
+
+[sub_resource type="Curve" id=99]
+min_value = -0.5
+max_value = 4.5
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.250951, -0.5 ), 0.0, 0.0, 0, 0, Vector2( 0.752852, 4 ), 6.95538, 6.95538, 0, 0, Vector2( 0.876426, 4.5 ), 0.0, 0.0, 0, 0, Vector2( 1, 4 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Curve" id=100]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Curve" id=101]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Resource" id=102]
+script = ExtResource( 8 )
+time = 0.4
+event_type = 1
+spawn_class = ExtResource( 6 )
+spawn_relative_position = Vector2( 0, -1 )
+spawn_params = [ 0.1, 1, ExtResource( 17 ) ]
+
+[sub_resource type="Resource" id=103]
+script = ExtResource( 8 )
+time = 0.45
+event_type = 1
+spawn_class = ExtResource( 6 )
+spawn_relative_position = Vector2( -1, -1 )
+spawn_params = [ 0.1, 1, ExtResource( 16 ) ]
+
+[sub_resource type="Resource" id=104]
+script = ExtResource( 8 )
+time = 0.5
+event_type = 1
+spawn_class = ExtResource( 6 )
+spawn_relative_position = Vector2( -1, 0 )
+spawn_params = [ 0.1, 2, ExtResource( 16 ) ]
+
+[sub_resource type="Resource" id=105]
+script = ExtResource( 8 )
+time = 0.55
+event_type = 1
+spawn_class = ExtResource( 6 )
+spawn_relative_position = Vector2( -1, 1 )
+spawn_params = [ 0.1, 1, ExtResource( 18 ) ]
+
+[sub_resource type="Resource" id=106]
+script = ExtResource( 8 )
+time = 0.6
+event_type = 1
+spawn_class = ExtResource( 6 )
+spawn_relative_position = Vector2( 0, 1 )
+spawn_params = [ 0.1, 1, ExtResource( 18 ) ]
+
+[sub_resource type="Resource" id=107]
+script = ExtResource( 8 )
+time = 0.65
+event_type = 1
+spawn_class = ExtResource( 6 )
+spawn_relative_position = Vector2( 1, 1 )
+spawn_params = [ 0.1, 1, ExtResource( 15 ) ]
+
+[sub_resource type="Resource" id=108]
+script = ExtResource( 8 )
+time = 0.7
+event_type = 1
+spawn_class = ExtResource( 6 )
+spawn_relative_position = Vector2( 1, 0 )
+spawn_params = [ 0.1, 1, ExtResource( 15 ) ]
+
+[sub_resource type="Resource" id=109]
+script = ExtResource( 8 )
+time = 0.75
+event_type = 1
+spawn_class = ExtResource( 6 )
+spawn_relative_position = Vector2( 1, -1 )
+spawn_params = [ 0.1, 1, ExtResource( 17 ) ]
+
+[sub_resource type="Resource" id=110]
+resource_name = "Move"
+script = ExtResource( 9 )
+delta_position = Vector2( 0, 0 )
+delta_facing = 0
+curve_x = SubResource( 100 )
+curve_y = SubResource( 101 )
+curve_facing = SubResource( 99 )
+flip_curve_x = false
+flip_curve_y = false
+flip_curve_facing = true
+duration = 0.625
+events = [ SubResource( 102 ), SubResource( 103 ), SubResource( 104 ), SubResource( 105 ), SubResource( 106 ), SubResource( 107 ), SubResource( 108 ), SubResource( 109 ) ]
+input_press_motions = {
+
+}
+input_release_motions = {
+
+}
+
+[sub_resource type="Resource" id=111]
+resource_name = "Spin Left"
+script = ExtResource( 7 )
+motion_moves = [ SubResource( 110 ) ]
+motion_curve = ExtResource( 2 )
+looping = false
+cancelable = false
+lock_input_buffer = true
+lock_inputs = [  ]
+hit_wall_motion_idx = -1
+hit_entity_motion_idx = -1
+next_motion_idx = -1
+
+[sub_resource type="Curve" id=112]
+min_value = -0.5
+max_value = 4.5
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.250951, -0.5 ), 0.0, 0.0, 0, 0, Vector2( 0.752852, 4 ), 6.95538, 6.95538, 0, 0, Vector2( 0.876426, 4.5 ), 0.0, 0.0, 0, 0, Vector2( 1, 4 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Curve" id=113]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Curve" id=114]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Resource" id=115]
+script = ExtResource( 8 )
+time = 0.4
+event_type = 1
+spawn_class = ExtResource( 6 )
+spawn_relative_position = Vector2( 0, -1 )
+spawn_params = [ 0.1, 1, ExtResource( 17 ) ]
+
+[sub_resource type="Resource" id=116]
+script = ExtResource( 8 )
+time = 0.45
+event_type = 1
+spawn_class = ExtResource( 6 )
+spawn_relative_position = Vector2( 1, -1 )
+spawn_params = [ 0.1, 1, ExtResource( 15 ) ]
+
+[sub_resource type="Resource" id=117]
+script = ExtResource( 8 )
+time = 0.5
+event_type = 1
+spawn_class = ExtResource( 6 )
+spawn_relative_position = Vector2( 1, 0 )
+spawn_params = [ 0.1, 2, ExtResource( 15 ) ]
+
+[sub_resource type="Resource" id=118]
+script = ExtResource( 8 )
+time = 0.55
+event_type = 1
+spawn_class = ExtResource( 6 )
+spawn_relative_position = Vector2( 1, 1 )
+spawn_params = [ 0.1, 1, ExtResource( 18 ) ]
+
+[sub_resource type="Resource" id=119]
+script = ExtResource( 8 )
+time = 0.6
+event_type = 1
+spawn_class = ExtResource( 6 )
+spawn_relative_position = Vector2( 0, 1 )
+spawn_params = [ 0.1, 1, ExtResource( 18 ) ]
+
+[sub_resource type="Resource" id=120]
+script = ExtResource( 8 )
+time = 0.65
+event_type = 1
+spawn_class = ExtResource( 6 )
+spawn_relative_position = Vector2( -1, 1 )
+spawn_params = [ 0.1, 1, ExtResource( 16 ) ]
+
+[sub_resource type="Resource" id=121]
+script = ExtResource( 8 )
+time = 0.7
+event_type = 1
+spawn_class = ExtResource( 6 )
+spawn_relative_position = Vector2( -1, 0 )
+spawn_params = [ 0.1, 1, ExtResource( 3 ) ]
+
+[sub_resource type="Resource" id=122]
+script = ExtResource( 8 )
+time = 0.75
+event_type = 1
+spawn_class = ExtResource( 6 )
+spawn_relative_position = Vector2( -1, -1 )
+spawn_params = [ 0.1, 1, ExtResource( 17 ) ]
+
+[sub_resource type="Resource" id=123]
+resource_name = "Move"
+script = ExtResource( 9 )
+delta_position = Vector2( 0, 0 )
+delta_facing = 0
+curve_x = SubResource( 113 )
+curve_y = SubResource( 114 )
+curve_facing = SubResource( 112 )
+flip_curve_x = false
+flip_curve_y = false
+flip_curve_facing = false
+duration = 0.625
+events = [ SubResource( 115 ), SubResource( 116 ), SubResource( 117 ), SubResource( 118 ), SubResource( 119 ), SubResource( 120 ), SubResource( 121 ), SubResource( 122 ) ]
+input_press_motions = {
+
+}
+input_release_motions = {
+
+}
+
+[sub_resource type="Resource" id=124]
+resource_name = "Spin Right"
+script = ExtResource( 7 )
+motion_moves = [ SubResource( 123 ) ]
+motion_curve = ExtResource( 2 )
+looping = false
+cancelable = false
+lock_input_buffer = true
+lock_inputs = [  ]
+hit_wall_motion_idx = -1
+hit_entity_motion_idx = -1
+next_motion_idx = -1
+
 [resource]
 resource_name = "Arming Sword"
 script = ExtResource( 1 )
@@ -306,15 +1106,15 @@ input_map = {
 "quickturn_left": -1,
 "quickturn_right": -1,
 "special_attack": -1,
-"special_move_back": -1,
-"special_move_forward": -1,
-"special_move_left": -1,
-"special_move_right": -1,
-"special_quickturn_left": -1,
-"special_quickturn_right": -1,
-"special_turn_left": -1,
-"special_turn_right": -1,
+"special_move_back": 9,
+"special_move_forward": 13,
+"special_move_left": 6,
+"special_move_right": 7,
+"special_quickturn_left": 16,
+"special_quickturn_right": 17,
+"special_turn_left": 10,
+"special_turn_right": 11,
 "turn_left": -1,
 "turn_right": -1
 }
-motions = [ SubResource( 6 ), SubResource( 11 ), SubResource( 17 ), SubResource( 22 ), SubResource( 28 ), SubResource( 33 ) ]
+motions = [ SubResource( 6 ), SubResource( 11 ), SubResource( 17 ), SubResource( 22 ), SubResource( 28 ), SubResource( 33 ), SubResource( 38 ), SubResource( 43 ), SubResource( 48 ), SubResource( 53 ), SubResource( 59 ), SubResource( 65 ), SubResource( 70 ), SubResource( 75 ), SubResource( 92 ), SubResource( 98 ), SubResource( 111 ), SubResource( 124 ) ]

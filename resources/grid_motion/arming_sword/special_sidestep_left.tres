@@ -3,14 +3,15 @@
 [ext_resource path="res://resources/curve/curve_ease_out.tres" type="Curve" id=1]
 [ext_resource path="res://scripts/resources/grid_motion.gd" type="Script" id=2]
 [ext_resource path="res://scripts/resources/grid_move.gd" type="Script" id=3]
-[ext_resource path="res://resources/grid_motion/broadsword/special_sidestep_recovery.tres" type="Resource" id=4]
 [ext_resource path="res://scripts/grid_entity/grid_hitbox.gd" type="Script" id=5]
 [ext_resource path="res://scripts/resources/grid_event.gd" type="Script" id=6]
 [ext_resource path="res://resources/curve/broadsword/curve_sidestep.tres" type="Curve" id=7]
 [ext_resource path="res://resources/grid_motion/basic/move_left.tres" type="Resource" id=8]
 
+[sub_resource type="Curve" id=34]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="Resource" id=1]
+[sub_resource type="Resource" id=35]
 script = ExtResource( 6 )
 time = 0.25
 event_type = 1
@@ -18,7 +19,7 @@ spawn_class = ExtResource( 5 )
 spawn_relative_position = Vector2( 1, -1 )
 spawn_params = [ 0.1, 1, ExtResource( 8 ) ]
 
-[sub_resource type="Resource" id=2]
+[sub_resource type="Resource" id=36]
 script = ExtResource( 6 )
 time = 0.5
 event_type = 1
@@ -26,17 +27,19 @@ spawn_class = ExtResource( 5 )
 spawn_relative_position = Vector2( 0, -1 )
 spawn_params = [ 0.1, 1 ]
 
-[sub_resource type="Resource" id=3]
+[sub_resource type="Resource" id=37]
+resource_name = "Move"
 script = ExtResource( 3 )
 delta_position = Vector2( -1, 0 )
 delta_facing = 0
 curve_x = ExtResource( 7 )
+curve_y = SubResource( 34 )
 curve_facing = ExtResource( 7 )
 flip_curve_x = true
 flip_curve_y = false
 flip_curve_facing = true
 duration = 0.3
-events = [ SubResource( 1 ), SubResource( 2 ) ]
+events = [ SubResource( 35 ), SubResource( 36 ) ]
 input_press_motions = {
 
 }
@@ -47,10 +50,12 @@ input_release_motions = {
 [resource]
 resource_name = "Sidestep Left"
 script = ExtResource( 2 )
-motion_moves = [ SubResource( 3 ) ]
+motion_moves = [ SubResource( 37 ) ]
 motion_curve = ExtResource( 1 )
-next_motion = ExtResource( 4 )
 looping = false
+cancelable = false
 lock_input_buffer = false
 lock_inputs = [  ]
-cancelable = false
+hit_wall_motion_idx = -1
+hit_entity_motion_idx = -1
+next_motion_idx = -1
