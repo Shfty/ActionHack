@@ -17,132 +17,127 @@ _global_script_classes=[ {
 "base": "Control",
 "class": "CurveControlPoints",
 "language": "GDScript",
-"path": "res://scenes/curve_control_points.gd"
+"path": "res://addons/curve_edit/src/curve_control_points.gd"
 }, {
 "base": "Control",
 "class": "CurveEdit",
 "language": "GDScript",
-"path": "res://scenes/curve_edit.gd"
+"path": "res://addons/curve_edit/src/curve_edit.gd"
 }, {
 "base": "Control",
 "class": "CurveRect",
 "language": "GDScript",
-"path": "res://scenes/curve_rect.gd"
+"path": "res://addons/curve_edit/src/curve_rect.gd"
 }, {
-"base": "ColorRect",
-"class": "DraggableRect",
-"language": "GDScript",
-"path": "res://scenes/tangent_handle.gd"
-}, {
-"base": "InspectorGadgetBase",
+"base": "Reference",
 "class": "GadgetAABB",
 "language": "GDScript",
-"path": "res://scripts/inspector_gadget/gadgets/gadget_aabb.gd"
+"path": "res://addons/inspector_gadget/src/gadgets/gadget_aabb.gd"
 }, {
-"base": "InspectorGadgetBase",
+"base": "Reference",
 "class": "GadgetBasis",
 "language": "GDScript",
-"path": "res://scripts/inspector_gadget/gadgets/gadget_basis.gd"
+"path": "res://addons/inspector_gadget/src/gadgets/gadget_basis.gd"
 }, {
-"base": "InspectorGadgetBase",
+"base": "Reference",
 "class": "GadgetBool",
 "language": "GDScript",
-"path": "res://scripts/inspector_gadget/gadgets/gadget_bool.gd"
+"path": "res://addons/inspector_gadget/src/gadgets/gadget_bool.gd"
 }, {
-"base": "GadgetVector4",
+"base": "Reference",
 "class": "GadgetColor",
 "language": "GDScript",
-"path": "res://scripts/inspector_gadget/gadgets/gadget_vector4/gadget_color.gd"
+"path": "res://addons/inspector_gadget/src/gadgets/gadget_vector4/gadget_color.gd"
 }, {
-"base": "GadgetResource",
+"base": "Reference",
 "class": "GadgetCurve",
 "language": "GDScript",
-"path": "res://scripts/inspector_gadget/gadgets/gadget_resource/gadget_curve.gd"
+"path": "res://scripts/inspector_gadget/gadget_curve.gd"
 }, {
-"base": "InspectorGadgetBase",
+"base": "Reference",
 "class": "GadgetFloat",
 "language": "GDScript",
-"path": "res://scripts/inspector_gadget/gadgets/gadget_float.gd"
+"path": "res://addons/inspector_gadget/src/gadgets/gadget_float.gd"
 }, {
-"base": "InspectorGadgetBase",
+"base": "Reference",
 "class": "GadgetInt",
 "language": "GDScript",
-"path": "res://scripts/inspector_gadget/gadgets/gadget_int.gd"
+"path": "res://addons/inspector_gadget/src/gadgets/gadget_int.gd"
 }, {
-"base": "GadgetResource",
+"base": "Reference",
 "class": "GadgetMotionButton",
 "language": "GDScript",
-"path": "res://scripts/inspector_gadget/gadgets/gadget_resource/gadget_motion_button.gd"
+"path": "res://scripts/inspector_gadget/gadget_motion_button.gd"
 }, {
-"base": "GadgetResource",
+"base": "Reference",
 "class": "GadgetMotionChoice",
 "language": "GDScript",
-"path": "res://scripts/inspector_gadget/gadgets/gadget_resource/gadget_motion_choice.gd"
+"path": "res://scripts/inspector_gadget/gadget_motion_choice.gd"
 }, {
-"base": "GadgetStringEdit",
+"base": "Reference",
 "class": "GadgetNodePath",
 "language": "GDScript",
-"path": "res://scripts/inspector_gadget/gadgets/gadget_node_path.gd"
+"path": "res://addons/inspector_gadget/src/gadgets/gadget_node_path.gd"
 }, {
-"base": "GadgetVector4",
+"base": "Reference",
 "class": "GadgetPlane",
 "language": "GDScript",
-"path": "res://scripts/inspector_gadget/gadgets/gadget_vector4/gadget_plane.gd"
+"path": "res://addons/inspector_gadget/src/gadgets/gadget_vector4/gadget_plane.gd"
 }, {
-"base": "GadgetVector4",
+"base": "Reference",
 "class": "GadgetQuat",
 "language": "GDScript",
-"path": "res://scripts/inspector_gadget/gadgets/gadget_vector4/gadget_quat.gd"
+"path": "res://addons/inspector_gadget/src/gadgets/gadget_vector4/gadget_quat.gd"
 }, {
-"base": "GadgetStringEdit",
+"base": "Reference",
 "class": "GadgetRID",
 "language": "GDScript",
-"path": "res://scripts/inspector_gadget/gadgets/gadget_rid.gd"
+"path": "res://addons/inspector_gadget/src/gadgets/gadget_rid.gd"
 }, {
-"base": "InspectorGadgetBase",
+"base": "Reference",
 "class": "GadgetRect2",
 "language": "GDScript",
-"path": "res://scripts/inspector_gadget/gadgets/gadget_rect2.gd"
+"path": "res://addons/inspector_gadget/src/gadgets/gadget_rect2.gd"
 }, {
-"base": "InspectorGadgetBase",
+"base": "Reference",
 "class": "GadgetResource",
 "language": "GDScript",
-"path": "res://scripts/inspector_gadget/gadgets/gadget_resource.gd"
+"path": "res://addons/inspector_gadget/src/gadgets/gadget_resource.gd"
 }, {
 "base": "Reference",
 "class": "GadgetStringEdit",
 "language": "GDScript",
-"path": "res://scripts/inspector_gadget/gadgets/gadget_string_edit.gd"
+"path": "res://addons/inspector_gadget/src/gadgets/gadget_string_edit.gd"
 }, {
-"base": "InspectorGadgetBase",
+"base": "Reference",
 "class": "GadgetStringLabel",
 "language": "GDScript",
-"path": "res://scripts/inspector_gadget/gadgets/gadget_string_label.gd"
+"path": "res://addons/inspector_gadget/src/gadgets/gadget_string_label.gd"
 }, {
-"base": "InspectorGadgetBase",
+"base": "Reference",
 "class": "GadgetTransform",
 "language": "GDScript",
-"path": "res://scripts/inspector_gadget/gadgets/gadget_transform.gd"
+"path": "res://addons/inspector_gadget/src/gadgets/gadget_transform.gd"
 }, {
-"base": "InspectorGadgetBase",
+"base": "Reference",
 "class": "GadgetTransform2D",
 "language": "GDScript",
-"path": "res://scripts/inspector_gadget/gadgets/gadget_transform2d.gd"
+"path": "res://addons/inspector_gadget/src/gadgets/gadget_transform2d.gd"
 }, {
-"base": "InspectorGadgetBase",
+"base": "Reference",
 "class": "GadgetVector2",
 "language": "GDScript",
-"path": "res://scripts/inspector_gadget/gadgets/gadget_vector2.gd"
+"path": "res://addons/inspector_gadget/src/gadgets/gadget_vector2.gd"
 }, {
-"base": "InspectorGadgetBase",
+"base": "Reference",
 "class": "GadgetVector3",
 "language": "GDScript",
-"path": "res://scripts/inspector_gadget/gadgets/gadget_vector3.gd"
+"path": "res://addons/inspector_gadget/src/gadgets/gadget_vector3.gd"
 }, {
-"base": "InspectorGadgetBase",
+"base": "Reference",
 "class": "GadgetVector4",
 "language": "GDScript",
-"path": "res://scripts/inspector_gadget/gadgets/gadget_vector4.gd"
+"path": "res://addons/inspector_gadget/src/gadgets/gadget_vector4.gd"
 }, {
 "base": "GridEntity",
 "class": "GridActor",
@@ -209,20 +204,20 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/grid_world.gd"
 }, {
-"base": "InspectorGadgetBase",
+"base": "Reference",
 "class": "InspectorGadget",
 "language": "GDScript",
-"path": "res://scripts/inspector_gadget/inspector_gadget.gd"
+"path": "res://addons/inspector_gadget/src/inspector_gadget.gd"
 }, {
-"base": "MarginContainer",
+"base": "Reference",
 "class": "InspectorGadgetBase",
 "language": "GDScript",
-"path": "res://scripts/inspector_gadget/inspector_gadget_base.gd"
+"path": "res://addons/inspector_gadget/src/inspector_gadget_base.gd"
 }, {
 "base": "Reference",
 "class": "InspectorGadgetUtil",
 "language": "GDScript",
-"path": "res://scripts/inspector_gadget/inspector_gadget_util.gd"
+"path": "res://addons/inspector_gadget/src/inspector_gadget_util.gd"
 }, {
 "base": "GridController",
 "class": "MonsterController",
@@ -259,7 +254,6 @@ _global_script_class_icons={
 "CurveControlPoints": "",
 "CurveEdit": "",
 "CurveRect": "",
-"DraggableRect": "",
 "GadgetAABB": "",
 "GadgetBasis": "",
 "GadgetBool": "",
@@ -308,7 +302,7 @@ _global_script_class_icons={
 
 [application]
 
-config/name="ActionHACK"
+config/name="ActionHack"
 run/main_scene="res://scenes/game.tscn"
 config/icon="res://icon.png"
 
@@ -318,6 +312,10 @@ window/size/width=960
 window/size/height=960
 window/size/resizable=false
 window/vsync/use_vsync=false
+
+[editor_plugins]
+
+enabled=PoolStringArray( "inspector_gadget" )
 
 [importer_defaults]
 
