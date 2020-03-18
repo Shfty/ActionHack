@@ -6,10 +6,7 @@ export_presets.cfg
 # Mono-specific ignores
 .mono/
 
-# Qodot-specific ignores
+# Project-specific ignores
 addons/
 export/
-scenes/test_maps
-scenes/autosave/
-textures/QUAKE101.WAD*
-maps/autosave
+resources/moveset/backups/
