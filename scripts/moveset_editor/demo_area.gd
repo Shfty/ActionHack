@@ -7,6 +7,7 @@ onready var cached_x = grid_actor.x
 onready var cached_y = grid_actor.y
 onready var cached_facing = grid_actor.facing
 
+var cached_moveset: GridMoveset = null
 var cached_motion: GridMotion = null
 
 func _ready() -> void:
@@ -31,12 +32,16 @@ func handle_resized() -> void:
 			else:
 				tile_map.set_cell(x, y, 1)
 
-func set_motion(motion: GridMotion):
+func set_moveset(moveset: GridMoveset) -> void:
+	cached_moveset = moveset
+
+func set_motion(motion: GridMotion) -> void:
 	cached_motion = motion
 
+	grid_actor.set_x(cached_x, true)
 	grid_actor.set_y(cached_y, true)
 	grid_actor.set_facing(cached_facing, true)
-	grid_actor.set_motion(motion)
+	grid_actor.set_motion(cached_moveset, motion)
 
 func replay():
 	set_motion(cached_motion)

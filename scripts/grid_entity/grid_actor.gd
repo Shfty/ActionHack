@@ -6,10 +6,12 @@ signal rotation_changed(rotation)
 signal current_motion_changed(current_motion)
 signal animation_progress_changed(animation_progress)
 
+export(Array, Resource) var moveset_stack
 export(Resource) var moveset = null setget set_moveset
 
 var input_buffer := []
 
+var current_moveset: GridMoveset = null
 var current_motion: GridMotion = null
 var motion_duration := -1.0
 var current_move_dict := {}
@@ -24,6 +26,15 @@ var animation_progress := 0.0
 func set_moveset(new_moveset: GridMoveset) -> void:
 	if moveset != new_moveset:
 		moveset = new_moveset
+
+# Getters
+func get_moveset_for_action(action: String) -> GridMoveset:
+	for i in range(moveset_stack.size() - 1, -1, -1):
+		var moveset = moveset_stack[i]
+		if action in moveset.input_map and moveset.input_map[action] != -1:
+			return moveset
+
+	return null
 
 # Overrides
 func _physics_process(delta: float) -> void:
@@ -49,17 +60,17 @@ func update_motion(progress: float = 0.0):
 		if world:
 			if world.check_tile_map_collision(target_x, target_y):
 				input_buffer.clear()
-				if current_motion.hit_wall_motion_idx:
-					set_motion(moveset.get_motion(current_motion.hit_wall_motion_idx))
+				if current_motion.hit_wall_motion_idx != -1:
+					set_motion(current_moveset, current_moveset.get_motion(current_motion.hit_wall_motion_idx))
 				else:
-					set_motion(null)
+					set_motion(null, null)
 				return
 			elif world.check_entity_collision(target_x, target_y, self):
 				input_buffer.clear()
-				if current_motion.hit_entity_motion_idx:
-					set_motion(moveset.get_motion(current_motion.hit_entity_motion_idx))
+				if current_motion.hit_entity_motion_idx != -1:
+					set_motion(current_moveset, current_moveset.get_motion(current_motion.hit_entity_motion_idx))
 				else:
-					set_motion(null)
+					set_motion(null, null)
 				return
 			else:
 				x += rotated_delta_position.x
@@ -192,15 +203,15 @@ func process_input():
 	if input_buffer.size() == 0:
 		if current_motion:
 			if current_motion.next_motion_idx != -1:
-				set_motion(moveset.get_motion(current_motion.next_motion_idx))
+				set_motion(current_moveset, current_moveset.get_motion(current_motion.next_motion_idx))
 			elif current_motion.looping:
-				set_motion(current_motion)
+				set_motion(current_moveset, current_motion)
 			else:
-				set_motion(null)
+				set_motion(null, null)
 		return
 
 	if not moveset:
-		set_motion(null)
+		set_motion(null, null)
 		return
 
 	var input = input_buffer.front()
@@ -208,28 +219,32 @@ func process_input():
 	var pressed = input[1]
 
 	if not action in moveset.input_map:
-		set_motion(null)
+		set_motion(null, null)
 		return
 
 	var consume_input = false
 	var process_next = true
 	var set_motion = true
+	var moveset = null
 	var motion = null
 
 	if current_motion:
-		print(current_motion.get_name(), current_motion.lock_input_buffer)
 		# Called by end of current motion
 		var current_move = get_current_move(motion_progress)
 		if pressed:
 			if action in current_move.input_press_motions:
 				# Pressing a link for the current move
-				var press_motion = moveset.get_motion(current_move.input_press_motions[action])
+				var press_motion = current_moveset.get_motion(current_move.input_press_motions[action])
 				if press_motion:
+					moveset = current_moveset
 					motion = press_motion
 					consume_input = true
 					process_next = false
 			elif not current_motion.lock_input_buffer:
-				motion = moveset.get_motion_by_action(action)
+				var action_moveset = get_moveset_for_action(action)
+				if action_moveset:
+					moveset = action_moveset
+					motion = moveset.get_motion_by_action(action)
 				consume_input = true
 				process_next = false
 			else:
@@ -239,8 +254,9 @@ func process_input():
 		else:
 			if action in current_move.input_release_motions:
 				# Releasing a link for the current move
-				var release_motion = moveset.get_motion(current_move.input_release_motions[action])
+				var release_motion = current_moveset.get_motion(current_move.input_release_motions[action])
 				if release_motion:
+					moveset = current_moveset
 					motion = release_motion
 					consume_input = true
 					process_next = false
@@ -253,7 +269,10 @@ func process_input():
 	else:
 		if pressed:
 			# Pressed during idle
-			motion = moveset.get_motion_by_action(action)
+			var action_moveset = get_moveset_for_action(action)
+			if action_moveset:
+				moveset = action_moveset
+				motion = moveset.get_motion_by_action(action)
 			consume_input = true
 			process_next = false
 		else:
@@ -262,7 +281,7 @@ func process_input():
 			process_next = true
 
 	if set_motion:
-		set_motion(motion)
+		set_motion(moveset, motion)
 
 	if consume_input:
 		input_buffer.pop_front()
@@ -270,13 +289,15 @@ func process_input():
 	if process_next:
 		process_input()
 
-func set_motion(motion: GridMotion):
+func set_motion(moveset: GridMoveset, motion: GridMotion):
 	motion_progress = 0.0
 	prev_move = null
 	prev_move_progress = 0.0
 
 	animation_progress = 0.0
 	motion_duration = -1.0
+
+	current_moveset = moveset
 
 	current_motion = motion
 	emit_signal("current_motion_changed", motion)

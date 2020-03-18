@@ -47,9 +47,9 @@ func hitstun(motion: GridMotion) -> void:
 			var move_mod = motion_mod.motion_moves[i].duplicate()
 			move_mod.delta_position = GridUtil.rotate_vec2_by_facing(move_mod.delta_position, -facing)
 			motion_mod.motion_moves[i] = move_mod
-		set_motion(motion_mod)
+		set_motion(current_moveset, motion_mod)
 	else:
-		set_motion(preload("res://resources/grid_motion/basic/hitstun.tres"))
+		set_motion(current_moveset, preload("res://resources/grid_motion/basic/hitstun.tres"))
 
 	var check_motion = current_motion
 	var duration = 0.0

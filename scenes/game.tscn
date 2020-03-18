@@ -74,7 +74,13 @@ script = ExtResource( 9 )
 sprite_texture = ExtResource( 7 )
 x = 9
 y = 19
+facing = 0
+opacity = 1.0
+solid = true
+moveset_stack = [ ExtResource( 5 ), ExtResource( 4 ) ]
 moveset = ExtResource( 4 )
+health = 5
+hitstun_threshold = 1
 hitstun_recovery_rate = 0.2
 
 [node name="PlayerController" type="Node" parent="World/Player"]
@@ -96,8 +102,13 @@ sprite_texture = ExtResource( 7 )
 x = 18
 y = 7
 facing = 2
+opacity = 1.0
+solid = true
+moveset_stack = [ ExtResource( 5 ) ]
 moveset = ExtResource( 5 )
 health = 15
+hitstun_threshold = 1
+hitstun_recovery_rate = 0.5
 
 [node name="MonsterController" type="Node" parent="World/Monster"]
 script = ExtResource( 8 )
@@ -116,8 +127,13 @@ sprite_texture = ExtResource( 7 )
 x = 7
 y = 10
 facing = 2
+opacity = 1.0
+solid = true
+moveset_stack = [ ExtResource( 5 ) ]
 moveset = ExtResource( 5 )
 health = 15
+hitstun_threshold = 1
+hitstun_recovery_rate = 0.5
 
 [node name="MonsterController2" type="Node" parent="World/Monster2"]
 script = ExtResource( 8 )
@@ -136,8 +152,13 @@ sprite_texture = ExtResource( 7 )
 x = 12
 y = 3
 facing = 2
+opacity = 1.0
+solid = true
+moveset_stack = [ ExtResource( 5 ) ]
 moveset = ExtResource( 5 )
 health = 20
+hitstun_threshold = 1
+hitstun_recovery_rate = 0.5
 
 [node name="MonsterController3" type="Node" parent="World/Monster3"]
 script = ExtResource( 8 )
