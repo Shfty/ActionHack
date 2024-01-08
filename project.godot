@@ -29,115 +29,115 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/curve_edit/src/curve_rect.gd"
 }, {
-"base": "Reference",
+"base": "InspectorGadgetBase",
 "class": "GadgetAABB",
 "language": "GDScript",
-"path": "res://addons/inspector_gadget/src/gadgets/gadget_aabb.gd"
+"path": "res://addons/inspector-gadget/src/gadgets/gadget_aabb.gd"
 }, {
-"base": "Reference",
+"base": "InspectorGadgetBase",
 "class": "GadgetBasis",
 "language": "GDScript",
-"path": "res://addons/inspector_gadget/src/gadgets/gadget_basis.gd"
+"path": "res://addons/inspector-gadget/src/gadgets/gadget_basis.gd"
 }, {
-"base": "Reference",
+"base": "InspectorGadgetBase",
 "class": "GadgetBool",
 "language": "GDScript",
-"path": "res://addons/inspector_gadget/src/gadgets/gadget_bool.gd"
+"path": "res://addons/inspector-gadget/src/gadgets/gadget_bool.gd"
 }, {
-"base": "Reference",
+"base": "GadgetVector4",
 "class": "GadgetColor",
 "language": "GDScript",
-"path": "res://addons/inspector_gadget/src/gadgets/gadget_vector4/gadget_color.gd"
+"path": "res://addons/inspector-gadget/src/gadgets/gadget_vector4/gadget_color.gd"
 }, {
-"base": "Reference",
+"base": "GadgetResource",
 "class": "GadgetCurve",
 "language": "GDScript",
 "path": "res://scripts/inspector_gadget/gadget_curve.gd"
 }, {
-"base": "Reference",
+"base": "InspectorGadgetBase",
 "class": "GadgetFloat",
 "language": "GDScript",
-"path": "res://addons/inspector_gadget/src/gadgets/gadget_float.gd"
+"path": "res://addons/inspector-gadget/src/gadgets/gadget_float.gd"
 }, {
-"base": "Reference",
+"base": "InspectorGadgetBase",
 "class": "GadgetInt",
 "language": "GDScript",
-"path": "res://addons/inspector_gadget/src/gadgets/gadget_int.gd"
+"path": "res://addons/inspector-gadget/src/gadgets/gadget_int.gd"
 }, {
-"base": "Reference",
+"base": "GadgetResource",
 "class": "GadgetMotionButton",
 "language": "GDScript",
 "path": "res://scripts/inspector_gadget/gadget_motion_button.gd"
 }, {
-"base": "Reference",
+"base": "GadgetResource",
 "class": "GadgetMotionChoice",
 "language": "GDScript",
 "path": "res://scripts/inspector_gadget/gadget_motion_choice.gd"
 }, {
-"base": "Reference",
+"base": "GadgetStringEdit",
 "class": "GadgetNodePath",
 "language": "GDScript",
-"path": "res://addons/inspector_gadget/src/gadgets/gadget_node_path.gd"
+"path": "res://addons/inspector-gadget/src/gadgets/gadget_node_path.gd"
 }, {
-"base": "Reference",
+"base": "GadgetVector4",
 "class": "GadgetPlane",
 "language": "GDScript",
-"path": "res://addons/inspector_gadget/src/gadgets/gadget_vector4/gadget_plane.gd"
+"path": "res://addons/inspector-gadget/src/gadgets/gadget_vector4/gadget_plane.gd"
 }, {
-"base": "Reference",
+"base": "GadgetVector4",
 "class": "GadgetQuat",
 "language": "GDScript",
-"path": "res://addons/inspector_gadget/src/gadgets/gadget_vector4/gadget_quat.gd"
+"path": "res://addons/inspector-gadget/src/gadgets/gadget_vector4/gadget_quat.gd"
 }, {
-"base": "Reference",
+"base": "GadgetStringEdit",
 "class": "GadgetRID",
 "language": "GDScript",
-"path": "res://addons/inspector_gadget/src/gadgets/gadget_rid.gd"
+"path": "res://addons/inspector-gadget/src/gadgets/gadget_rid.gd"
 }, {
-"base": "Reference",
+"base": "InspectorGadgetBase",
 "class": "GadgetRect2",
 "language": "GDScript",
-"path": "res://addons/inspector_gadget/src/gadgets/gadget_rect2.gd"
+"path": "res://addons/inspector-gadget/src/gadgets/gadget_rect2.gd"
 }, {
-"base": "Reference",
+"base": "InspectorGadgetBase",
 "class": "GadgetResource",
 "language": "GDScript",
-"path": "res://addons/inspector_gadget/src/gadgets/gadget_resource.gd"
+"path": "res://addons/inspector-gadget/src/gadgets/gadget_resource.gd"
 }, {
-"base": "Reference",
+"base": "InspectorGadgetBase",
 "class": "GadgetStringEdit",
 "language": "GDScript",
-"path": "res://addons/inspector_gadget/src/gadgets/gadget_string_edit.gd"
+"path": "res://addons/inspector-gadget/src/gadgets/gadget_string_edit.gd"
 }, {
-"base": "Reference",
+"base": "InspectorGadgetBase",
 "class": "GadgetStringLabel",
 "language": "GDScript",
-"path": "res://addons/inspector_gadget/src/gadgets/gadget_string_label.gd"
+"path": "res://addons/inspector-gadget/src/gadgets/gadget_string_label.gd"
 }, {
-"base": "Reference",
+"base": "InspectorGadgetBase",
 "class": "GadgetTransform",
 "language": "GDScript",
-"path": "res://addons/inspector_gadget/src/gadgets/gadget_transform.gd"
+"path": "res://addons/inspector-gadget/src/gadgets/gadget_transform.gd"
 }, {
-"base": "Reference",
+"base": "InspectorGadgetBase",
 "class": "GadgetTransform2D",
 "language": "GDScript",
-"path": "res://addons/inspector_gadget/src/gadgets/gadget_transform2d.gd"
+"path": "res://addons/inspector-gadget/src/gadgets/gadget_transform2d.gd"
 }, {
-"base": "Reference",
+"base": "InspectorGadgetBase",
 "class": "GadgetVector2",
 "language": "GDScript",
-"path": "res://addons/inspector_gadget/src/gadgets/gadget_vector2.gd"
+"path": "res://addons/inspector-gadget/src/gadgets/gadget_vector2.gd"
 }, {
-"base": "Reference",
+"base": "InspectorGadgetBase",
 "class": "GadgetVector3",
 "language": "GDScript",
-"path": "res://addons/inspector_gadget/src/gadgets/gadget_vector3.gd"
+"path": "res://addons/inspector-gadget/src/gadgets/gadget_vector3.gd"
 }, {
-"base": "Reference",
+"base": "InspectorGadgetBase",
 "class": "GadgetVector4",
 "language": "GDScript",
-"path": "res://addons/inspector_gadget/src/gadgets/gadget_vector4.gd"
+"path": "res://addons/inspector-gadget/src/gadgets/gadget_vector4.gd"
 }, {
 "base": "GridEntity",
 "class": "GridActor",
@@ -204,20 +204,20 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/grid_world.gd"
 }, {
-"base": "Reference",
+"base": "InspectorGadgetBase",
 "class": "InspectorGadget",
 "language": "GDScript",
-"path": "res://addons/inspector_gadget/src/inspector_gadget.gd"
+"path": "res://addons/inspector-gadget/src/inspector_gadget.gd"
 }, {
-"base": "Reference",
+"base": "MarginContainer",
 "class": "InspectorGadgetBase",
 "language": "GDScript",
-"path": "res://addons/inspector_gadget/src/inspector_gadget_base.gd"
+"path": "res://addons/inspector-gadget/src/inspector_gadget_base.gd"
 }, {
 "base": "Reference",
 "class": "InspectorGadgetUtil",
 "language": "GDScript",
-"path": "res://addons/inspector_gadget/src/inspector_gadget_util.gd"
+"path": "res://addons/inspector-gadget/src/inspector_gadget_util.gd"
 }, {
 "base": "GridController",
 "class": "MonsterController",
@@ -315,7 +315,7 @@ window/vsync/use_vsync=false
 
 [editor_plugins]
 
-enabled=PoolStringArray( "inspector_gadget" )
+enabled=PoolStringArray(  )
 
 [importer_defaults]
 
@@ -344,42 +344,42 @@ texture={
 
 move_forward={
 "deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":69,"unicode":0,"echo":false,"script":null)
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":69,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
  ]
 }
 move_back={
 "deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":68,"unicode":0,"echo":false,"script":null)
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":68,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
  ]
 }
 move_left={
 "deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":83,"unicode":0,"echo":false,"script":null)
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":83,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
  ]
 }
 move_right={
 "deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":70,"unicode":0,"echo":false,"script":null)
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":70,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
  ]
 }
 turn_left={
 "deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":87,"unicode":0,"echo":false,"script":null)
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":87,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
  ]
 }
 turn_right={
 "deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":82,"unicode":0,"echo":false,"script":null)
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":82,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
  ]
 }
 quickturn_left={
 "deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":67,"unicode":0,"echo":false,"script":null)
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":67,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
  ]
 }
 quickturn_right={
 "deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":86,"unicode":0,"echo":false,"script":null)
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":86,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
  ]
 }
 attack={

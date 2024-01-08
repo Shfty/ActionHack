@@ -252,7 +252,7 @@ func process_input():
 				process_next = false
 				set_motion = false
 		else:
-			if action in current_move.input_release_motions:
+			if action in current_move.input_release_motions and current_move.input_release_motions[action] != null:
 				# Releasing a link for the current move
 				var release_motion = current_moveset.get_motion(current_move.input_release_motions[action])
 				if release_motion:
